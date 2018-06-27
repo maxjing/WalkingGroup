@@ -47,11 +47,11 @@ public class ServerTestActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
 
         // Setup UI buttons to test it.
-//        setupNewUserButton();
+        setupNewUserButton();
         setupLoginButton();
-//        setupListUsers();
-//        setupGetUserByEmail();
-//        setupGetUserById();
+        setupListUsers();
+        setupGetUserByEmail();
+        setupGetUserById();
         setbtntoLogin();
 
     }
@@ -64,32 +64,32 @@ public class ServerTestActivity extends AppCompatActivity {
 
     // Create a new user on the server
     // ------------------------------------------------------------------------------------------
-//    private void setupNewUserButton() {
-//        Button btn = findViewById(R.id.btnNewUser);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Build new user (with random email to avoid conflicts)
-//                User user = new User();
-//                int random = (int) (Math.random() * 100000);
-//                user.setEmail("testuser"+random+"@test.com");
-//                user.setName("I. B. Rocking");
-//                user.setPassword(userPassword);
-//                user.setCurrentPoints(100);
-//                user.setTotalPointsEarned(2500);
-//                user.setRewards(new EarnedRewards());
-//
-//                // Make call
-//                Call<User> caller = proxy.createUser(user);
-//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
-//            }
-//        });
-//    }
-//    private void response(User user) {
-//        notifyUserViaLogAndToast("Server replied with user: " + user.toString());
-//        userId = user.getId();
-//        userEmail = user.getEmail();
-//    }
+    private void setupNewUserButton() {
+        Button btn = findViewById(R.id.btnNewUser);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Build new user (with random email to avoid conflicts)
+                User user = new User();
+                int random = (int) (Math.random() * 100000);
+                user.setEmail("testuser"+random+"@test.com");
+                user.setName("I. B. Rocking");
+                user.setPassword(userPassword);
+                user.setCurrentPoints(100);
+                user.setTotalPointsEarned(2500);
+                user.setRewards(new EarnedRewards());
+
+                // Make call
+                Call<User> caller = proxy.createUser(user);
+                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
+            }
+        });
+    }
+    private void response(User user) {
+        notifyUserViaLogAndToast("Server replied with user: " + user.toString());
+        userId = user.getId();
+        userEmail = user.getEmail();
+    }
 
 
     // Login to get a Token
@@ -133,56 +133,56 @@ public class ServerTestActivity extends AppCompatActivity {
 
     // List all users
     // ------------------------------------------------------------------------------------------
-//    private void setupListUsers() {
-//        Button btn = findViewById(R.id.btnListUsers);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Make call
-//                Call<List<User>> caller = proxy.getUsers();
-//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUsers -> response(returnedUsers));
-//            }
-//        });
-//    }
-//
-//    private void response(List<User> returnedUsers) {
-//        notifyUserViaLogAndToast("Got list of " + returnedUsers.size() + " users! See logcat.");
-//        Log.w(TAG, "All Users:");
-//        for (User user : returnedUsers) {
-//            Log.w(TAG, "    User: " + user.toString());
-//        }
-//    }
+    private void setupListUsers() {
+        Button btn = findViewById(R.id.btnListUsers);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Make call
+                Call<List<User>> caller = proxy.getUsers();
+                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUsers -> response(returnedUsers));
+            }
+        });
+    }
+
+    private void response(List<User> returnedUsers) {
+        notifyUserViaLogAndToast("Got list of " + returnedUsers.size() + " users! See logcat.");
+        Log.w(TAG, "All Users:");
+        for (User user : returnedUsers) {
+            Log.w(TAG, "    User: " + user.toString());
+        }
+    }
 
 
-    // Get user by Email
+//     Get user by Email
+//     ------------------------------------------------------------------------------------------
+//     Response goes the same function as created above for user responses.
+    private void setupGetUserByEmail() {
+        Button btn = findViewById(R.id.btnGetUserByEmail);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Make call
+                Call<User> caller = proxy.getUserByEmail(userEmail);
+                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
+            }
+        });
+    }
+
+    // Get user by ID
     // ------------------------------------------------------------------------------------------
     // Response goes the same function as created above for user responses.
-//    private void setupGetUserByEmail() {
-//        Button btn = findViewById(R.id.btnGetUserByEmail);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Make call
-//                Call<User> caller = proxy.getUserByEmail(userEmail);
-//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
-//            }
-//        });
-//    }
-//
-//    // Get user by ID
-//    // ------------------------------------------------------------------------------------------
-//    // Response goes the same function as created above for user responses.
-//    private void setupGetUserById() {
-//        Button btn = findViewById(R.id.btnGetUserById);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                // Make call
-//                Call<User> caller = proxy.getUserById(userId);
-//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
-//            }
-//        });
-//    }
+    private void setupGetUserById() {
+        Button btn = findViewById(R.id.btnGetUserById);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Make call
+                Call<User> caller = proxy.getUserById(userId);
+                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
+            }
+        });
+    }
 
 
 
