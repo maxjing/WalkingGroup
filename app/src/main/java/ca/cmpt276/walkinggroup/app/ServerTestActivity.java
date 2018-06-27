@@ -103,10 +103,8 @@ public class ServerTestActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Build new user
                 User user = new User();
-                user.setEmail("2223");
-                user.setPassword("wejrhw111");
-                Toast.makeText(ServerTestActivity.this,userEmail+" "+userPassword,Toast.LENGTH_LONG).show();
-
+                user.setEmail(userEmail);
+                user.setPassword(userPassword);
                 // Register for token received:
                 ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
 
