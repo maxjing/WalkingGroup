@@ -3,4 +3,5 @@
 
     <!--Hardcode your API key like this. Don't use this test one!-->
     <string name="apikey">394ECE0B-5BF9-41C4-B9F6-261B07678ED23</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
