@@ -32,7 +32,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         GetPref();
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), userToken);
-        
+
 
         setLoginBtn();
         setRegisterBtn();
@@ -118,7 +118,6 @@ public class LoginActivity extends AppCompatActivity {
         if (dataToGet==null)return;
         userToken = dataToGet.getString("userToken","");
 
-        Toast.makeText(this, userToken, Toast.LENGTH_LONG).show();
 
     }
 

@@ -17,6 +17,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
+        if (token==""){
+            Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
+        }
         Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
         setGroupBtn();
         setDevBtn();
