@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ca.cmpt276.walkinggroup.test_wj">
+    package="ca.cmpt276.walkinggroup.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -27,7 +27,6 @@
         </activity>
         <activity android:name=".ServerTestActivity" />
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginSuccessActivity" />
         <activity android:name=".LoginActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -44,7 +43,6 @@
         <activity
             android:name=".GoogleMapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name="ca.cmpt276.walkinggroup.test.TestActivity"></activity>
     </application>
 
 </manifest>
