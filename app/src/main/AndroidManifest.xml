@@ -28,6 +28,7 @@
         <activity android:name=".ServerTestActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginSuccessActivity" />
+        <activity android:name=".LoginActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
