@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(LoginActivity.this,RegisterActivity.class);
+                Intent intent = RegisterActivity.makeIntent(LoginActivity.this);
                 startActivity(intent);
             }
         });
@@ -96,5 +97,8 @@ public class LoginActivity extends AppCompatActivity {
     private void notifyUserViaLogAndToast(String message) {
         Log.w(TAG, message);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    public static Intent makeIntent(Context context){
+        return new Intent(context, LoginActivity.class);
     }
 }

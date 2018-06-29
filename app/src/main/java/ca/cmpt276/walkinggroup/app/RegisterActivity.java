@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+                Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
                 startActivity(intent);
             }
         });
@@ -80,10 +81,16 @@ public class RegisterActivity extends AppCompatActivity {
         notifyUserViaLogAndToast("Server replied with user: " + user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
+        Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
+        startActivity(intent);
+
     }
     private void notifyUserViaLogAndToast(String message) {
         Log.w(TAG, message);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+    public static Intent makeIntent(Context context){
+        return new Intent(context, RegisterActivity.class);
     }
 
 
