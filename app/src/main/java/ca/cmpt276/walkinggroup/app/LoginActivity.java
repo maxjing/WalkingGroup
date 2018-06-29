@@ -2,6 +2,7 @@ package ca.cmpt276.walkinggroup.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
+    private String userToken;
 
     private WGServerProxy proxy;
 
@@ -28,9 +30,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
-
+        GetPref();
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), userToken);
+        
 
         setLoginBtn();
         setRegisterBtn();
@@ -73,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Register for token received:
                 ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-
                 // Make call
                 Call<Void> caller = proxy.login(user);
                 ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
@@ -85,6 +86,12 @@ public class LoginActivity extends AppCompatActivity {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        userToken = token;
+        savePref();
+        Intent intent = LoginSuccessActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+
+
     }
 
     // Login actually completes by calling this; nothing to do as it was all done
@@ -98,6 +105,25 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, message);
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+    public void savePref(){
+        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+        SharedPreferences.Editor PrefEditor = dataToSave.edit();
+        PrefEditor.putString("userToken",userToken);
+
+        PrefEditor.apply();
+
+    }
+    public void GetPref(){
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+        if (dataToGet==null)return;
+        userToken = dataToGet.getString("userToken","");
+
+        Toast.makeText(this, userToken, Toast.LENGTH_LONG).show();
+
+    }
+
+
+
     public static Intent makeIntent(Context context){
         return new Intent(context, LoginActivity.class);
     }
