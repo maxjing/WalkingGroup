@@ -19,7 +19,7 @@ import retrofit2.Call;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN";
 
-
+    private User user;
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
     private String userToken;
@@ -37,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setLoginBtn();
         setRegisterBtn();
         setDevBtn();
+
     }
     private void setRegisterBtn(){
         Button btnRegister = (Button)findViewById(R.id.btnRegister);
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 userEmail = emailInput.getText().toString();
                 userPassword = passwordInput.getText().toString();
 
-                User user = new User();
+                user = User.getInstance();
                 user.setEmail(userEmail);
                 user.setPassword(userPassword);
 

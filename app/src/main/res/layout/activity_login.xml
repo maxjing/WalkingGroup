@@ -64,6 +64,7 @@
             android:background="@drawable/background_button"
             android:text="REGISTER"
             android:textColor="#FFF" />
+
         <Button
             android:id="@+id/btnDev"
             android:layout_width="match_parent"

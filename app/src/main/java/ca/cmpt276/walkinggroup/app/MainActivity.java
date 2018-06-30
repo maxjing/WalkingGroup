@@ -15,11 +15,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiActivity;
 
+import ca.cmpt276.walkinggroup.dataobjects.User;
+
 public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
 
+    private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +30,12 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
+        user = User.getInstance();
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.GONE);
         }else{
-            Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this,"has token, Email: "+user.getEmail(),Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.VISIBLE);
         }
 
@@ -91,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
                         break;
+                    default:
+                        Intent intent = UserinfoActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
 
                 }
 
