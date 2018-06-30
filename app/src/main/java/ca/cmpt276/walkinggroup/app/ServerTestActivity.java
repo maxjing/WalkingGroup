@@ -161,6 +161,7 @@ public class ServerTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Make call
+                Toast.makeText(ServerTestActivity.this, "Email:"+userEmail, Toast.LENGTH_SHORT).show();
                 Call<User> caller = proxy.getUserByEmail(userEmail);
                 ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
             }
