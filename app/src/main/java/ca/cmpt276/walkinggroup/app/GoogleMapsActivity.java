@@ -145,7 +145,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
 
         if (mLocationPermissionsGranted){
-            //getDeviceLocation();
+            getDeviceLocation();
         }
 
        /* // Add a marker in Sydney and move the camera
