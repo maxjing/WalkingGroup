@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = RegisterActivity.makeIntent(LoginActivity.this);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -88,9 +89,9 @@ public class LoginActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userToken = token;
         savePref();
-        Intent intent = LoginSuccessActivity.makeIntent(LoginActivity.this);
+        Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
-
+        finish();
 
     }
 

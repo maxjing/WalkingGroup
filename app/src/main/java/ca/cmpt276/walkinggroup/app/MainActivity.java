@@ -17,15 +17,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
+        Button btnLogout = (Button)findViewById(R.id.btnLogout);
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
+            btnLogout.setVisibility(View.GONE);
+        }else{
+            Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
+            btnLogout.setVisibility(View.VISIBLE);
         }
-        Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
+
         setGroupBtn();
         setDevBtn();
         setMapButton();
 
     }
+        setLogoutBtn();
+
 
     private void setMapButton() {
         Button btn = findViewById(R.id.google_map);
@@ -41,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         return new Intent(context, MainActivity.class);
     }
     private void setGroupBtn(){
+        if (token==""){
+            Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
+        }
         Button btnDev = (Button)findViewById(R.id.btnGroup);
         btnDev.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -50,11 +60,26 @@ public class MainActivity extends AppCompatActivity {
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
                         break;
-                    default:
-                        Intent intentToGroup = LoginSuccessActivity.makeIntent(MainActivity.this);
-                        startActivity(intentToGroup);
 
                 }
+
+            }
+        });
+    }
+
+    private void setLogoutBtn(){
+        Button btnLogout = (Button)findViewById(R.id.btnLogout);
+        btnLogout.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+                PrefEditor.putString("userToken","");
+                PrefEditor.apply();
+                Toast.makeText(MainActivity.this,"Log out success",Toast.LENGTH_LONG).show();
+                Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                startActivity(intentToLogin);
+                finish();
 
             }
         });
@@ -66,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this,ServerTestActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
