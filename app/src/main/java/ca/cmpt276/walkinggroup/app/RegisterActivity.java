@@ -21,6 +21,7 @@ import retrofit2.Call;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "Register";
+    private User user;
     private long userId = 0;
     private String userEmail;
     private String userPassword;
@@ -40,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity {
         setRegisterBtn();
         setBackBtn();
 
+
     }
     private void setBackBtn(){
         Button btnBack= (Button)findViewById(R.id.btnBack);
@@ -48,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -56,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                User user = new User();
+                user = User.getInstance();
 
                 EditText nameInput = (EditText)findViewById(R.id.editTextName);
                 EditText emailInput = (EditText)findViewById(R.id.editTextEmail);

@@ -32,6 +32,7 @@ import retrofit2.Call;
  */
 public class ServerTestActivity extends AppCompatActivity {
     private static final String TAG = "ServerTest";
+    private User user;
     private long userId = 0;
     private String userEmail;
     private String userPassword = "secret...JustKidding,That'sTooEasyToGuess!";
@@ -81,7 +82,7 @@ public class ServerTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Build new user (with random email to avoid conflicts)
-                User user = new User();
+                user = User.getInstance();
                 int random = (int) (Math.random() * 100000);
                 user.setEmail("testuser"+random+"@test.com");
                 user.setName("I. B. Rocking");
@@ -113,7 +114,7 @@ public class ServerTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Build new user
-                User user = new User();
+                user = User.getInstance();
                 user.setEmail(userEmail);
                 user.setPassword(userPassword);
                 // Register for token received:

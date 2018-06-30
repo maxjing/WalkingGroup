@@ -31,16 +31,16 @@ public class User extends IdItemBase{
     //       deserialize if the value is null from the server.
 
 
-//    private static User instance;
-//    private User(){
-//
-//    }
-//    public static User getInstance(){
-//        if(instance == null ){
-//            instance = new User();
-//        }
-//        return instance;
-//    }
+    private static User instance;
+    private User(){
+
+    }
+    public static User getInstance(){
+        if(instance == null ){
+            instance = new User();
+        }
+        return instance;
+    }
 
     private String name;
     private String email;
