@@ -23,7 +23,7 @@ import com.google.android.gms.tasks.Task;
 
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private static final String TAG = "";
+    private static final String TAG = "GoogleMapActivity";
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -114,7 +114,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             case LOCATION_PERMISSION_REQUEST_CODE:{
                 if (grantResults.length > 0){
                     for (int i = 0; i < grantResults.length; i++) {
-                        if (grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED){
                             mLocationPermissionsGranted = false;
                             Log.d(TAG, "onRequestPermissionsResult: permission failed");
                             return;
@@ -145,7 +145,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap = googleMap;
 
         if (mLocationPermissionsGranted){
-            getDeviceLocation();
+            //getDeviceLocation();
         }
 
        /* // Add a marker in Sydney and move the camera
