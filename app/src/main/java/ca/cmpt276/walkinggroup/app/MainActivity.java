@@ -23,8 +23,20 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(MainActivity.this,token,Toast.LENGTH_LONG).show();
         setGroupBtn();
         setDevBtn();
+        setMapButton();
 
     }
+
+    private void setMapButton() {
+        Button btn = findViewById(R.id.google_map);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,GoogleMapsActivity.class));
+            }
+        });
+    }
+
     public static Intent makeIntent(Context context){
         return new Intent(context, MainActivity.class);
     }

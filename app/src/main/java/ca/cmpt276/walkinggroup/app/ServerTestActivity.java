@@ -53,18 +53,6 @@ public class ServerTestActivity extends AppCompatActivity {
         setupGetUserByEmail();
         setupGetUserById();
         setbtntoLogin();
-        setMapButton();
-
-    }
-
-    private void setMapButton() {
-        Button btn = findViewById(R.id.google_map);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ServerTestActivity.this,GoogleMapsActivity.class));
-            }
-        });
     }
 
     // Switch to 2nd activity to help show simple interaction (getting API key)
