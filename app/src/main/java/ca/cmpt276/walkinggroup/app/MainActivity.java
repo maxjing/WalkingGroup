@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setGroupBtn();
         setDevBtn();
         setMapButton();
-
-    }
         setLogoutBtn();
+    }
+
 
 
     private void setMapButton() {
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setDevBtn(){
         Button btnDev = (Button)findViewById(R.id.btnDev);
         btnDev.setOnClickListener(new View.OnClickListener(){
