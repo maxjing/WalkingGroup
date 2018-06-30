@@ -32,10 +32,22 @@ public class MainActivity extends AppCompatActivity {
 
         setGroupBtn();
         setDevBtn();
+        setMapButton();
         setLogoutBtn();
-
-
     }
+
+
+
+    private void setMapButton() {
+        Button btn = findViewById(R.id.google_map);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,GoogleMapsActivity.class));
+            }
+        });
+    }
+
     public static Intent makeIntent(Context context){
         return new Intent(context, MainActivity.class);
     }
@@ -79,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setDevBtn(){
         Button btnDev = (Button)findViewById(R.id.btnDev);
         btnDev.setOnClickListener(new View.OnClickListener(){
