@@ -1,6 +1,5 @@
 package ca.cmpt276.walkinggroup.app;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,8 +19,6 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class MonitorActivity extends AppCompatActivity {
-
-//    public static final int REQUEST_CODE_MONITOREDNEW = 02;
 
     private User user;
     private List<User> monitoredByUsers;
@@ -51,7 +48,6 @@ public class MonitorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = AddUserActivity.makeIntent(MonitorActivity.this,"monitored");
-//                startActivityForResult(intent, REQUEST_CODE_MONITOREDNEW);
                 startActivity(intent);
                 populateListView();
             }
@@ -100,13 +96,4 @@ public class MonitorActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context) {
         return new Intent(context,MonitorActivity.class);
     }
-//
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_MONITOREDNEW:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    populateListView();
-//                }
-//        }
-//    }
 }
