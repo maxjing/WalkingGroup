@@ -42,10 +42,52 @@ public class MainActivity extends AppCompatActivity {
         setGroupBtn();
         setDevBtn();
         setLogoutBtn();
+        setMonitoringBtn();
+        setMonitorBtn();
 
         if (isServicesOK()){
             setMapButton();
         }
+    }
+
+    private void setMonitorBtn() {
+        Button btnMonitor = (Button)findViewById(R.id.btnMonitor);
+        btnMonitor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        Intent intentMonitor = MonitorActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitor);
+
+                }
+
+            }
+        });
+    }
+
+    private void setMonitoringBtn() {
+        Button btnMonitoring = (Button)findViewById(R.id.btnMonitoring);
+        btnMonitoring.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                       Intent intentMonitoring = MonitoringActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitoring);
+
+                }
+
+            }
+        });
     }
 
     public boolean isServicesOK(){
