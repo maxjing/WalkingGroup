@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
     private String userToken;
-
+    private long userId = 0;
     private WGServerProxy proxy;
 
     @Override
@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         GetPref();
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), userToken);
-
 
         setLoginBtn();
         setRegisterBtn();
@@ -90,9 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userToken = token;
         savePref();
-        Intent intent = MainActivity.makeIntent(LoginActivity.this);
-        startActivity(intent);
-        finish();
+
 
     }
 
@@ -100,7 +97,14 @@ public class LoginActivity extends AppCompatActivity {
     // when we got the token.
     private void response(Void returnedNothing) {
         notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
+        Intent intent = MainActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+
     }
+
+
+
     // Put message up in toast and logcat
     // -----------------------------------------------------------------------------------------
     private void notifyUserViaLogAndToast(String message) {
@@ -111,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
         SharedPreferences.Editor PrefEditor = dataToSave.edit();
         PrefEditor.putString("userToken",userToken);
+        PrefEditor.putString("userEmail",userEmail);
 
         PrefEditor.apply();
 
