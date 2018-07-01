@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
-
+    Long userId;
     private User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +31,15 @@ public class MainActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken","");
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
+        userId = user.getId();
+
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.GONE);
         }else{
             Toast.makeText(MainActivity.this,"has token, Email: "+user.getEmail(),Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.VISIBLE);
+
         }
 
         setGroupBtn();

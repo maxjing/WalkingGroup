@@ -84,8 +84,11 @@ public class RegisterActivity extends AppCompatActivity {
         notifyUserViaLogAndToast("Server replied with user: " + user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
+        user.setId(user.getId());
         Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
         startActivity(intent);
+        Toast.makeText(RegisterActivity.this, ""+userId, Toast.LENGTH_SHORT).show();
+
 
     }
     private void notifyUserViaLogAndToast(String message) {

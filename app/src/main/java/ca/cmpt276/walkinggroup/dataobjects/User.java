@@ -32,9 +32,9 @@ public class User extends IdItemBase{
 
 
     private static User instance;
-    private User(){
-
-    }
+//    private User(){
+//
+//    }
     public static User getInstance(){
         if(instance == null ){
             instance = new User();
@@ -187,4 +187,6 @@ public class User extends IdItemBase{
                 ", href='" + getHref() + '\'' +
                 '}';
     }
+
+
 }
