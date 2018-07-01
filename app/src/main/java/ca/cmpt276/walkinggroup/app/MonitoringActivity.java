@@ -1,7 +1,9 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +11,15 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.User;
+import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
+import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 public class MonitoringActivity extends AppCompatActivity {
 
@@ -21,16 +27,31 @@ public class MonitoringActivity extends AppCompatActivity {
 
     private User user;
     private List<User> monitorsUsers;
+    private WGServerProxy proxy;
+    private String token;
+    private long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
 
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+        token = dataToGet.getString("userToken","");
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
+        Call<User> caller = proxy.getUserByEmail(user.getEmail());
+        ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+//        Toast.makeText(this,Long.toString(userId),Toast.LENGTH_SHORT).show();
+//        userId = user.getId();
 //        Log.i("Log",user.toString());
-        populateListView();
+
         setAddBtn();
+    }
+
+    private void response(User user) {
+        userId = user.getId();
+        populateListView();
     }
 
     private void setAddBtn() {
@@ -45,27 +66,53 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        List<User> monitorsUsers = user.getMonitorsUsers();
-        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,R.layout.monitoring,monitorsUsers);
+        Call<List<User>> caller = proxy.getMonitorsUsers(userId);
+        ProxyBuilder.callProxy(MonitoringActivity.this, caller,returnedUser -> responseForMonitoring(returnedUser));
+//        String[] items = new String[user.getMonitorsUsers().size()];
+//        for (int i = 0; i < user.getMonitorsUsers().size(); i++) {
+//            items[i] = user.getMonitorsUsers().get(i).getName() + " " + user.getMonitorsUsers().get(i).getEmail();
+//        }
+//        monitorsUsers = user.getMonitorsUsers();
+//        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,R.layout.monitoring,monitorsUsers);
+//
+////        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitoring,items);
+//        ListView list = (ListView) findViewById(R.id.listView_Monitoring);
+//        list.setAdapter(adapter);
+    }
+
+    private void responseForMonitoring(List<User> users) {
+//        String[] items = new String[user.size()];
+//        for (int i = 0; i < user.size(); i++) {
+//            items[i] = user.get(i).getName() + " " + user.get(i).getEmail();
+//        }
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitoring,items);
+        monitorsUsers = users;
+        String[] items = new String[monitorsUsers.size()];
+        for (int i = 0; i < monitorsUsers.size(); i++) {
+            items[i] = monitorsUsers.get(i).getName() + " " + monitorsUsers.get(i).getEmail();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitoring,items);
+//        ArrayAdapter<User> adapter = new ArrayAdapter<User>(this,R.layout.monitoring,monitorsUsers);
         ListView list = (ListView) findViewById(R.id.listView_Monitoring);
         list.setAdapter(adapter);
     }
+
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, MonitoringActivity.class);
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch(requestCode){
-//            case REQUEST_CODE_MONITORINGNEW:
-//                if(resultCode == Activity.RESULT_OK) {
-//                    //Get the message
-//                    Pot added = AddPot.getPotFromIntent(data);
-//                    potList.addPot(added);
-//                    populateListView();
-//                }
-//        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_MONITORINGNEW:
+                if (resultCode == Activity.RESULT_OK) {
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
+    }
+}
 //        switch(requestCode){
 //            case REQUEST_CODE_EDIT:
 //                if(resultCode == Activity.RESULT_OK) {
@@ -84,4 +131,4 @@ public class MonitoringActivity extends AppCompatActivity {
 //        }
 //    }
 
-}
+//}
