@@ -60,7 +60,7 @@ public class UserinfoActivity extends AppCompatActivity {
                 EditText email = (EditText)findViewById(R.id.editTextEmail);
                 String Email = email.getText().toString();
                 Call<User> caller = proxy.getUserByEmail(Email);
-                ProxyBuilder.callProxy(UserinfoActivity.this, caller, returnedUser -> response1(returnedUser));
+                ProxyBuilder.callProxy(UserinfoActivity.this, caller, returnedUser -> responseforaddMonitoring(returnedUser));
 
 
             }
