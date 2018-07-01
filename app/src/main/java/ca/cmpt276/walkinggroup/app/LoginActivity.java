@@ -88,7 +88,6 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userToken = token;
-
         savePref();
 
 
@@ -116,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
         SharedPreferences.Editor PrefEditor = dataToSave.edit();
         PrefEditor.putString("userToken",userToken);
+        PrefEditor.putString("userEmail",userEmail);
 
         PrefEditor.apply();
 
