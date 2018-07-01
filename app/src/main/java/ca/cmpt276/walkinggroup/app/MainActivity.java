@@ -128,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
         }
-        Button btnDev = (Button)findViewById(R.id.btnGroup);
-        btnDev.setOnClickListener(new View.OnClickListener(){
+        Button btnGroup = (Button)findViewById(R.id.btnGroup);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 switch (token){
