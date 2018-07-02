@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import retrofit2.Call;
 
 public class MonitorActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE_Monitored = 02;
     private User user;
     private List<User> monitoredByUsers;
     private WGServerProxy proxy;
@@ -48,8 +50,7 @@ public class MonitorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = AddUserActivity.makeIntent(MonitorActivity.this,"monitored");
-                startActivity(intent);
-                populateListView();
+                startActivityForResult(intent, REQUEST_CODE_Monitored);
             }
         });
     }
@@ -76,8 +77,6 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        Call<User> caller = proxy.getUserByEmail(user.getEmail());
-        ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
         Call<List<User>> caller_list = proxy.getMonitoredByUsers(userId);
         ProxyBuilder.callProxy(MonitorActivity.this, caller_list, returnedUser -> responseForMonitored(returnedUser));
     }
@@ -95,5 +94,20 @@ public class MonitorActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context,MonitorActivity.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_Monitored:
+                if (resultCode == Activity.RESULT_OK) {
+                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+                    token = dataToGet.getString("userToken","");
+                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+                    user = User.getInstance();
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
     }
 }
