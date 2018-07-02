@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,7 +23,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -31,6 +35,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -45,6 +50,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private PlaceInfo mPlaceDetailsText;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
       new LatLng(-40, -168), new LatLng(71, 136)
     );
@@ -71,8 +77,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
+        // Retrieve the TextViews that will display details and attributions of the selected place.
 
         getLocationPermission();
+
+
     }
 
     private void init() {
@@ -80,6 +89,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
+
+        mSearchText.setOnItemClickListener(mAutocompleteClickerListener);
 
         mSearchText.setAdapter(mPlaceAutocompleteAdapter);
 
@@ -265,5 +276,51 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    /*
+    ---------------------------------------------------------------google places api auto complete suggestions-----------------------------------------------------------------
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickerListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            hideSoftKeyboard();
+
+            final AutocompletePrediction item = mPlaceAutocompleteAdapter.getItem(i);
+            final String placeID = item.getPlaceId();
+            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(placeID);
+            placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
+        }
+    };
+
+    // link: https://github.com/googlesamples/android-play-places/blob/master/PlaceCompleteAdapter/Application/src/main/java/com/example/google/playservices/placecomplete/MainActivity.java
+    private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
+            = new OnCompleteListener<PlaceBufferResponse>() {
+        @Override
+        public void onComplete(Task<PlaceBufferResponse> task) {
+            try {
+                PlaceBufferResponse places = task.getResult();
+
+                // Get the Place object from the buffer.
+                final Place place = places.get(0);
+                Log.i(TAG, "Place details received: " + place.getName());
+
+                mPlaceDetailsText = new PlaceInfo();
+                mPlaceDetailsText.setAddress(place.getAddress().toString());
+                mPlaceDetailsText.setId(place.getId());
+                mPlaceDetailsText.setName(place.getName().toString());
+                mPlaceDetailsText.setLatLng(place.getLatLng());
+                mPlaceDetailsText.setPhoneNumber(place.getPhoneNumber().toString());
+                mPlaceDetailsText.setWebsiteUri(place.getWebsiteUri());
+
+                moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, place.getName().toString());
+
+                places.release();
+            } catch (RuntimeRemoteException e) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete.", e);
+                return;
+            }
+        }
+    };
 
 }
