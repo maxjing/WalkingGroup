@@ -27,12 +27,12 @@
         android:background="@drawable/background_button"
         android:text="@string/my_group"
         android:textColor="#FFF"
-        app:layout_constraintBottom_toTopOf="@+id/google_map"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.945"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogout"
-        app:layout_constraintVertical_bias="0.761" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.163" />
 
     <Button
         android:id="@+id/btnDev"
