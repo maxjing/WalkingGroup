@@ -56,6 +56,9 @@
         <activity
             android:name=".UserinfoActivity"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".MonitorActivity" />
+        <activity android:name=".MonitoringActivity" />
+        <activity android:name=".AddUserActivity" />
         <activity android:name=".GroupActivity"></activity>
     </application>
 

@@ -23,11 +23,12 @@ import retrofit2.Call;
 public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";
+    private WGServerProxy proxy;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
     private String userEmail;
     private long userId = 0;
-    private WGServerProxy proxy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         userEmail = dataToGet.getString("userEmail","");
-        userId = dataToGet.getLong("userId",0);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
@@ -52,10 +52,52 @@ public class MainActivity extends AppCompatActivity {
         setGroupBtn();
         setDevBtn();
         setLogoutBtn();
+        setMonitoringBtn();
+        setMonitorBtn();
 
         if (isServicesOK()){
             setMapButton();
         }
+    }
+
+    private void setMonitorBtn() {
+        Button btnMonitor = (Button)findViewById(R.id.btnMonitor);
+        btnMonitor.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        Intent intentMonitor = MonitorActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitor);
+
+                }
+
+            }
+        });
+    }
+
+    private void setMonitoringBtn() {
+        Button btnMonitoring = (Button)findViewById(R.id.btnMonitoring);
+        btnMonitoring.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                       Intent intentMonitoring = MonitoringActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitoring);
+
+                }
+
+            }
+        });
     }
 
 
@@ -97,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
         }
-        Button btnDev = (Button)findViewById(R.id.btnGroup);
-        btnDev.setOnClickListener(new View.OnClickListener(){
+        Button btnGroup = (Button)findViewById(R.id.btnGroup);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 switch (token){
@@ -107,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intentToLogin);
                         break;
                     default:
-                        Intent intent = UserinfoActivity.makeIntent(MainActivity.this);
+                        Intent intent = GroupActivity.makeIntent(MainActivity.this);
                         startActivity(intent);
 
                 }

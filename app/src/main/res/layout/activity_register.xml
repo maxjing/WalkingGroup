@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="sans-serif"
-            android:text="REGISTER"
+            android:text="@string/register"
             android:textColor="#fff"
             android:textSize="24sp" />
 
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_edittext"
-            android:hint="Name"
+            android:hint="@string/name_hint"
             android:inputType="textPersonName"
             android:padding="8dp"
             android:textColor="#80FFFFFF"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_edittext"
-            android:hint="Email"
+            android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
             android:padding="8dp"
             android:textColor="#80FFFFFF"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_edittext"
-            android:hint="Password"
+            android:hint="@string/et_password"
             android:inputType="textPassword"
             android:padding="8dp"
             android:textColor="#80FFFFFF"
@@ -64,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_button"
-            android:text="REGISTER"
+            android:text="@string/register"
             android:textColor="#FFF" />
         <Button
             android:id="@+id/btnBack"
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:background="@drawable/background_button"
-            android:text="Back"
+            android:text="@string/back"
             android:textColor="#FFF" />
     </LinearLayout>
 </RelativeLayout>
