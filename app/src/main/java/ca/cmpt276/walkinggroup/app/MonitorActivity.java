@@ -86,7 +86,7 @@ public class MonitorActivity extends AppCompatActivity {
         monitoredByUsers = users;
         String[] items = new String[monitoredByUsers.size()];
         for (int i = 0; i < monitoredByUsers.size(); i++) {
-            items[i] = monitoredByUsers.get(i).getName() + " " + monitoredByUsers.get(i).getEmail();
+            items[i] = monitoredByUsers.get(i).getName() + " - " + monitoredByUsers.get(i).getEmail();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitored,items);
         ListView list = (ListView) findViewById(R.id.listView_Monitored);
