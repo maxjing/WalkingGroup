@@ -33,4 +33,5 @@
     <string name="get_user_by_id">Get User By Id</string>
     <string name="to_login">To Login</string>
     <string name="you_should_set_the_api_key_in_strings_xml">You should set the API key in strings.xml.</string>
+    <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
 </resources>
