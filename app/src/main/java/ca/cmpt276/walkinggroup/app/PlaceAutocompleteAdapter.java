@@ -16,6 +16,8 @@ package ca.cmpt276.walkinggroup.app;
  *  limitations under the License.
  */
 
+// links: https://github.com/googlesamples/android-play-places/blob/master/PlaceCompleteAdapter/Application/src/main/java/com/example/google/playservices/placecomplete/PlaceAutocompleteAdapter.java
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.style.CharacterStyle;
