@@ -16,27 +16,37 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiActivity;
 
 import ca.cmpt276.walkinggroup.dataobjects.User;
+import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
+import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";
     private static final int ERROR_DIALOG_REQUEST = 9001;
-
     private User user;
+    private String userEmail;
+    private long userId = 0;
+    private WGServerProxy proxy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
+        userEmail = dataToGet.getString("userEmail","");
+        userId = dataToGet.getLong("userId",0);
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
+        user.setEmail(userEmail);
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.GONE);
         }else{
             Toast.makeText(MainActivity.this,"has token, Email: "+user.getEmail(),Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.VISIBLE);
+
         }
 
         setGroupBtn();
@@ -90,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     public boolean isServicesOK(){
         Log.d(TAG, "isServicesOK: checking google services version");
 
@@ -128,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
         }
-        Button btnDev = (Button)findViewById(R.id.btnGroup);
-        btnDev.setOnClickListener(new View.OnClickListener(){
+        Button btnGroup = (Button)findViewById(R.id.btnGroup);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
                 switch (token){
