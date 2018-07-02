@@ -10,13 +10,14 @@
     <ListView
         android:id="@+id/listView_Monitoring"
         android:layout_width="368dp"
-        android:layout_height="508dp"
+        android:layout_height="408dp"
         android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/btnAdd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtMonitoring" />
+        app:layout_constraintTop_toBottomOf="@+id/txtMonitoring"
+        app:layout_constraintVertical_bias="0.207" />
 
     <TextView
         android:id="@+id/txtMonitoring"

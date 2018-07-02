@@ -23,11 +23,12 @@ import retrofit2.Call;
 public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";
+    private WGServerProxy proxy;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
     private String userEmail;
     private long userId = 0;
-    private WGServerProxy proxy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         userEmail = dataToGet.getString("userEmail","");
-        userId = dataToGet.getLong("userId",0);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intentToLogin);
                         break;
                     default:
-                        Intent intent = UserinfoActivity.makeIntent(MainActivity.this);
+                        Intent intent = GroupActivity.makeIntent(MainActivity.this);
                         startActivity(intent);
 
                 }
