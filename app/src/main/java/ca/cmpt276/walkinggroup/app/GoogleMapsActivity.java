@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -61,10 +62,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
+    private Marker mMarker;
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps;
+    private ImageView mGps, mInfo;
 
 
     @Override
@@ -77,11 +79,21 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
+        mInfo = findViewById(R.id.place_info);
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         getLocationPermission();
+        setUpClearButton();
+    }
 
-
+    private void setUpClearButton() {
+        ImageView btn = findViewById(R.id.clear_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSearchText.setText("");
+            }
+        });
     }
 
     private void init() {
@@ -114,6 +126,23 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked gps icon");
                 getDeviceLocation();
+            }
+        });
+
+        mInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked place info");
+                try{
+                    if (mMarker.isInfoWindowShown()){
+                        mMarker.hideInfoWindow();
+                    }else{
+                        Log.d(TAG, "onClick: place info: " + mPlaceDetailsText.toString());
+                        mMarker.showInfoWindow();
+                    }
+                }catch (NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
+                }
             }
         });
 
@@ -170,10 +199,37 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
+    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        mMap.clear();
+
+        if (placeInfo != null){
+            try{
+                String snippet = "Address: " + placeInfo.getAddress() + "\n" +
+                        "Phone Number: : " + placeInfo.getPhoneNumber() + "\n" +
+                        "Website: : " + placeInfo.getWebsiteUri() + "\n" +
+                        "Price Rating: : " + placeInfo.getRating() + "\n";
+
+                MarkerOptions options = new MarkerOptions()
+                        .position(latLng)
+                        .title(placeInfo.getName())
+                        .snippet(snippet);
+                mMarker = mMap.addMarker(options);
+            }catch(NullPointerException e){
+                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
+            }
+        }else{
+            mMap.addMarker(new MarkerOptions().position(latLng));
+        }
+
+        hideSoftKeyboard();
+    }
+
     private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
+        mMap.clear();
         if (title != "My Location"){
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
@@ -311,8 +367,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 mPlaceDetailsText.setLatLng(place.getLatLng());
                 mPlaceDetailsText.setPhoneNumber(place.getPhoneNumber().toString());
                 mPlaceDetailsText.setWebsiteUri(place.getWebsiteUri());
+                mPlaceDetailsText.setRating(place.getRating());
+                if (place.getAttributions()!= null){
+                    mPlaceDetailsText.setAttributions(place.getAttributions().toString());
+                }
 
-                moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, place.getName().toString());
+                moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
 
                 places.release();
             } catch (RuntimeRemoteException e) {

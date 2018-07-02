@@ -11,6 +11,38 @@ public class PlaceInfo {
     private String id;
     private Uri websiteUri;
     private LatLng latLng;
+    private float Rating;
+    private String attributions;
+
+    @Override
+    public String toString() {
+        return "PlaceInfo{" +
+                "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", id='" + id + '\'' +
+                ", websiteUri=" + websiteUri +
+                ", latLng=" + latLng +
+                ", Rating=" + Rating +
+                ", attributions='" + attributions + '\'' +
+                '}';
+    }
+
+    public String getAttributions() {
+        return attributions;
+    }
+
+    public void setAttributions(String attributions) {
+        this.attributions = attributions;
+    }
+
+    public float getRating() {
+        return Rating;
+    }
+
+    public void setRating(float rating) {
+        Rating = rating;
+    }
 
     public PlaceInfo(String name, String address, String phoneNumber, String id, Uri websiteUri, LatLng latLng, float rating, String attributions) {
         this.name = name;
@@ -19,6 +51,7 @@ public class PlaceInfo {
         this.id = id;
         this.websiteUri = websiteUri;
         this.latLng = latLng;
+        this.Rating = Rating;
     }
 
     public PlaceInfo(){}
@@ -72,15 +105,4 @@ public class PlaceInfo {
         return latLng;
     }
 
-    @Override
-    public String toString() {
-        return "PlaceInfo{" +
-                "name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", id='" + id + '\'' +
-                ", websiteUri=" + websiteUri +
-                ", latLng=" + latLng +
-                '}';
-    }
 }
