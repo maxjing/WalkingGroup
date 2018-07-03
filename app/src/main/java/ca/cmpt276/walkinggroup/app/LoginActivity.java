@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -18,7 +22,13 @@ import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN";
+    private List<User> monitoredByUsers;
+    private List<User> monitorsUsers;
 
+    private List<Group> memberOfGroups;
+    private List<Group> leadsGroups;
+
+    private String userName;
     private User user;
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
@@ -31,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         GetPref();
+        user = User.getInstance();
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), userToken);
 
         setLoginBtn();
@@ -64,6 +75,10 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                monitoredByUsers = new ArrayList<>();
+                monitorsUsers    = new ArrayList<>();
+                memberOfGroups   = new ArrayList<>();
+                leadsGroups      = new ArrayList<>();
                 EditText emailInput = (EditText)findViewById(R.id.editTextEmail);
                 EditText passwordInput = (EditText)findViewById(R.id.editTextPassword);
 
@@ -79,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Make call
                 Call<Void> caller = proxy.login(user);
                 ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
+
             }
         });
     }
@@ -91,31 +107,37 @@ public class LoginActivity extends AppCompatActivity {
         savePref();
 
 
+
     }
 
     // Login actually completes by calling this; nothing to do as it was all done
     // when we got the token.
     private void response(Void returnedNothing) {
-        notifyUserViaLogAndToast("Server replied to login request (no content was expected).");
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
+        Call<User> caller = proxy.getUserByEmail(userEmail);
+        ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
         startActivity(intent);
         finish();
 
+
+    }
+
+    private void response(User user) {
+        userId = user.getId();
+
+
+        savePref();
+
     }
 
 
-
-    // Put message up in toast and logcat
-    // -----------------------------------------------------------------------------------------
-    private void notifyUserViaLogAndToast(String message) {
-        Log.w(TAG, message);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
     public void savePref(){
         SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
         SharedPreferences.Editor PrefEditor = dataToSave.edit();
         PrefEditor.putString("userToken",userToken);
         PrefEditor.putString("userEmail",userEmail);
+        PrefEditor.putLong("userId",userId);
+
 
         PrefEditor.apply();
 

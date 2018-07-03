@@ -37,11 +37,11 @@ public class MonitoringActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
-        Call<User> caller = proxy.getUserByEmail(user.getEmail());
-        ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
 
         setAddBtn();
         registerClickCallback();
+        userId = dataToGet.getLong("userId", 0);
+        populateListView();
     }
 
     private void setAddBtn() {
@@ -72,7 +72,6 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void response(User user) {
-        userId = user.getId();
         populateListView();
     }
 

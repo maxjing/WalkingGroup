@@ -7,59 +7,46 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.List;
 
-import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
-import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.Path;
 
-public class GroupActivity extends AppCompatActivity {
+public class GroupTestActivity extends AppCompatActivity {
     private String token;
-    private String TAG = "GroupActivity";
+    private String TAG = "GroupTestActivity";
     private WGServerProxy proxy;
+    private long groudId = 29;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group);
+        setContentView(R.layout.activity_group_test);
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        setupNewGroupButton();
-        setupTestButton();
+
+
+        setupAddChild();
 
     }
 
-    private void setupNewGroupButton() {
-        Button btn = findViewById(R.id.btnNewGroup);
+    private void setupAddChild() {
+        Button btn = findViewById(R.id.button1);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentToCreate = GroupCreateActivity.makeIntent(GroupActivity.this);
-                startActivity(intentToCreate);
+
+
             }
         });
     }
-
-    private void setupTestButton() {
-        Button btn = findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intentToCreate = GroupTestActivity.makeIntent(GroupActivity.this);
-                startActivity(intentToCreate);
-            }
-        });
-    }
-
-
-
     public static Intent makeIntent(Context context){
-        return new Intent(context, GroupActivity.class);
+        return new Intent(context, GroupTestActivity.class);
     }
 }

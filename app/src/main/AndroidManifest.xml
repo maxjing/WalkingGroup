@@ -60,7 +60,8 @@
         <activity android:name=".MonitoringActivity" />
         <activity android:name=".AddUserActivity" />
         <activity android:name=".GroupActivity" />
-        <activity android:name=".GroupCreateActivity"></activity>
+        <activity android:name=".GroupCreateActivity" />
+        <activity android:name=".GroupTestActivity"></activity>
     </application>
 
 </manifest>

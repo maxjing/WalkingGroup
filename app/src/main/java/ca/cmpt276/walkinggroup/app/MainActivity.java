@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
         user.setEmail(userEmail);
+
+
         if (token==""){
             Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.GONE);
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             setMapButton();
         }
     }
+
 
     private void setMonitorBtn() {
         Button btnMonitor = (Button)findViewById(R.id.btnMonitor);
