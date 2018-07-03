@@ -15,11 +15,12 @@ import java.util.List;
 public class Group extends IdItemBase{
 
     private String groupDescription;
-
-    private boolean hasFullData;
     private User leader;
-
+    private List<Group> routeLatArray = new ArrayList<>();
+    private List<Group> routeLngArray = new ArrayList<>();
     private List<Group> memberUsers = new ArrayList<>();
+    private List<Group> messages = new ArrayList<>();
+    private boolean hasFullData;
 
     public String getGroupDescription() {
         return groupDescription;
@@ -27,14 +28,6 @@ public class Group extends IdItemBase{
 
     public void setGroupDescription(String groupDescription) {
         this.groupDescription = groupDescription;
-    }
-
-    public boolean isHasFullData() {
-        return hasFullData;
-    }
-
-    public void setHasFullData(boolean hasFullData) {
-        this.hasFullData = hasFullData;
     }
 
     public User getLeader() {
@@ -45,6 +38,22 @@ public class Group extends IdItemBase{
         this.leader = leader;
     }
 
+    public List<Group> getRouteLatArray() {
+        return routeLatArray;
+    }
+
+    public void setRouteLatArray(List<Group> routeLatArray) {
+        this.routeLatArray = routeLatArray;
+    }
+
+    public List<Group> getRouteLngArray() {
+        return routeLngArray;
+    }
+
+    public void setRouteLngArray(List<Group> routeLngArray) {
+        this.routeLngArray = routeLngArray;
+    }
+
     public List<Group> getMemberUsers() {
         return memberUsers;
     }
@@ -53,14 +62,32 @@ public class Group extends IdItemBase{
         this.memberUsers = memberUsers;
     }
 
+    public List<Group> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Group> messages) {
+        this.messages = messages;
+    }
+
+    public boolean isHasFullData() {
+        return hasFullData;
+    }
+
+    public void setHasFullData(boolean hasFullData) {
+        this.hasFullData = hasFullData;
+    }
+
     @Override
     public String toString() {
         return "Group{" +
-                "id=" + getId() +
                 "groupDescription='" + groupDescription + '\'' +
-                ", hasFullData=" + hasFullData +
-                ", leader='" + leader + '\'' +
+                ", leader=" + leader +
+                ", routeLatArray=" + routeLatArray +
+                ", routeLngArray=" + routeLngArray +
                 ", memberUsers=" + memberUsers +
+                ", messages=" + messages +
+                ", hasFullData=" + hasFullData +
                 '}';
     }
 }
