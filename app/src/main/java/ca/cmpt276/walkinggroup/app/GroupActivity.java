@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.List;
+
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.User;
@@ -33,6 +35,7 @@ public class GroupActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         setupNewGroupButton();
+
     }
 
     private void setupNewGroupButton() {
@@ -40,24 +43,30 @@ public class GroupActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Build new user (with random email to avoid conflicts)
-                group = new Group();
-                int random = (int) (Math.random() * 100000);
-                group.setLeader("sdjhakjsdhkashdkasdkjahdkjashdkjabcskja");
-
-                // Make call
-                Call<Group> caller = proxy.updateGroup(groupId,group);
-                ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> response(returnedGroup));
+                Intent intentToCreate = GroupCreateActivity.makeIntent(GroupActivity.this);
+                startActivity(intentToCreate);
             }
         });
     }
-    private void response(Group group) {
+    private void responseForFindMemberToAdd(Group group) {
         groupId = group.getId();
-
-        groupLeader = group.getLeader();
+        Call<User> caller = proxy.getUserByEmail("123456");
+        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseForAddMember(returnedUser));
         Toast.makeText(GroupActivity.this, ""+group.toString(), Toast.LENGTH_SHORT).show();
 
     }
+    private void responseForAddMember(User user) {
+
+        Call<List<User>> caller = proxy.addGroupMember(groupId,user);
+        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> response(returnedGroup));
+    }
+    private void response(List<User> users) {
+
+        Toast.makeText(GroupActivity.this, "add successfully", Toast.LENGTH_SHORT).show();
+    }
+
+
+
 
     public static Intent makeIntent(Context context){
         return new Intent(context, GroupActivity.class);
