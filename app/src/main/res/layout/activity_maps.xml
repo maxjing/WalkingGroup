@@ -47,6 +47,7 @@
             android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/search_button"
+            android:layout_toStartOf="@id/clear_button"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:background="@null"
@@ -54,21 +55,6 @@
             android:imeOptions="actionSearch"
             android:singleLine="true"/>
 
-        <TextView
-            android:id="@+id/place_details"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:id="@+id/place_attribution"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 
     <ImageView
