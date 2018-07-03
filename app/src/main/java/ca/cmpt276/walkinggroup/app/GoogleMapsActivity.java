@@ -1,6 +1,7 @@
 package ca.cmpt276.walkinggroup.app;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,19 +16,31 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.GeoDataClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBufferResponse;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -35,23 +48,30 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
-
+public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback{
     private static final String TAG = "GoogleMapActivity";
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final int PLACE_PICKER_REQUEST = 1;
+    private PlaceInfo mPlaceDetailsText;
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+      new LatLng(-40, -168), new LatLng(71, 136)
+    );
 
     //vars
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
+    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
+    private GeoDataClient mGeoDataClient;
+    private Marker mMarker;
 
     //widgets
-    private EditText mSearchText;
-    private ImageView mGps;
+    private AutoCompleteTextView mSearchText;
+    private ImageView mGps, mInfo, mCreateGroup, mSearchGroup, mPlacePicker;
 
 
     @Override
@@ -64,12 +84,35 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
+        mInfo = findViewById(R.id.place_info);
+        mCreateGroup = findViewById(R.id.create_group);
+        mSearchGroup = findViewById(R.id.search_group);
+        mPlacePicker = findViewById(R.id.place_picker);
+        // Retrieve the TextViews that will display details and attributions of the selected place.
 
         getLocationPermission();
+        setUpClearButton();
+    }
+
+    private void setUpClearButton() {
+        ImageView btn = findViewById(R.id.clear_button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSearchText.setText("");
+            }
+        });
     }
 
     private void init() {
         Log.d(TAG, "init: initializing");
+
+        mGeoDataClient = Places.getGeoDataClient(this, null);
+        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
+
+        mSearchText.setOnItemClickListener(mAutocompleteClickerListener);
+
+        mSearchText.setAdapter(mPlaceAutocompleteAdapter);
 
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -94,7 +137,64 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        mInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClick: clicked place info");
+                try{
+                    if (mMarker.isInfoWindowShown()){
+                        mMarker.hideInfoWindow();
+                    }else{
+                        Log.d(TAG, "onClick: place info: " + mPlaceDetailsText.toString());
+                        mMarker.showInfoWindow();
+                    }
+                }catch (NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
+                }
+            }
+        });
+
+        mCreateGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GoogleMapsActivity.this, "should create a group at selected location", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mSearchGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GoogleMapsActivity.this,"should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mPlacePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(GoogleMapsActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Log.e(TAG, "GooglePlayServicesRepairableException: " + e.getMessage());
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Log.e(TAG, "GooglePlayServicesNotAvailableException: " + e.getMessage());
+                }
+            }
+        });
+
         hideSoftKeyboard();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(place.getId());
+                placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
+            }
+        }
     }
 
     private void geoLocate(){
@@ -147,10 +247,39 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
+    private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo) {
+        Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        mMap.clear();
+
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GoogleMapsActivity.this));
+
+        if (placeInfo != null){
+            try{
+                String snippet = "Address: " + placeInfo.getAddress() + "\n" +
+                        "Phone Number: : " + placeInfo.getPhoneNumber() + "\n" +
+                        "Website: : " + placeInfo.getWebsiteUri() + "\n" +
+                        "Price Rating: : " + placeInfo.getRating() + "\n";
+
+                MarkerOptions options = new MarkerOptions()
+                        .position(latLng)
+                        .title(placeInfo.getName())
+                        .snippet(snippet);
+                mMarker = mMap.addMarker(options);
+            }catch(NullPointerException e){
+                Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
+            }
+        }else{
+            mMap.addMarker(new MarkerOptions().position(latLng));
+        }
+
+        hideSoftKeyboard();
+    }
+
     private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-
+        mMap.clear();
         if (title != "My Location"){
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
@@ -253,4 +382,55 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private void hideSoftKeyboard(){
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
+
+    /*
+    ---------------------------------------------------------------google places api auto complete suggestions-----------------------------------------------------------------
+     */
+    private AdapterView.OnItemClickListener mAutocompleteClickerListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            hideSoftKeyboard();
+
+            final AutocompletePrediction item = mPlaceAutocompleteAdapter.getItem(i);
+            final String placeID = item.getPlaceId();
+            Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(placeID);
+            placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
+        }
+    };
+
+    // link: https://github.com/googlesamples/android-play-places/blob/master/PlaceCompleteAdapter/Application/src/main/java/com/example/google/playservices/placecomplete/MainActivity.java
+    private OnCompleteListener<PlaceBufferResponse> mUpdatePlaceDetailsCallback
+            = new OnCompleteListener<PlaceBufferResponse>() {
+        @Override
+        public void onComplete(Task<PlaceBufferResponse> task) {
+            try {
+                PlaceBufferResponse places = task.getResult();
+
+                // Get the Place object from the buffer.
+                final Place place = places.get(0);
+                Log.i(TAG, "Place details received: " + place.getName());
+
+                mPlaceDetailsText = new PlaceInfo();
+                mPlaceDetailsText.setAddress(place.getAddress().toString());
+                mPlaceDetailsText.setId(place.getId());
+                mPlaceDetailsText.setName(place.getName().toString());
+                mPlaceDetailsText.setLatLng(place.getLatLng());
+                mPlaceDetailsText.setPhoneNumber(place.getPhoneNumber().toString());
+                mPlaceDetailsText.setWebsiteUri(place.getWebsiteUri());
+                mPlaceDetailsText.setRating(place.getRating());
+                if (place.getAttributions()!= null){
+                    mPlaceDetailsText.setAttributions(place.getAttributions().toString());
+                }
+
+                moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
+
+                places.release();
+            } catch (RuntimeRemoteException e) {
+                // Request did not complete successfully
+                Log.e(TAG, "Place query did not complete.", e);
+                return;
+            }
+        }
+    };
+
 }
