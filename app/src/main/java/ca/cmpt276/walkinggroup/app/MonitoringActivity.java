@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +21,7 @@ import retrofit2.Call;
 
 public class MonitoringActivity extends AppCompatActivity {
 
+    public static final int REQUEST_CODE_Monitoring = 01;
     private User user;
     private List<User> monitorsUsers;
     private WGServerProxy proxy;
@@ -37,8 +39,20 @@ public class MonitoringActivity extends AppCompatActivity {
         user = User.getInstance();
         Call<User> caller = proxy.getUserByEmail(user.getEmail());
         ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+
         setAddBtn();
         registerClickCallback();
+    }
+
+    private void setAddBtn() {
+        Button btn = (Button) findViewById(R.id.btnAdd);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = AddUserActivity.makeIntent(MonitoringActivity.this, "monitoring");
+                startActivityForResult(intent,REQUEST_CODE_Monitoring);
+            }
+        });
     }
 
     private void registerClickCallback() {
@@ -62,21 +76,8 @@ public class MonitoringActivity extends AppCompatActivity {
         populateListView();
     }
 
-    private void setAddBtn() {
-        Button btn = (Button) findViewById(R.id.btnAdd);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = AddUserActivity.makeIntent(MonitoringActivity.this, "monitoring");
-                startActivity(intent);
-                populateListView();
-            }
-        });
-    }
 
     private void populateListView() {
-        Call<User> caller = proxy.getUserByEmail(user.getEmail());
-        ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
         Call<List<User>> caller_list = proxy.getMonitorsUsers(userId);
         ProxyBuilder.callProxy(MonitoringActivity.this, caller_list, returnedUser -> responseForMonitoring(returnedUser));
     }
@@ -95,6 +96,21 @@ public class MonitoringActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, MonitoringActivity.class);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_Monitoring:
+                if (resultCode == Activity.RESULT_OK) {
+                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+                    token = dataToGet.getString("userToken","");
+                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+                    user = User.getInstance();
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
     }
 }
 
