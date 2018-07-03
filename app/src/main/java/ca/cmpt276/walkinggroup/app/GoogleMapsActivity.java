@@ -68,6 +68,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
+    private List<LatLng> latLngList = new ArrayList<>();
+    private List<Marker> mMarkerList = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText;
@@ -89,6 +91,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mSearchGroup = findViewById(R.id.search_group);
         mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
+
+        //for Test
+        latLngList.add(new LatLng(49.30,-122.80));
+        latLngList.add(new LatLng(49.56, -122.78));
 
         getLocationPermission();
         setUpClearButton();
@@ -273,6 +279,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
+        for (int i = 0; i < latLngList.size(); i++){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLngList.get(i))
+                    .title("Walking Group")
+                    .snippet("");
+            mMarkerList.add(mMap.addMarker(options));
+        }
+
         hideSoftKeyboard();
     }
 
@@ -285,6 +299,13 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .position(latLng)
                     .title(title);
             mMap.addMarker(options);
+        }
+        for (int i = 0; i < latLngList.size(); i++){
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLngList.get(i))
+                    .title("Walking Group")
+                    .snippet("");
+            mMarkerList.add(mMap.addMarker(options));
         }
         hideSoftKeyboard();
     }
@@ -418,10 +439,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 mPlaceDetailsText.setPhoneNumber(place.getPhoneNumber().toString());
                 mPlaceDetailsText.setWebsiteUri(place.getWebsiteUri());
                 mPlaceDetailsText.setRating(place.getRating());
-                if (place.getAttributions()!= null){
+               /* if (place.getAttributions()!= null){
                     mPlaceDetailsText.setAttributions(place.getAttributions().toString());
                 }
-
+                */
                 moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
 
                 places.release();
