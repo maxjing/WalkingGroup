@@ -66,7 +66,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo;
+    private ImageView mGps, mInfo, mCreateGroup, mSearchGroup;
 
 
     @Override
@@ -80,6 +80,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
+        mCreateGroup = findViewById(R.id.create_group);
+        mSearchGroup = findViewById(R.id.search_group);
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         getLocationPermission();
@@ -146,6 +148,20 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        mCreateGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GoogleMapsActivity.this, "should create a group at selected location", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mSearchGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(GoogleMapsActivity.this,"should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         hideSoftKeyboard();
     }
 
@@ -203,6 +219,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         mMap.clear();
+
+        mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GoogleMapsActivity.this));
 
         if (placeInfo != null){
             try{

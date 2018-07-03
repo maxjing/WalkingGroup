@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:andorid= "http://schemas.android.com/apk/res/android"
+    andorid:orientation="horizontal"
+    andorid:layout_width="match_parent"
+    andorid:layout_height="match_parent"
+    andorid:background="@drawable/white_border"
+    andorid:padding="10dp">
+
+    <LinearLayout
+        andorid:id="@+id/linear1"
+        andorid:layout_width="match_parent"
+        andorid:layout_height="wrap_content"
+        andorid:orientation="vertical">
+
+        <TextView
+            andorid:id="@+id/title"
+            andorid:layout_width="wrap_content"
+            andorid:layout_height="wrap_content"
+            andorid:layout_gravity="center_horizontal"
+            andorid:ellipsize="end"
+            andorid:maxLines="1"
+            andorid:textColor="#000"
+            andorid:textSize="14sp"
+            andorid:textStyle="bold" />
+
+        <TextView
+            andorid:id="@+id/snippet"
+            andorid:layout_width="wrap_content"
+            andorid:layout_height="wrap_content"
+            andorid:ellipsize="end"
+            andorid:maxLines="10"
+            andorid:textColor="#000"
+            andorid:textSize="14sp" />
+
+    </LinearLayout>
+
+</LinearLayout>
