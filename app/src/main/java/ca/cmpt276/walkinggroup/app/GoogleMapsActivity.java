@@ -1,6 +1,7 @@
 package ca.cmpt276.walkinggroup.app;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -21,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.AutocompletePrediction;
@@ -28,6 +31,7 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -51,6 +55,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
+    private static final int PLACE_PICKER_REQUEST = 1;
     private PlaceInfo mPlaceDetailsText;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
       new LatLng(-40, -168), new LatLng(71, 136)
@@ -66,7 +71,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mCreateGroup, mSearchGroup;
+    private ImageView mGps, mInfo, mCreateGroup, mSearchGroup, mPlacePicker;
 
 
     @Override
@@ -82,6 +87,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mInfo = findViewById(R.id.place_info);
         mCreateGroup = findViewById(R.id.create_group);
         mSearchGroup = findViewById(R.id.search_group);
+        mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         getLocationPermission();
@@ -162,7 +168,33 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
+        mPlacePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                try {
+                    startActivityForResult(builder.build(GoogleMapsActivity.this), PLACE_PICKER_REQUEST);
+                } catch (GooglePlayServicesRepairableException e) {
+                    Log.e(TAG, "GooglePlayServicesRepairableException: " + e.getMessage());
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Log.e(TAG, "GooglePlayServicesNotAvailableException: " + e.getMessage());
+                }
+            }
+        });
+
         hideSoftKeyboard();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+
+                Task<PlaceBufferResponse> placeResult = mGeoDataClient.getPlaceById(place.getId());
+                placeResult.addOnCompleteListener(mUpdatePlaceDetailsCallback);
+            }
+        }
     }
 
     private void geoLocate(){
