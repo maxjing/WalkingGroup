@@ -22,13 +22,7 @@ import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN";
-    private List<User> monitoredByUsers;
-    private List<User> monitorsUsers;
 
-    private List<Group> memberOfGroups;
-    private List<Group> leadsGroups;
-
-    private String userName;
     private User user;
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
@@ -75,10 +69,6 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                monitoredByUsers = new ArrayList<>();
-                monitorsUsers    = new ArrayList<>();
-                memberOfGroups   = new ArrayList<>();
-                leadsGroups      = new ArrayList<>();
                 EditText emailInput = (EditText)findViewById(R.id.editTextEmail);
                 EditText passwordInput = (EditText)findViewById(R.id.editTextPassword);
 
