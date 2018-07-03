@@ -2,6 +2,7 @@ package ca.cmpt276.walkinggroup.app;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -73,9 +74,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private AutoCompleteTextView mSearchText;
     private ImageView mGps, mInfo, mCreateGroup, mSearchGroup, mPlacePicker;
 
+    //transfer value
+
+    public static final String LATITUDE = "latitude";
+    public static final String LONGTITUDE = "longtitude";
+    public static final String PLACENAME = "placename";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -157,9 +165,27 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GoogleMapsActivity.this, "should create a group at selected location", Toast.LENGTH_SHORT).show();
+                try{
+
+
+                    Intent intentToCreate = GroupCreateActivity.makeIntent(GoogleMapsActivity.this);
+                    intentToCreate.putExtra(LATITUDE,mPlaceDetailsText.getLatLng().latitude);
+                    intentToCreate.putExtra(LONGTITUDE,mPlaceDetailsText.getLatLng().longitude);
+                    intentToCreate.putExtra(PLACENAME,mPlaceDetailsText.getName());
+
+                    startActivity(intentToCreate);
+
+
+                }catch(Exception e){
+                    Toast.makeText(GoogleMapsActivity.this, "should create a group at selected location ", Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
         });
+
+
 
         mSearchGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -405,7 +431,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         public void onComplete(Task<PlaceBufferResponse> task) {
             try {
                 PlaceBufferResponse places = task.getResult();
-
                 // Get the Place object from the buffer.
                 final Place place = places.get(0);
                 Log.i(TAG, "Place details received: " + place.getName());

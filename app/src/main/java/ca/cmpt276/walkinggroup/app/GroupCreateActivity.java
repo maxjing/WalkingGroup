@@ -9,7 +9,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.User;
@@ -27,6 +32,25 @@ public class GroupCreateActivity extends AppCompatActivity {
     private User user;
     private long userId;
     private Group group;
+
+
+
+    public static final int REQUEST_CODE_TARGET = 64;
+
+    public static final String LATITUDE = "latitude";
+    public static final String LONGTITUDE = "longtitude";
+    public static final String PLACENAME = "placename";
+
+    private List<Double> routeLatArray;
+    private List<Double> routeLngArray;
+
+
+    private double latitude;
+    private double longtitude;
+    private String placeName;
+    private List<LatLng> latlng;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +58,19 @@ public class GroupCreateActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        routeLatArray = new ArrayList<>();
+        routeLngArray = new ArrayList<>();
+
+        Intent intent =getIntent();
+
+        latitude    = intent.getDoubleExtra(LATITUDE,0);
+        longtitude  = intent.getDoubleExtra(LONGTITUDE,0);
+        placeName   = intent.getStringExtra(PLACENAME);
+
+        TextView editDest = (EditText) findViewById(R.id.editDestination);
+        editDest.setText(placeName);
+
+
         setOKBtn();
     }
 
@@ -44,12 +81,12 @@ public class GroupCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Extract data from UI
-                EditText editDest = (EditText) findViewById(R.id.editDestination);
-                editDestination = editDest.getText().toString();
+
                 EditText editDesc= (EditText) findViewById(R.id.editDescription);
                 editDesctiption = editDesc.getText().toString();
                 EditText editMeet= (EditText) findViewById(R.id.editMeetPlace);
                 editMeetPlace = editMeet.getText().toString();
+
 
                 user = User.getInstance();
                 Call<User> caller = proxy.getUserByEmail(user.getEmail());
@@ -59,10 +96,20 @@ public class GroupCreateActivity extends AppCompatActivity {
         });
     }
 
+
+
+
+
     private void response(User user) {
 
         group = new Group();
         group.setLeader(user);
+        routeLatArray.add(latitude);
+        routeLngArray.add(longtitude);
+
+        group.setRouteLatArray(routeLatArray);
+        group.setRouteLngArray(routeLngArray);
+
         group.setGroupDescription(editDestination);
         Call<Group> caller = proxy.createGroup(group);
         ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroup -> response(returnedGroup));
