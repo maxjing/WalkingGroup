@@ -11,20 +11,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Group extends IdItemBase{
     private String name;
+    private String leader;
 
-    public String getName() {
-        return name;
+    public String getLeader() {
+        return leader;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setLeader(String leader) {
+        this.leader = leader;
     }
+
+
 
 
     @Override
     public String toString() {
         return "Group{" +
-//                "id=" + getId() +
-                ", name='" + name + '\'' +
+                "id=" + getId() +
+                ", leader ='" + leader + '\'' +
                 '}';
     }
 }

@@ -48,6 +48,7 @@ public class UserinfoActivity extends AppCompatActivity {
         notifyUserViaLogAndToast("Server replied with user: " + user.toString());
         userId = user.getId();
 
+
     }
 
 

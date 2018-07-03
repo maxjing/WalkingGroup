@@ -23,7 +23,8 @@ public class GroupActivity extends AppCompatActivity {
     private String userEmail;
     private User user;
     private Group group;
-    private String groupName;
+    private String groupLeader;
+    private long groupId = 29;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,18 +42,21 @@ public class GroupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Build new user (with random email to avoid conflicts)
                 group = new Group();
-                group.setName("wjwjwjwjwj");
+                int random = (int) (Math.random() * 100000);
+                group.setLeader("sdjhakjsdhkashdkasdkjahdkjashdkjabcskja");
 
                 // Make call
-                Call<Group> caller = proxy.createGroup(group);
+                Call<Group> caller = proxy.updateGroup(groupId,group);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> response(returnedGroup));
             }
         });
     }
     private void response(Group group) {
+        groupId = group.getId();
 
-        groupName = group.getName();
-        Toast.makeText(GroupActivity.this, ""+groupName, Toast.LENGTH_SHORT).show();
+        groupLeader = group.getLeader();
+        Toast.makeText(GroupActivity.this, ""+group.toString(), Toast.LENGTH_SHORT).show();
+
     }
 
     public static Intent makeIntent(Context context){

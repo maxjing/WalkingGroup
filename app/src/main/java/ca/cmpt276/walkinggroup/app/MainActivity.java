@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setLogoutBtn();
         setMonitoringBtn();
         setMonitorBtn();
+        setTestButton();
 
         if (isServicesOK()){
             setMapButton();
@@ -128,6 +129,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,GoogleMapsActivity.class));
+            }
+        });
+    }
+
+    private void setTestButton() {
+        Button btn = findViewById(R.id.btnTest);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,UserinfoActivity.class));
             }
         });
     }
