@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.google.android.gms.maps.model.LatLng;
 /**
  * Store information about the walking groups.
  *
@@ -16,11 +16,12 @@ public class Group extends IdItemBase{
 
     private String groupDescription;
     private User leader;
-    private List<Group> routeLatArray = new ArrayList<>();
-    private List<Group> routeLngArray = new ArrayList<>();
+    private List<Double> routeLatArray = new ArrayList<>();
+    private List<Double> routeLngArray = new ArrayList<>();
     private List<Group> memberUsers = new ArrayList<>();
     private List<Group> messages = new ArrayList<>();
     private boolean hasFullData;
+
 
     public String getGroupDescription() {
         return groupDescription;
@@ -38,19 +39,19 @@ public class Group extends IdItemBase{
         this.leader = leader;
     }
 
-    public List<Group> getRouteLatArray() {
+    public List<Double> getRouteLatArray() {
         return routeLatArray;
     }
 
-    public void setRouteLatArray(List<Group> routeLatArray) {
+    public void setRouteLatArray(List<Double> routeLatArray) {
         this.routeLatArray = routeLatArray;
     }
 
-    public List<Group> getRouteLngArray() {
+    public List<Double> getRouteLngArray() {
         return routeLngArray;
     }
 
-    public void setRouteLngArray(List<Group> routeLngArray) {
+    public void setRouteLngArray(List<Double> routeLngArray) {
         this.routeLngArray = routeLngArray;
     }
 
