@@ -67,7 +67,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int PLACE_PICKER_REQUEST = 1;
     private PlaceInfo mPlaceDetailsText;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-      new LatLng(-40, -168), new LatLng(71, 136)
+            new LatLng(-40, -168), new LatLng(71, 136)
     );
 
     //vars

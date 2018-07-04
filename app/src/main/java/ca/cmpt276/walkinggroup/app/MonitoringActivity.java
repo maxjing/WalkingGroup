@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class MonitoringActivity extends AppCompatActivity {
                 startActivityForResult(intent,REQUEST_CODE_Monitoring);
             }
         });
-    }
+}
 
     private void registerClickCallback() {
         ListView list = (ListView) findViewById(R.id.listView_Monitoring);
@@ -66,6 +67,24 @@ public class MonitoringActivity extends AppCompatActivity {
                 ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
             }
         });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
+                ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedChild -> responseChild(returnedChild));
+//                Intent intent = GroupActivity.makeChildIntent(MonitoringActivity.this,);
+//                startActivity(intent);
+                return true;
+            }
+        });
+
+    }
+
+    private void responseChild(User returnedChild) {
+        Intent intent = GroupActivity.makeChildIntent(MonitoringActivity.this,returnedChild.getId());
+        Toast.makeText(this,""+returnedChild.getId(),Toast.LENGTH_SHORT).show();
+        startActivity(intent);
     }
 
     private void responseRemove() {
