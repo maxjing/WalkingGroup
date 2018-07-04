@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.SQLOutput;
 
 import ca.cmpt276.walkinggroup.app.ServerTestActivity;
+import ca.cmpt276.walkinggroup.dataobjects.User;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,6 +29,8 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
  * For more on Retrofit, see http://square.github.io/retrofit/
  */
 public class ProxyBuilder {
+
+
     // Select a server (top one is production one; others are for testing)
     private static final String SERVER_URL = "https://cmpt276-1177-bf.cmpt.sfu.ca:8184/";
 
@@ -72,6 +75,16 @@ public class ProxyBuilder {
 
         return retrofit.create(WGServerProxy.class);
     }
+
+//    private static WGServerProxy instance = null;
+//
+//    public static WGServerProxy getInstance(){
+//        if(instance == null){
+//            instance = new WGServerProxy();
+//        }
+//
+//        return instance;
+//    }
 
 
 

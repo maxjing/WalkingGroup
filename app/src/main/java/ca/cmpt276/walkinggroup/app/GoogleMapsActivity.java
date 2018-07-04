@@ -240,6 +240,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                     Log.i(TAG, "show the dialog");
 
+                }else{
+                    Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                 }
 
             }

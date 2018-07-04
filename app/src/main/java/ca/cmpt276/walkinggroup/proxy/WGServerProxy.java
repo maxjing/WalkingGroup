@@ -21,6 +21,7 @@ import retrofit2.http.Query;
  * This is a Retrofit interface.
  */
 public interface WGServerProxy {
+
     @GET("getApiKey")
     Call<String> getApiKey(@Query("groupName") String groupName);
 
