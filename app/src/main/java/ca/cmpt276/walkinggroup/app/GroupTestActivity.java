@@ -18,13 +18,14 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public class GroupTestActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupTestActivity";
     private WGServerProxy proxy;
-    private long groudId = 199;
+    private long groupId = 322;
     private long userId = 0;
     private Group group;
 
@@ -37,17 +38,20 @@ public class GroupTestActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userId = dataToGet.getLong("userId",0);
 
-        Toast.makeText(this, ""+userId, Toast.LENGTH_SHORT).show();
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(GroupTestActivity.this, caller, returnedUser -> response(returnedUser));
+
         setupAddChild();
 
     }
 
     private void response(User user) {
-        Toast.makeText(this, user.getLeadsGroups().get(0).getGroupDescription(), Toast.LENGTH_SHORT).show();
 
-        Toast.makeText(this,user.getMemberOfGroups().size(),Toast.LENGTH_LONG).show();
+
+        Call<List<User>>  caller = proxy.addGroupMember(groupId,user);
+        ProxyBuilder.callProxy(GroupTestActivity.this, caller, returnedUser -> response(returnedUser));
+
+    }
+
+    private void response(List<User> user) {
 
     }
 
@@ -58,14 +62,15 @@ public class GroupTestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Call<Group>  caller = proxy.getGroupById(groudId);
+
+                Call<User> caller = proxy.getUserById(userId);
                 ProxyBuilder.callProxy(GroupTestActivity.this, caller, returnedUser -> response(returnedUser));
             }
         });
     }
 
     private void response(Group group) {
-        Toast.makeText(this, ""+group.getLeader().getId(), Toast.LENGTH_SHORT).show();
+
 
     }
     public static Intent makeIntent(Context context){
