@@ -5,10 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,9 +23,11 @@ public class GroupActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
-    private User user;
-    private List<Group> leadsGroups;
-
+    private List<Group> groupList;
+    private Double[] latitudes;
+    private Double[] longtitudes;
+    private String[] groupDes;
+    private Long[] groupId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,44 +35,62 @@ public class GroupActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        Call<User> caller = proxy.getUserByEmail(user.getEmail());
-        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> response(returnedUser));
-       // setupNewGroupButton();
+        setupNewGroupButton();
         setupTestButton();
+        setupShowGroup();
 
     }
 
-    private void response(User returnedUser) {
-       // leadsGroups = returnedUser.getLeadsGroups();
-        String msg="";
-        String[] items = new String[returnedUser.getLeadsGroups().size()];
-        for (int i = 0; i < returnedUser.getLeadsGroups().size(); i++) {
-            items[i] = returnedUser.getLeadsGroups().get(i).getId() + " - " + returnedUser.getLeadsGroups().get(i).getGroupDescription();
-                    //+" "+leadsGroups.get(i).getLeader().getId();
-            //msg = msg + items[i];
+    private void setupNewGroupButton() {
+        Button btn = findViewById(R.id.btnNewGroup);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToCreate = GroupCreateActivity.makeIntent(GroupActivity.this);
+                startActivity(intentToCreate);
+            }
+        });
+    }
+
+
+    private void setupShowGroup() {
+        Button btn = findViewById(R.id.showGroup);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<List<Group>> caller = proxy.getGroups();
+                ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> response(returnedGroup));
+            }
+        });
+    }
+
+    private void response(List<Group> groups) {
+        groupList = groups;
+        latitudes   = new Double[groupList.size()];
+        longtitudes = new Double[groupList.size()];
+        groupDes    = new String[groupList.size()];
+        groupId     = new Long[groupList.size()];
+
+        for (int i = 0; i < groupList.size(); i++) {
+            latitudes[i]    = groupList.get(i).getRouteLatArray().get(0);
+            longtitudes[i]  = groupList.get(i).getRouteLngArray().get(0);
+            groupDes[i]     =  groupList.get(i).getGroupDescription();
+            groupId[i]      =groupList.get(i).getId();
         }
-        Toast.makeText(this,msg,Toast.LENGTH_LONG).show();
+        for (int i = 0; i< latitudes.length;i++){
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lead, items);
-        ListView list = (ListView) findViewById(R.id.list_leader);
-        list.setAdapter(adapter);
+            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
+
+            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+                    "Description: "+groupDes[i]+" \n\n");
+        }
+
+
     }
-
-
-//    private void setupNewGroupButton() {
-//        Button btn = findViewById(R.id.btnNewGroup);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intentToCreate = GroupCreateActivity.makeIntent(GroupActivity.this);
-//                startActivity(intentToCreate);
-//            }
-//        });
-//    }
 
     private void setupTestButton() {
-        Button btn = findViewById(R.id.btnTest);
+        Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

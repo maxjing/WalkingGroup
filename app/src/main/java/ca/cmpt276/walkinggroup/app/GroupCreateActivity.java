@@ -51,6 +51,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     private List<LatLng> latlng;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +73,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
 
         setOKBtn();
+        setCancelBtn();
     }
 
     private void setOKBtn() {
@@ -92,6 +94,25 @@ public class GroupCreateActivity extends AppCompatActivity {
                 Call<User> caller = proxy.getUserByEmail(user.getEmail());
                 ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
 
+                Intent intenttomap = GroupActivity.makeIntent(GroupCreateActivity.this);
+                startActivity(intenttomap);
+                finish();
+            }
+        });
+    }
+
+    private void setCancelBtn() {
+
+        Button btn = (Button) findViewById(R.id.btnCancel_Map);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Extract data from UI
+
+
+                Intent intenttomap = GoogleMapsActivity.makeIntent(GroupCreateActivity.this);
+                startActivity(intenttomap);
+                finish();
             }
         });
     }
@@ -112,10 +133,10 @@ public class GroupCreateActivity extends AppCompatActivity {
 
         group.setGroupDescription(editDestination);
         Call<Group> caller = proxy.createGroup(group);
-        ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroup -> response(returnedGroup));
+        ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroups -> response(returnedGroups));
     }
 
-    private void response(Group group) {
+    private void response(Group groups) {
 
         Toast.makeText(GroupCreateActivity.this, ""+group.toString(), Toast.LENGTH_SHORT).show();
 

@@ -109,7 +109,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editDescription" />
 
     <Button
-        android:id="@+id/btnCancel"
+        android:id="@+id/btnCancel_Map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
