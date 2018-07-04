@@ -44,6 +44,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,6 +104,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         //for Test
         latLngList.add(new LatLng(49.30,-122.80));
         latLngList.add(new LatLng(49.56, -122.78));
+        latLngList.add(new LatLng(49.2960264,-122.745591));
 
         getLocationPermission();
         setUpClearButton();
@@ -305,13 +307,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
-        for (int i = 0; i < latLngList.size(); i++){
-            MarkerOptions options = new MarkerOptions()
-                    .position(latLngList.get(i))
-                    .title("Walking Group")
-                    .snippet("");
-            mMarkerList.add(mMap.addMarker(options));
-        }
+        walkingGroup();
 
         hideSoftKeyboard();
     }
@@ -324,16 +320,21 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
-            mMap.addMarker(options);
+            mMarker = mMap.addMarker(options);
         }
+        walkingGroup();
+        hideSoftKeyboard();
+    }
+
+    private void walkingGroup(){
         for (int i = 0; i < latLngList.size(); i++){
+            String snippet = "Walking Group";
             MarkerOptions options = new MarkerOptions()
                     .position(latLngList.get(i))
                     .title("Walking Group")
-                    .snippet("");
+                    .snippet(snippet);
             mMarkerList.add(mMap.addMarker(options));
         }
-        hideSoftKeyboard();
     }
 
     private void intiMap() {
