@@ -52,7 +52,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
+import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
+
+public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback{
     private static final String TAG = "GoogleMapActivity";
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -62,7 +67,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int PLACE_PICKER_REQUEST = 1;
     private PlaceInfo mPlaceDetailsText;
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40, -168), new LatLng(71, 136)
+      new LatLng(-40, -168), new LatLng(71, 136)
     );
 
     //vars
@@ -85,6 +90,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String LONGTITUDE = "longtitude";
     public static final String PLACENAME = "placename";
 
+    //latlnt data
+    private String token;
+    private WGServerProxy proxy;
+    private List<Group> groupList;
+    private Double[] latitudes;
+    private Double[] longtitudes;
+    private String[] groupDes;
+    private Long[] groupId;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -103,14 +118,48 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         //for Test
-        latLngList.add(new LatLng(49.30, -122.80));
+        latLngList.add(new LatLng(49.30,-122.80));
         latLngList.add(new LatLng(49.56, -122.78));
-        latLngList.add(new LatLng(49.2960264, -122.745591));
+        latLngList.add(new LatLng(49.2960264,-122.745591));
+
+
+        //get latlnt data
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+        token = dataToGet.getString("userToken","");
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        Call<List<Group>> caller = proxy.getGroups();
+        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
         getLocationPermission();
         setUpClearButton();
     }
 
+
+    private void response(List<Group> groups) {
+        groupList = groups;
+        latitudes   = new Double[groupList.size()];
+        longtitudes = new Double[groupList.size()];
+        groupDes    = new String[groupList.size()];
+        groupId     = new Long[groupList.size()];
+
+        for (int i = 0; i < groupList.size(); i++) {
+            latitudes[i]    = groupList.get(i).getRouteLatArray().get(0);
+            longtitudes[i]  = groupList.get(i).getRouteLngArray().get(0);
+            groupDes[i]     =  groupList.get(i).getGroupDescription();
+            groupId[i]      =groupList.get(i).getId();
+        }
+        for (int i = 0; i< latitudes.length;i++){
+
+            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
+
+            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+                    "Description: "+groupDes[i]+" \n\n");
+        }
+
+
+    }
     private void setUpClearButton() {
         ImageView btn = findViewById(R.id.clear_button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -119,10 +168,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 mSearchText.setText("");
             }
         });
-    }
-
-    public void creatGroup() {
-
     }
 
     private void init() {
@@ -141,7 +186,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == keyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                        ||keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
 
                     //execute our method for searching
                     geoLocate();
@@ -162,15 +207,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked place info");
-                try {
-                    if (mMarker.isInfoWindowShown()) {
+                try{
+                    if (mMarker.isInfoWindowShown()){
                         mMarker.hideInfoWindow();
-                    } else {
+                    }else{
                         Log.d(TAG, "onClick: place info: " + mPlaceDetailsText.toString());
                         mMarker.showInfoWindow();
                     }
-                } catch (NullPointerException e) {
-                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage());
+                }catch (NullPointerException e){
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
                 }
             }
         });

@@ -47,4 +47,8 @@
     <string name="place_details">&lt;b&gt;%1$s&lt;/b&gt;&lt;br/&gt;&lt;i&gt;Place Id: %2$s&lt;/i&gt;&lt;br/&gt;Address: %3$s&lt;br/&gt;Phone: %4$s&lt;br/&gt;Website: %5$s</string>
     <string name="create_group">CREATE GROUP</string>
     <string name="do_you_want_to_create_a_group">Do you want to create a group?</string>
+    <string name="groups">Groups</string>
+    <string name="i_am_a_leader_of">I am a leader of</string>
+    <string name="test">test</string>
+    <string name="i_am_a_member_of">I am a member of</string>
 </resources>

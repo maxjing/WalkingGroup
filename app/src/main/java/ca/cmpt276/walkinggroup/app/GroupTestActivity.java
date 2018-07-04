@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ public class GroupTestActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupTestActivity";
     private WGServerProxy proxy;
-    private long groudId = 201;
+    private long groudId = 199;
     private long userId = 0;
     private Group group;
 
@@ -44,7 +45,9 @@ public class GroupTestActivity extends AppCompatActivity {
     }
 
     private void response(User user) {
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, user.getLeadsGroups().get(0).getGroupDescription(), Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this,user.getMemberOfGroups().size(),Toast.LENGTH_LONG).show();
 
     }
 
@@ -54,16 +57,15 @@ public class GroupTestActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                group = new Group();
-                group.setGroupDescription("SFU");
-                Call<Group>  caller = proxy.updateGroup(groudId,group);
+
+                Call<Group>  caller = proxy.getGroupById(groudId);
                 ProxyBuilder.callProxy(GroupTestActivity.this, caller, returnedUser -> response(returnedUser));
             }
         });
     }
 
     private void response(Group group) {
-        Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, ""+group.getLeader().getId(), Toast.LENGTH_SHORT).show();
 
     }
     public static Intent makeIntent(Context context){

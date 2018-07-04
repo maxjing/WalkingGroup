@@ -27,7 +27,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     private String TAG = "GroupCreateActivity";
     private WGServerProxy proxy;
     private String editDestination;
-    private String editDesctiption;
+    private String editDescription;
     private String editMeetPlace;
     private User user;
     private long userId;
@@ -85,7 +85,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 //Extract data from UI
 
                 EditText editDesc= (EditText) findViewById(R.id.editDescription);
-                editDesctiption = editDesc.getText().toString();
+                editDescription = editDesc.getText().toString();
                 EditText editMeet= (EditText) findViewById(R.id.editMeetPlace);
                 editMeetPlace = editMeet.getText().toString();
 
@@ -125,13 +125,14 @@ public class GroupCreateActivity extends AppCompatActivity {
 
         group = new Group();
         group.setLeader(user);
+
         routeLatArray.add(latitude);
         routeLngArray.add(longtitude);
 
         group.setRouteLatArray(routeLatArray);
         group.setRouteLngArray(routeLngArray);
 
-        group.setGroupDescription(editDestination);
+        group.setGroupDescription(editDescription);
         Call<Group> caller = proxy.createGroup(group);
         ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroups -> response(returnedGroups));
     }
