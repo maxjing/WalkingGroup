@@ -36,6 +36,9 @@ public class GroupActivity extends AppCompatActivity {
     private List<Group> groupsLeader;
 
     private Long userId;
+    private Long childId;
+
+    public static final String CHILD_ID = "ca.cmpt276.walkinggroup.app - GroupActivity.class";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +49,21 @@ public class GroupActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userId = dataToGet.getLong("userId",0);
 
+        Intent intent = getIntent();
+        childId = intent.getLongExtra(CHILD_ID,0);
 
+        if(childId != 0){
+            userId = childId;
+        }
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> response(returnedUser));
         groupsMember = new ArrayList<>();
         groupsLeader = new ArrayList<>();
+
+//        Intent intent = getIntent();
+//        childId = intent.getLongExtra(CHILD_ID,0);
+//        Toast.makeText(this,""+childId,Toast.LENGTH_SHORT).show();
+
 
         setTestBtn();
 
@@ -112,4 +125,11 @@ public class GroupActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context){
         return new Intent(context, GroupActivity.class);
     }
+
+    public static Intent makeChildIntent(Context context,long id){
+        Intent intent = new Intent(context,GroupActivity.class);
+        intent.putExtra(CHILD_ID,id);
+        return intent;
+    }
+
 }
