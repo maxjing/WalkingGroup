@@ -47,7 +47,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -86,7 +85,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mCreateGroup, mSearchGroup, mPlacePicker;
+    private ImageView mGps, mInfo, mCreateGroup, mJoinGroup, mPlacePicker;
 
     //transfer value
 
@@ -118,7 +117,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
         mCreateGroup = findViewById(R.id.create_group);
-        mSearchGroup = findViewById(R.id.search_group);
+        mJoinGroup = findViewById(R.id.search_group);
         mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
@@ -254,7 +253,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        mSearchGroup.setOnClickListener(new View.OnClickListener() {
+        mJoinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
