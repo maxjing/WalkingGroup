@@ -7,7 +7,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="enter_address_city_or_zip_code">Enter Address, City or Zip Code</string>
 
-    <string name="add_new_users">Add New Users:</string>
+    <string name="add_new_users">Add New Users</string>
     <string name="name">Name:</string>
     <string name="email">Email:</string>
     <string name="name_hint">Name</string>
@@ -24,9 +24,9 @@
 
     <!--Group actiity-->
     <string name="create_new_group">New Group</string>
-    <string name="group_description">Description</string>
-    <string name="meet_place">Meet Place</string>
-    <string name="destination">Destination</string>
+    <string name="group_description">Description:</string>
+    <string name="meet_place">Meet Place:</string>
+    <string name="destination">Destination:</string>
     <string name="create">CREATE</string>
 
 
