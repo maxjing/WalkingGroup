@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -222,32 +223,32 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try{
+                if (mPlaceDetailsText != null) {
+                    Bundle args = new Bundle();
+                    final double Latitude = mPlaceDetailsText.getLatLng().latitude;
+                    final double Longtitude = mPlaceDetailsText.getLatLng().longitude;
+                    final String PlaceName = mPlaceDetailsText.getName();
+                    args.putString(PLACENAME, PlaceName);
+                    args.putDouble(LONGTITUDE, Longtitude);
+                    args.putDouble(LATITUDE, Latitude);
 
 
-                    Intent intentToCreate = GroupCreateActivity.makeIntent(GoogleMapsActivity.this);
-                    intentToCreate.putExtra(LATITUDE,mPlaceDetailsText.getLatLng().latitude);
-                    intentToCreate.putExtra(LONGTITUDE,mPlaceDetailsText.getLatLng().longitude);
-                    intentToCreate.putExtra(PLACENAME,mPlaceDetailsText.getName());
+                    FragmentManager manager = getSupportFragmentManager();
+                    MessageFragment dialog = new MessageFragment();
+                    dialog.setArguments(args);
+                    dialog.show(manager, "MessageDialog");
 
-                    startActivity(intentToCreate);
+                    Log.i(TAG, "show the dialog");
 
-
-                }catch(Exception e){
-                    Toast.makeText(GoogleMapsActivity.this, "should create a group at selected location ", Toast.LENGTH_SHORT).show();
                 }
-
-
 
             }
         });
 
-
-
         mSearchGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GoogleMapsActivity.this,"should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -280,20 +281,20 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
     }
 
-    private void geoLocate(){
+    private void geoLocate() {
         Log.d(TAG, "geoLocate: geolocating");
 
         String searchString = mSearchText.getText().toString();
 
         Geocoder geocoder = new Geocoder(GoogleMapsActivity.this);
         List<Address> list = new ArrayList<>();
-        try{
-            list = geocoder.getFromLocationName(searchString,1);
-        }catch (IOException e){
+        try {
+            list = geocoder.getFromLocationName(searchString, 1);
+        } catch (IOException e) {
             Log.e(TAG, "geoLocate: IOException" + e.getMessage());
         }
 
-        if (list.size() > 0){
+        if (list.size() > 0) {
             Address address = list.get(0);
 
             Log.d(TAG, "geoLocate: found a location: " + address.toString());
@@ -337,8 +338,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GoogleMapsActivity.this));
 
-        if (placeInfo != null){
-            try{
+        if (placeInfo != null) {
+            try {
                 String snippet = "Address: " + placeInfo.getAddress() + "\n" +
                         "Phone Number: : " + placeInfo.getPhoneNumber() + "\n" +
                         "Website: : " + placeInfo.getWebsiteUri() + "\n" +
@@ -349,10 +350,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         .title(placeInfo.getName())
                         .snippet(snippet);
                 mMarker = mMap.addMarker(options);
-            }catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
             }
-        }else{
+        } else {
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
@@ -365,7 +366,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         mMap.clear();
-        if (title != "My Location"){
+        if (title != "My Location") {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
@@ -375,8 +376,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         hideSoftKeyboard();
     }
 
-    private void walkingGroup(){
-        for (int i = 0; i < latLngList.size(); i++){
+    private void walkingGroup() {
+        for (int i = 0; i < latLngList.size(); i++) {
             String snippet = "Walking Group";
             MarkerOptions options = new MarkerOptions()
                     .position(latLngList.get(i))
@@ -476,7 +477,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         */
     }
 
-    private void hideSoftKeyboard(){
+    private void hideSoftKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -518,7 +519,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     mPlaceDetailsText.setAttributions(place.getAttributions().toString());
                 }
                 */
-                moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
+                moveCamera(new LatLng(place.getViewport().getCenter().latitude, place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
 
                 places.release();
             } catch (RuntimeRemoteException e) {
@@ -529,7 +530,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
     };
 
-    public static Intent makeIntent(Context context){
+    public static Intent makeIntent(Context context) {
         return new Intent(context, GoogleMapsActivity.class);
     }
 
