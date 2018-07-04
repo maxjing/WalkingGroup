@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -57,7 +58,7 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
-public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback{
+public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "GoogleMapActivity";
 
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
@@ -77,8 +78,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
-    private List<LatLng> latLngList = new ArrayList<>();
+    private double markerID = 0;
+
+    // private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
+    private List<GroupInfo> mGroupInfoList = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText;
@@ -89,6 +93,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String LATITUDE = "latitude";
     public static final String LONGTITUDE = "longtitude";
     public static final String PLACENAME = "placename";
+    public static final String JOINGROUP = "joinGroupID";
 
     //latlnt data
     private String token;
@@ -124,8 +129,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
 
         //get latlnt data
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 
         Call<List<Group>> caller = proxy.getGroups();
@@ -139,30 +144,29 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     private void response(List<Group> groups) {
         groupList = groups;
-        latitudes   = new Double[groupList.size()];
+        latitudes = new Double[groupList.size()];
         longtitudes = new Double[groupList.size()];
-        groupDes    = new String[groupList.size()];
-        groupId     = new Long[groupList.size()];
+        groupDes = new String[groupList.size()];
+        groupId = new Long[groupList.size()];
 
         for (int i = 0; i < groupList.size(); i++) {
-            latitudes[i]    = groupList.get(i).getRouteLatArray().get(0);
-            longtitudes[i]  = groupList.get(i).getRouteLngArray().get(0);
-            groupDes[i]     =  groupList.get(i).getGroupDescription();
-            groupId[i]      =groupList.get(i).getId();
+            latitudes[i] = groupList.get(i).getRouteLatArray().get(0);
+            longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
+            groupDes[i] = groupList.get(i).getGroupDescription();
+            groupId[i] = groupList.get(i).getId();
         }
-        for (int i = 0; i< latitudes.length;i++){
+        for (int i = 0; i < latitudes.length; i++) {
 
-//            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-//                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
+           Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+                   "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
 //
 //            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
 //                    "Description: "+groupDes[i]+" \n\n")
-            latLngList.add(new LatLng(latitudes[i],longtitudes[i]));
+            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
         }
-
-
-
+        walkingGroup();
     }
+
     private void setUpClearButton() {
         ImageView btn = findViewById(R.id.clear_button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +193,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 if (actionId == EditorInfo.IME_ACTION_SEARCH
                         || actionId == EditorInfo.IME_ACTION_DONE
                         || keyEvent.getAction() == keyEvent.ACTION_DOWN
-                        ||keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
+                        || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
 
                     //execute our method for searching
                     geoLocate();
@@ -210,15 +214,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked place info");
-                try{
-                    if (mMarker.isInfoWindowShown()){
+                try {
+                    if (mMarker.isInfoWindowShown()) {
                         mMarker.hideInfoWindow();
-                    }else{
+                    } else {
                         Log.d(TAG, "onClick: place info: " + mPlaceDetailsText.toString());
                         mMarker.showInfoWindow();
                     }
-                }catch (NullPointerException e){
-                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage() );
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage());
                 }
             }
         });
@@ -243,7 +247,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                     Log.i(TAG, "show the dialog");
 
-                }else{
+                } else {
                     Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                 }
 
@@ -253,7 +257,17 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mSearchGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
+                if (markerID != 0) {
+                    Bundle args = new Bundle();
+                    final double selectedID = markerID;
+                    args.putDouble(JOINGROUP, selectedID);
+
+                    FragmentManager manager = getSupportFragmentManager();
+                    JoinGroupFragment dialog = new JoinGroupFragment();
+                    dialog.setArguments(args);
+                    dialog.show(manager, "MessageDialog");
+                }
             }
         });
 
@@ -269,6 +283,22 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 } catch (GooglePlayServicesNotAvailableException e) {
                     Log.e(TAG, "GooglePlayServicesNotAvailableException: " + e.getMessage());
                 }
+            }
+        });
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if (mMarkerList != null) {
+                    for (int i = 0; i < mMarkerList.size(); i++) {
+                        if (marker.equals(mMarkerList.get(i))) {
+                            //handle click here
+                            Toast.makeText(GoogleMapsActivity.this, "ID: " + mGroupInfoList.get(i).getID(), Toast.LENGTH_SHORT).show();
+                            markerID = mGroupInfoList.get(i).getID();
+                        }
+                    }
+                }
+                return false;
             }
         });
 
@@ -370,8 +400,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private void moveCamera(LatLng latLng, float zoom, String title) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        mMap.clear();
         if (title != "My Location") {
+            mMap.clear();
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
@@ -382,12 +412,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void walkingGroup() {
-        for (int i = 0; i < latLngList.size(); i++) {
+        for (int i = 0; i < mGroupInfoList.size(); i++) {
             String snippet = "Walking Group";
+            if (mGroupInfoList.get(i).getDes() != null) {
+                snippet = mGroupInfoList.get(i).getDes();
+            }
             MarkerOptions options = new MarkerOptions()
-                    .position(latLngList.get(i))
+                    .position(mGroupInfoList.get(i).getLatLng())
                     .title("Walking Group")
-                    .snippet(snippet);
+                    .snippet(snippet)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             mMarkerList.add(mMap.addMarker(options));
         }
     }
