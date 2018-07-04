@@ -67,7 +67,7 @@ public class GroupCreateActivity extends AppCompatActivity {
         longtitude  = intent.getDoubleExtra(LONGTITUDE,0);
         placeName   = intent.getStringExtra(PLACENAME);
 
-        TextView editDest = (EditText) findViewById(R.id.editDestination);
+        TextView editDest = (TextView) findViewById(R.id.editDestination);
         editDest.setText(placeName);
 
 

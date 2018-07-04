@@ -5,13 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
+    android:paddingRight="0dp"
     tools:context="ca.cmpt276.walkinggroup.app.GroupCreateActivity">
 
     <TextView
         android:id="@+id/txtNewGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="16dp"
         android:text="@string/create_new_group"
         android:textColor="#FFF"
@@ -23,7 +24,7 @@
         android:id="@+id/txtDestination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="25dp"
         android:text="@string/destination"
         android:textColor="#FFF"
@@ -35,7 +36,7 @@
         android:id="@+id/txtMeetPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="25dp"
         android:text="@string/meet_place"
         android:textColor="#FFF"
@@ -48,7 +49,7 @@
         android:id="@+id/txtDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="14dp"
         android:layout_marginTop="25dp"
         android:text="@string/group_description"
         android:textColor="#FFF"
@@ -56,14 +57,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtMeetPlace" />
 
-    <EditText
+
+    <TextView
         android:id="@+id/editDestination"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:textColor="#FFF"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/txtDestination"
         app:layout_constraintTop_toBottomOf="@+id/txtNewGroup" />
 
@@ -71,8 +74,10 @@
         android:id="@+id/editMeetPlace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="30dp"
+        android:width="200dp"
+        android:background="@drawable/background_edittext"
         android:ems="10"
         android:textColor="#FFF"
         app:layout_constraintStart_toEndOf="@+id/txtMeetPlace"
@@ -82,8 +87,10 @@
         android:id="@+id/editDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="35dp"
+        android:width="200dp"
+        android:background="@drawable/background_edittext"
         android:ems="10"
         android:textColor="#FFF"
         app:layout_constraintStart_toEndOf="@+id/txtDescription"
@@ -112,9 +119,6 @@
         android:textColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editDescription" />
-
-
-
 
 
 </android.support.constraint.ConstraintLayout>

@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                 Call<Void> caller = proxy.login(user);
                 ProxyBuilder.callProxy(LoginActivity.this, caller, returnedNothing -> response(returnedNothing));
 
+
             }
         });
     }
@@ -104,20 +105,21 @@ public class LoginActivity extends AppCompatActivity {
     // Login actually completes by calling this; nothing to do as it was all done
     // when we got the token.
     private void response(Void returnedNothing) {
-        Intent intent = MainActivity.makeIntent(LoginActivity.this);
+
         Call<User> caller = proxy.getUserByEmail(userEmail);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
-        startActivity(intent);
-        finish();
+
 
 
     }
 
     private void response(User user) {
         userId = user.getId();
-
-
         savePref();
+        Intent intent = MainActivity.makeIntent(LoginActivity.this);
+        startActivity(intent);
+        finish();
+
 
     }
 
