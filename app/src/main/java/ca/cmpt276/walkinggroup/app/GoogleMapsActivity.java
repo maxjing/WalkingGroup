@@ -45,6 +45,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.RuntimeRemoteException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.maps.android.SphericalUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,6 +71,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
+    private List<LatLng> latLngList = new ArrayList<>();
+    private List<Marker> mMarkerList = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText;
@@ -98,6 +101,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mSearchGroup = findViewById(R.id.search_group);
         mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
+
+        //for Test
+        latLngList.add(new LatLng(49.30,-122.80));
+        latLngList.add(new LatLng(49.56, -122.78));
+        latLngList.add(new LatLng(49.2960264,-122.745591));
 
         getLocationPermission();
         setUpClearButton();
@@ -300,6 +308,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.addMarker(new MarkerOptions().position(latLng));
         }
 
+        walkingGroup();
+
         hideSoftKeyboard();
     }
 
@@ -311,9 +321,21 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title);
-            mMap.addMarker(options);
+            mMarker = mMap.addMarker(options);
         }
+        walkingGroup();
         hideSoftKeyboard();
+    }
+
+    private void walkingGroup(){
+        for (int i = 0; i < latLngList.size(); i++){
+            String snippet = "Walking Group";
+            MarkerOptions options = new MarkerOptions()
+                    .position(latLngList.get(i))
+                    .title("Walking Group")
+                    .snippet(snippet);
+            mMarkerList.add(mMap.addMarker(options));
+        }
     }
 
     private void intiMap() {
@@ -444,10 +466,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 mPlaceDetailsText.setPhoneNumber(place.getPhoneNumber().toString());
                 mPlaceDetailsText.setWebsiteUri(place.getWebsiteUri());
                 mPlaceDetailsText.setRating(place.getRating());
-                if (place.getAttributions()!= null){
+               /* if (place.getAttributions()!= null){
                     mPlaceDetailsText.setAttributions(place.getAttributions().toString());
                 }
-
+                */
                 moveCamera(new LatLng(place.getViewport().getCenter().latitude,place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
 
                 places.release();

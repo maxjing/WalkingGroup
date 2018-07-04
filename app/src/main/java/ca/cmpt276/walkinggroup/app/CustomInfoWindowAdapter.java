@@ -1,6 +1,8 @@
 package ca.cmpt276.walkinggroup.app;
 
 import android.content.Context;
+import android.location.Location;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +21,8 @@ public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
     }
 
     private void rendowWindowText(Marker marker, View view){
+        Log.i("CustomInfoWindowAdapter", "getLatlng:" + marker.getPosition());
+        Log.i("CustomInfoWindowAdapter", "getName:" + marker.getSnippet());
         String title = marker.getTitle();
         TextView textView = view.findViewById(R.id.title);
 

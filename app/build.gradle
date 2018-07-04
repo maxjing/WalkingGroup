@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "ca.cmpt276.walkinggroupserverdemo"
         minSdkVersion 19
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -37,6 +37,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:15.0.1'
 
     api 'com.google.android.gms:play-services-places:15.0.1'
+    //noinspection GradleDynamicVersion
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+    //noinspection GradleDynamicVersion
+    api 'com.google.maps.android:android-maps-utils:0.5+'
 
     // <<< ADDED >>>
     // Retrofit
