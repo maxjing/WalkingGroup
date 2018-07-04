@@ -131,6 +131,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Call<List<Group>> caller = proxy.getGroups();
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
+
         getLocationPermission();
         setUpClearButton();
     }
@@ -151,12 +152,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
         for (int i = 0; i< latitudes.length;i++){
 
-            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
-
-            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                    "Description: "+groupDes[i]+" \n\n");
+//            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+//                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
+//
+//            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+//                    "Description: "+groupDes[i]+" \n\n")
+            latLngList.add(new LatLng(latitudes[i],longtitudes[i]));
         }
+
 
 
     }
