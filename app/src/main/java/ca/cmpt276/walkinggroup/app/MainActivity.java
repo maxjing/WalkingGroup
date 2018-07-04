@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken","");
         userEmail = dataToGet.getString("userEmail","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
         Button btnLogout = (Button)findViewById(R.id.btnLogout);
         user = User.getInstance();
         user.setEmail(userEmail);

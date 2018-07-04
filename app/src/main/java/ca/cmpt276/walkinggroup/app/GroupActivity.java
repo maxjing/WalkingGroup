@@ -73,37 +73,41 @@ public class GroupActivity extends AppCompatActivity {
     private void response(User user) {
         groupsMember = user.getMemberOfGroups();
         groupsLeader = user.getLeadsGroups();
-    try {
-        String[] groupsLeaderData = new String[groupsLeader.size()];
-        for (int i = 0; i < groupsLeader.size(); i++) {
-            groupsLeaderData[i] = "Group  - " + groupsLeader.get(i).getId();
+        try {
+            String[] groupsLeaderData = new String[groupsLeader.size()];
+            for (int i = 0; i < groupsLeader.size(); i++) {
+                groupsLeaderData[i] = "Group  - " + groupsLeader.get(i).getId();
+            }
+            ArrayAdapter<String> adapterLead = new ArrayAdapter<String>(this, R.layout.lead, groupsLeaderData);
+            ListView listLead = (ListView) findViewById(R.id.list_leader);
+            listLead.setAdapter(adapterLead);
+
         }
-        ArrayAdapter<String> adapterLead = new ArrayAdapter<String>(this, R.layout.lead, groupsLeaderData);
-        ListView listLead = (ListView) findViewById(R.id.list_leader);
-        listLead.setAdapter(adapterLead);
+            catch(Exception e){
+
+            }
+
+        try{
+
+            String[] groupsMemberData = new String[groupsMember.size()];
+            for (int i = 0; i < groupsMember.size(); i++) {
+                groupsMemberData[i] = "Group  - " + groupsMember.get(i).getId();
+            }
+
+
+
+            ArrayAdapter<String> adapterMember = new ArrayAdapter<String>(this, R.layout.member, groupsMemberData);
+            ListView listMember = (ListView) findViewById(R.id.list_member);
+            listMember.setAdapter(adapterMember);
+
+        }catch(Exception e){
+
+        }
+
 
     }
-        catch(Exception e){
 
-        }
-
-    try{
-
-        String[] groupsMemberData = new String[groupsMember.size()];
-        for (int i = 0; i < groupsMember.size(); i++) {
-            groupsMemberData[i] = "Group  - " + groupsMember.get(i).getId();
-        }
-
-
-
-        ArrayAdapter<String> adapterMember = new ArrayAdapter<String>(this, R.layout.member, groupsMemberData);
-        ListView listMember = (ListView) findViewById(R.id.list_member);
-        listMember.setAdapter(adapterMember);
-
-    }catch(Exception e){
-
-    }
-
+    private void populateList(){
 
     }
 

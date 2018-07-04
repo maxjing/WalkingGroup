@@ -131,6 +131,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Call<List<Group>> caller = proxy.getGroups();
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
+
         getLocationPermission();
         setUpClearButton();
     }
@@ -151,17 +152,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         }
         for (int i = 0; i< latitudes.length;i++){
 
-            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
-
-            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                    "Description: "+groupDes[i]+" \n\n");
-            latLngList.add(new LatLng(latitudes[i], longtitudes[i]));
+//            Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+//                    "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
+//
+//            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
+//                    "Description: "+groupDes[i]+" \n\n")
+            latLngList.add(new LatLng(latitudes[i],longtitudes[i]));
         }
 
-        for (int i = 0; i< groupList.size(); i++){
 
-        }
+
     }
     private void setUpClearButton() {
         ImageView btn = findViewById(R.id.clear_button);
@@ -243,6 +243,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                     Log.i(TAG, "show the dialog");
 
+                }else{
+                    Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                 }
 
             }
