@@ -118,9 +118,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         //for Test
-        latLngList.add(new LatLng(49.30,-122.80));
+       /* latLngList.add(new LatLng(49.30,-122.80));
         latLngList.add(new LatLng(49.56, -122.78));
-        latLngList.add(new LatLng(49.2960264,-122.745591));
+        latLngList.add(new LatLng(49.2960264,-122.745591));*/
 
 
         //get latlnt data
@@ -156,9 +156,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
             Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
                     "Description: "+groupDes[i]+" \n\n");
+            latLngList.add(new LatLng(latitudes[i], longtitudes[i]));
         }
 
+        for (int i = 0; i< groupList.size(); i++){
 
+        }
     }
     private void setUpClearButton() {
         ImageView btn = findViewById(R.id.clear_button);
