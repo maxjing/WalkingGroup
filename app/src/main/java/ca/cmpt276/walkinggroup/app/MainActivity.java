@@ -131,7 +131,17 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,GoogleMapsActivity.class));
+
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        startActivity(new Intent(MainActivity.this,GoogleMapsActivity.class));
+
+                }
+
             }
         });
     }
