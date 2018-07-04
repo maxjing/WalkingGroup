@@ -77,7 +77,7 @@ public class GroupActivity extends AppCompatActivity {
     try{
 
         String[] groupsMemberData = new String[groupsMember.size()];
-        for (int i = 0; i < groupsLeader.size(); i++) {
+        for (int i = 0; i < groupsMember.size(); i++) {
             groupsMemberData[i] = "Group  - " + groupsMember.get(i).getId();
         }
 
