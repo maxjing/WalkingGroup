@@ -1,6 +1,7 @@
 package ca.cmpt276.walkinggroup.app;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -457,5 +458,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         }
     };
+
+    public static Intent makeIntent(Context context){
+        return new Intent(context, GoogleMapsActivity.class);
+    }
 
 }
