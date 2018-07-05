@@ -305,6 +305,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
+                mSearchMarkerDetail = null;
                 if (!marker.getTitle().equals(WALKING_GROUP)){
                     if (mPlaceDetailsTextList != null){
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++){
