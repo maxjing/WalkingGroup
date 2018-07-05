@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -465,6 +466,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         } else {
             mSearchMarker.add(mMap.addMarker(new MarkerOptions().position(latLng)));
         }
+        Toast.makeText(GoogleMapsActivity.this,
+                "To create the group click the red marker, to join the group, press the blue marker.",
+                Toast.LENGTH_LONG).show();
         hideSoftKeyboard();
     }
 
@@ -480,10 +484,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMarker = mMap.addMarker(options);
             mSearchMarker.add(mMarker);
 
-            mSearchMarkerDetail.setLatLng(latLng);
-            mSearchMarkerDetail.setName(title);
-            mPlaceDetailsTextList.add(mSearchMarkerDetail);
+            PlaceInfo temPlace = new PlaceInfo(title, title, null, null, null, latLng, 0, null);
+            mPlaceDetailsTextList.add(temPlace);
         }
+        Toast.makeText(GoogleMapsActivity.this,
+                "To create the group click the red marker, to join the group, press the blue marker.",
+                Toast.LENGTH_LONG).show();
         hideSoftKeyboard();
     }
 
