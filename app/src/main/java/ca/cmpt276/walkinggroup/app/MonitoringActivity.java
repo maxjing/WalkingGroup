@@ -113,6 +113,7 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void responseForJoining(List<User> returnedList) {
+        finish();
     }
 
     private void responseChild(User returnedChild) {

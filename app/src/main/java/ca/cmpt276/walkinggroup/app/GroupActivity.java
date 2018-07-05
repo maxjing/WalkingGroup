@@ -151,7 +151,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
 //                startActivity(intent);
-                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this);
+                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,groupsLeader.get(position).getId());
                 startActivity(intent);
             }
         });
