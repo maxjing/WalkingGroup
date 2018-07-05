@@ -1,10 +1,10 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.dataobjects;
 
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
-class GroupInfo {
+public class GroupInfo {
     private LatLng latLng;
     private String Des;
     private Long ID;

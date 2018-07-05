@@ -1,4 +1,4 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.dataobjects;
 
 import android.net.Uri;
 
