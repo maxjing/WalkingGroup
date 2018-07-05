@@ -67,7 +67,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     private static final float DEFAULT_ZOOM = 15f;
     private static final int PLACE_PICKER_REQUEST = 1;
+    public static final String WALKING_GROUP = "Walking Group";
     private PlaceInfo mPlaceDetailsText;
+    private PlaceInfo mSearchMarkerDetail;
+    private List<PlaceInfo> mPlaceDetailsTextList = new ArrayList<>();
+    private List<Marker> mSearchMarker = new ArrayList<>();
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
             new LatLng(-40, -168), new LatLng(71, 136)
     );
@@ -239,11 +243,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mCreateGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mPlaceDetailsText != null) {
+                if (mSearchMarkerDetail != null) {
                     Bundle args = new Bundle();
-                    final double Latitude = mPlaceDetailsText.getLatLng().latitude;
-                    final double Longtitude = mPlaceDetailsText.getLatLng().longitude;
-                    final String PlaceName = mPlaceDetailsText.getName();
+                    final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
+                    final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
+                    final String PlaceName = mSearchMarkerDetail.getName();
                     args.putString(PLACENAME, PlaceName);
                     args.putDouble(LONGTITUDE, Longtitude);
                     args.putDouble(LATITUDE, Latitude);
@@ -300,7 +304,23 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (mMarkerList != null) {
+                markerID = 0;
+                if (!marker.getTitle().equals(WALKING_GROUP)){
+                    if (mPlaceDetailsTextList != null){
+                        for (int i = 0; i < mPlaceDetailsTextList.size(); i++){
+                            try{
+                                if (marker.equals(mSearchMarker.get(i))){
+                                    mSearchMarkerDetail = mPlaceDetailsTextList.get(i);
+                                    break;
+                                }
+                            }
+                            catch (Exception e){
+
+                            }
+                        }
+                    }
+                }
+               else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
                         try {
                             if (marker.equals(mMarkerList.get(i))) {
@@ -309,18 +329,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                                 Toast.makeText(GoogleMapsActivity.this, "ID: " + markerID, Toast.LENGTH_SHORT).show();
                                 groupDescription = mGroupInfoList.get(i).getDes();
 
+                                break;
                             }
+                            markerID = 0;
                         }
                         catch(Exception e){
-
                         }
                     }
                 }
                 return false;
-
-
-
-
             }
         });
 
@@ -408,11 +425,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         .title(placeInfo.getName())
                         .snippet(snippet);
                 mMarker = mMap.addMarker(options);
+                mSearchMarker.add(mMarker);
             } catch (NullPointerException e) {
                 Log.e(TAG, "moveCamera: NullPointerException: " + e.getMessage());
             }
         } else {
-            mMap.addMarker(new MarkerOptions().position(latLng));
+            mSearchMarker.add(mMap.addMarker(new MarkerOptions().position(latLng)));
         }
         hideSoftKeyboard();
     }
@@ -427,19 +445,24 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .position(latLng)
                     .title(title);
             mMarker = mMap.addMarker(options);
+            mSearchMarker.add(mMarker);
+
+            mSearchMarkerDetail.setLatLng(latLng);
+            mSearchMarkerDetail.setName(title);
+            mPlaceDetailsTextList.add(mSearchMarkerDetail);
         }
         hideSoftKeyboard();
     }
 
     private void walkingGroup() {
         for (int i = 0; i < mGroupInfoList.size(); i++) {
-            String snippet = "Walking Group";
+            String snippet = WALKING_GROUP;
             if (mGroupInfoList.get(i).getDes() != null) {
                 snippet = mGroupInfoList.get(i).getDes();
             }
             MarkerOptions options = new MarkerOptions()
                     .position(mGroupInfoList.get(i).getLatLng())
-                    .title("Walking Group")
+                    .title(WALKING_GROUP)
                     .snippet(snippet)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             mMarkerList.add(mMap.addMarker(options));
@@ -578,6 +601,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     mPlaceDetailsText.setAttributions(place.getAttributions().toString());
                 }
                 */
+                mPlaceDetailsTextList.add(mPlaceDetailsText);
                 moveCamera(new LatLng(place.getViewport().getCenter().latitude, place.getViewport().getCenter().longitude), DEFAULT_ZOOM, mPlaceDetailsText);
 
                 places.release();
