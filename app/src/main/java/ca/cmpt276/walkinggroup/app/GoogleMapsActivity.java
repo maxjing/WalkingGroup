@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
@@ -80,6 +81,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private long markerID = 0;
     private long userId = 0;
 
+
     // private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
@@ -104,7 +106,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private Double[] longtitudes;
     private String[] groupDes;
     private Long[] groupId;
-
+    private String[] meetPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,21 +152,19 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         longtitudes = new Double[groupList.size()];
         groupDes = new String[groupList.size()];
         groupId = new Long[groupList.size()];
+        meetPlace = new String[groupList.size()];
 
         for (int i = 0; i < groupList.size(); i++) {
             latitudes[i] = groupList.get(i).getRouteLatArray().get(0);
             longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
+            meetPlace[i] = groupList.get(i).getMessages().get(0);
+
         }
         for (int i = 0; i < latitudes.length; i++) {
 
-           Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                   "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
-//
-//            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-//                    "Description: "+groupDes[i]+" \n\n")
-            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
+            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i],meetPlace[i]));
         }
         walkingGroup();
     }
@@ -296,7 +296,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     for (int i = 0; i < mMarkerList.size(); i++) {
                         if (marker.equals(mMarkerList.get(i))) {
                             //handle click here
-                            Toast.makeText(GoogleMapsActivity.this, "ID: " + mGroupInfoList.get(i).getID(), Toast.LENGTH_SHORT).show();
                             markerID = mGroupInfoList.get(i).getID();
                         }
                     }

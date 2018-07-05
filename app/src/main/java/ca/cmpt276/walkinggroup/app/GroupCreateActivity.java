@@ -43,6 +43,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
     private List<Double> routeLatArray;
     private List<Double> routeLngArray;
+    private List<String> message;
 
 
     private double latitude;
@@ -128,11 +129,13 @@ public class GroupCreateActivity extends AppCompatActivity {
 
         routeLatArray.add(latitude);
         routeLngArray.add(longtitude);
+        message.add(editMeetPlace);
 
         group.setRouteLatArray(routeLatArray);
         group.setRouteLngArray(routeLngArray);
-
+        group.setMessages(message);
         group.setGroupDescription(editDescription);
+
         Call<Group> caller = proxy.createGroup(group);
         ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroups -> response(returnedGroups));
     }

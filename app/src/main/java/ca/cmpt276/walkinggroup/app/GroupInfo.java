@@ -8,9 +8,10 @@ class GroupInfo {
     private LatLng latLng;
     private String Des;
     private Long ID;
+    private String meetPlace;
 
     public GroupInfo() {}
-    public GroupInfo(LatLng latLng, String des, Long ID) {
+    public GroupInfo(LatLng latLng, String des, Long ID, String meetPlace) {
         this.latLng = latLng;
         Des = des;
         this.ID = ID;
@@ -38,5 +39,13 @@ class GroupInfo {
 
     public void setID(Long ID) {
         this.ID = ID;
+    }
+
+    public String getMeetPlace() {
+        return meetPlace;
+    }
+
+    public void setMeetPlace(String meetPlace) {
+        this.meetPlace = meetPlace;
     }
 }
