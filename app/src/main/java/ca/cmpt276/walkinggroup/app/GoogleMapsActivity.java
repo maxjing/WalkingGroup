@@ -298,10 +298,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             public boolean onMarkerClick(Marker marker) {
                 if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
-                        if (marker.equals(mMarkerList.get(i))) {
-                            //handle click here
-                            markerID = mGroupInfoList.get(i).getID();
-                            groupDescription = mGroupInfoList.get(i).getDes();
+                        try {
+                            if (marker.equals(mMarkerList.get(i))) {
+                                //handle click here
+                                markerID = mGroupInfoList.get(i).getID();
+                                groupDescription = mGroupInfoList.get(i).getDes();
+
+                            }
+                        }
+                        catch(Exception e){
 
                         }
                     }
