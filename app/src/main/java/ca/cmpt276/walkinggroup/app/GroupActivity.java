@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,7 @@ public class GroupActivity extends AppCompatActivity {
     public static final String GROUP_REMOVE = "ca.cmpt276.walkinggroup.app - Group - GroupID";
     public static final String USER_REMOVE = "ca.cmpt276.walkinggroup.app - Group - UserId";
     public static final String POSITION = "POSITION";
+    public static final int REQUEST_CODE_DELETE = 07;
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
@@ -152,7 +154,7 @@ public class GroupActivity extends AppCompatActivity {
 //                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
 //                startActivity(intent);
                 Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,groupsLeader.get(position).getId());
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_DELETE);
             }
         });
     }
@@ -180,6 +182,20 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = new Intent(context,GroupActivity.class);
         intent.putExtra(CHILD_ID,id);
         return intent;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_DELETE:
+                if (resultCode == Activity.RESULT_OK) {
+                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+                    token = dataToGet.getString("userToken","");
+                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+                    user = User.getInstance();
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
     }
 
 }

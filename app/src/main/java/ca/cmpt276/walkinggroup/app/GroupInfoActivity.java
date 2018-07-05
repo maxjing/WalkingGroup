@@ -1,5 +1,6 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,10 +43,30 @@ public class GroupInfoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         groupId = intent.getLongExtra(INFO_GROUPID,0);
 
+        Button btn = (Button) findViewById(R.id.btnDelete);
+        btn.setVisibility(View.GONE);
+
         Call<Group> caller = proxy.getGroupById(groupId);
         ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returnedGroup -> response(returnedGroup));
 
         registerClickCallback();
+        setDeleteBtn();
+    }
+
+    private void setDeleteBtn() {
+        Button btn = (Button)findViewById(R.id.btnDelete);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<Void> caller = proxy.deleteGroup(groupId);
+                ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returned -> responseForDelete());
+                setResult(Activity.RESULT_OK);
+            }
+        });
+    }
+
+    private void responseForDelete() {
+        finish();
     }
 
     private void registerClickCallback() {
@@ -79,6 +101,10 @@ public class GroupInfoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.group_member, items);
         ListView list = (ListView) findViewById(R.id.list_group_member);
         list.setAdapter(adapter);
+        Button btn = (Button) findViewById(R.id.btnDelete);
+        if (members.size() == 0) {
+            btn.setVisibility(View.VISIBLE);
+        }
     }
 
     public static Intent makeIntent(Context context, long groupId) {
