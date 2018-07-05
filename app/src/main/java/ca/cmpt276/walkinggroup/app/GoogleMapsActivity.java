@@ -295,20 +295,23 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                if (mMarkerList != null) {
+                if (marker.equals(mMarker)){
+                    markerID = 0L;
+                }
+                else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
-                        if (marker.equals(mMarkerList.get(i))) {
+                        if (marker.getId().equals(mMarkerList.get(i).getId())) {
                             //handle click here
                             markerID = mGroupInfoList.get(i).getID();
-                            meetingPlace = mGroupInfoList.get(i).getMeetPlace();
+                            //meetingPlace = mGroupInfoList.get(i).getMeetPlace();
                             break;
                         }
                         markerID = 0L;
-                        meetingPlace = null;
+                       // meetingPlace = null;
                     }
                 }else{
                     markerID = 0L;
-                    meetingPlace = null;
+                  //  meetingPlace = null;
                 }
                 return false;
             }
