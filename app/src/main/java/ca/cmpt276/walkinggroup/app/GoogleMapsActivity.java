@@ -160,17 +160,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
-            meetPlace[i] = groupList.get(i).getMessages().get(0);
+//            meetPlace[i] = groupList.get(i).getMessages().get(0);
+
+
 
         }
         for (int i = 0; i < latitudes.length; i++) {
-
-           Toast.makeText(this, ""+"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-                   "Description: "+groupDes[i]+" \n\n", Toast.LENGTH_SHORT).show();
-//
-//            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
-//                    "Description: "+groupDes[i]+" \n\n")
-            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i], meetPlace[i]));
+//            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
+            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
         }
         walkingGroup();
     }
@@ -271,7 +268,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     final long selectedID = markerID;
                     args.putLong(JOINGROUP, selectedID);
                     args.putLong(USER_JOIN,userId);
-                    args.putString(MEETINGPLACE, meetingPlace);
 
                     FragmentManager manager = getSupportFragmentManager();
                     JoinGroupFragment dialog = new JoinGroupFragment();
@@ -303,7 +299,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     for (int i = 0; i < mMarkerList.size(); i++) {
                         if (marker.equals(mMarkerList.get(i))) {
                             //handle click here
-                            Toast.makeText(GoogleMapsActivity.this, "ID: " + mGroupInfoList.get(i).getID(), Toast.LENGTH_SHORT).show();
                             markerID = mGroupInfoList.get(i).getID();
                             meetingPlace = mGroupInfoList.get(i).getMeetPlace();
                             break;

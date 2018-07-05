@@ -22,6 +22,7 @@ import retrofit2.Call;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.JOINGROUP;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETINGPLACE;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
+import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
 
 public class JoinGroupFragment extends AppCompatDialogFragment{
     private WGServerProxy proxy;
@@ -34,11 +35,8 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
 
         Bundle mArgs = getArguments();
 
+        long selectedID = mArgs.getLong(JOINGROUP);
         long userId = mArgs.getLong(USER_JOIN);
-        String meetingPlace = mArgs.getString(MEETINGPLACE);
-        long selectedID = mArgs.getLong(JOINGROUP,0);
-
-        Toast.makeText(getActivity(), "Meeting Place: "+ meetingPlace, Toast.LENGTH_SHORT).show();
 
         SharedPreferences dataToGet = getActivity().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");

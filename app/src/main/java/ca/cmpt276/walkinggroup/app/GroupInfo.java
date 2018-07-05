@@ -11,11 +11,10 @@ class GroupInfo {
     private String meetPlace;
 
     public GroupInfo() {}
-    public GroupInfo(LatLng latLng, String des, Long ID, String meetPlace) {
+    public GroupInfo(LatLng latLng, String des, Long ID) {
         this.latLng = latLng;
         Des = des;
         this.ID = ID;
-        this.meetPlace = meetPlace;
     }
 
     public LatLng getLatLng() {
@@ -42,11 +41,5 @@ class GroupInfo {
         this.ID = ID;
     }
 
-    public String getMeetPlace() {
-        return meetPlace;
-    }
 
-    public void setMeetPlace(String meetPlace) {
-        this.meetPlace = meetPlace;
-    }
 }
