@@ -77,7 +77,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
-    private double markerID = 0;
+    private long markerID = 0;
+    private long userId = 0;
 
     // private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
@@ -93,6 +94,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String LONGTITUDE = "longtitude";
     public static final String PLACENAME = "placename";
     public static final String JOINGROUP = "joinGroupID";
+    public static final String USER_JOIN = "userId";
 
     //latlnt data
     private String token;
@@ -131,6 +133,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        userId = dataToGet.getLong("userId",0);
 
         Call<List<Group>> caller = proxy.getGroups();
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
@@ -259,8 +262,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
                 if (markerID != 0) {
                     Bundle args = new Bundle();
-                    final double selectedID = markerID;
-                    args.putDouble(JOINGROUP, selectedID);
+                    final long selectedID = markerID;
+                    args.putLong(JOINGROUP, selectedID);
+                    args.putLong(USER_JOIN,userId);
 
                     FragmentManager manager = getSupportFragmentManager();
                     JoinGroupFragment dialog = new JoinGroupFragment();
