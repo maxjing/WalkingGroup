@@ -77,7 +77,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
-    private double markerID = 0;
+    private Long markerID = 0L;
 
     // private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
@@ -259,8 +259,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
                 if (markerID != 0) {
                     Bundle args = new Bundle();
-                    final double selectedID = markerID;
-                    args.putDouble(JOINGROUP, selectedID);
+                    final long selectedID = markerID;
+                    args.putLong(JOINGROUP, selectedID);
 
                     FragmentManager manager = getSupportFragmentManager();
                     JoinGroupFragment dialog = new JoinGroupFragment();
@@ -294,8 +294,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             //handle click here
                             Toast.makeText(GoogleMapsActivity.this, "ID: " + mGroupInfoList.get(i).getID(), Toast.LENGTH_SHORT).show();
                             markerID = mGroupInfoList.get(i).getID();
+                            break;
                         }
+                        markerID = 0L;
                     }
+                }else{
+                    markerID = 0L;
                 }
                 return false;
             }

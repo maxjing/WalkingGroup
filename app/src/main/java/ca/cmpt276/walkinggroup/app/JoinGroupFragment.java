@@ -22,7 +22,8 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
 
         Bundle mArgs = getArguments();
 
-        Double selectedID = mArgs.getDouble(JOINGROUP,0);
+        assert mArgs != null;
+        Long selectedID = mArgs.getLong(JOINGROUP,0);
 
         // Create a button listener
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
