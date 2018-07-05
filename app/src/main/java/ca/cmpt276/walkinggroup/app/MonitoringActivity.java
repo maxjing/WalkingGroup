@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -23,11 +24,13 @@ import retrofit2.Call;
 public class MonitoringActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_Monitoring = 01;
+    public static final String GROUP_ID_MONITORING = "ca.cmpt276.walkinggroup.app - Monitoring -  GroupID";
     private User user;
     private List<User> monitorsUsers;
     private WGServerProxy proxy;
     private String token;
     private long userId;
+    private long groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MonitoringActivity extends AppCompatActivity {
         setAddBtn();
         registerClickCallback();
         userId = dataToGet.getLong("userId", 0);
+
         populateListView();
     }
 
@@ -61,10 +65,24 @@ public class MonitoringActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Call<Void> remove = proxy.removeFromMonitorsUsers(userId, monitorsUsers.get(position).getId());
-                ProxyBuilder.callProxy(MonitoringActivity.this, remove, returnedUser -> responseRemove());
-                Call<User> caller = proxy.getUserByEmail(user.getEmail());
-                ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+                Intent intent = getIntent();
+                groupId = intent.getLongExtra(GROUP_ID_MONITORING,0);
+                TextView tv = (TextView) findViewById(R.id.txtClick);
+                //if(source.equals("main")){
+                if(groupId == 0){
+                    tv.setText(R.string.click_from_main);
+                    Call<Void> remove = proxy.removeFromMonitorsUsers(userId, monitorsUsers.get(position).getId());
+                    ProxyBuilder.callProxy(MonitoringActivity.this, remove, returnedUser -> responseRemove());
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+                else{
+                    tv.setText(R.string.click_for_join);
+                    Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
+                    ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedUser -> responsejoin(returnedUser));
+                    //Call<Void> join = proxy.addGroupMember(groupId,monitorsUsers.get(position).getId())
+                }
+
             }
         });
 
@@ -79,6 +97,14 @@ public class MonitoringActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void responsejoin(User returnedUser) {
+        Call<List<User>> caller = proxy.addGroupMember(groupId,returnedUser);
+        ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedList -> responseForJoining(returnedList));
+    }
+
+    private void responseForJoining(List<User> returnedList) {
     }
 
     private void responseChild(User returnedChild) {
@@ -112,8 +138,10 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context, MonitoringActivity.class);
+    public static Intent makeIntent(Context context,long groupId) {
+        Intent intent = new Intent(context, MonitoringActivity.class);
+        intent.putExtra(GROUP_ID_MONITORING,groupId);
+        return intent;
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -64,8 +65,50 @@ public class GroupActivity extends AppCompatActivity {
 //        childId = intent.getLongExtra(CHILD_ID,0);
 //        Toast.makeText(this,""+childId,Toast.LENGTH_SHORT).show();
 
+        registerClickCallback_Leader();
+        registerClickCallback_Member();
 
         setTestBtn();
+
+    }
+
+    private void registerClickCallback_Member() {
+        ListView list = (ListView) findViewById(R.id.list_member);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Bundle args_remove = new Bundle();
+//
+//                //final long groupId = groupsMember.get(position).getId();
+//                args_remove.putLong(GROUP_REMOVE,groupsMember.get(position).getId());
+//                args_remove.putLong(USER_REMOVE, userId);
+
+               // dialog.setArguments(args);
+//                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
+//                startActivity(intent);
+                //Call<Void> caller = proxy.removeGroupMember()
+//                Intent intent = new Intent();
+//
+//                intent.putExtra(GROUP_ID,groupsMember.get(position).getId());
+
+                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                RemoveMessage dialog = new RemoveMessage();
+//                dialog.setArguments(args_remove);
+                dialog.show(manager,"MessageDialog");
+
+                Intent intent = getIntent();
+                String msg = intent.getStringExtra("REMOVE");
+                if(msg.equals("remove")){
+                    Call<Void> caller = proxy.removeGroupMember(groupsMember.get(position).getId(),userId);
+                    ProxyBuilder.callProxy(GroupActivity.this,caller,returned -> responseForRemove());
+                }
+
+            }
+
+            private void responseForRemove() {
+            }
+
+        });
 
     }
 
@@ -107,8 +150,17 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
-    private void populateList(){
-
+    private void registerClickCallback_Leader() {
+        ListView list = (ListView) findViewById(R.id.list_leader);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
+//                startActivity(intent);
+                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
 
