@@ -48,6 +48,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
                     case DialogInterface.BUTTON_POSITIVE:
                         Call<User> caller = proxy.getUserById(userId);
                         ProxyBuilder.callProxy(getActivity(), caller, returnedUser -> response(returnedUser));
+                        getActivity().finish();
                         break;
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
