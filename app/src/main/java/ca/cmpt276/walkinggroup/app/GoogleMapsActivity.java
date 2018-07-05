@@ -80,6 +80,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private Marker mMarker;
     private long markerID = 0;
     private long userId = 0;
+    private String groupDescription;
 
 
     // private List<LatLng> latLngList = new ArrayList<>();
@@ -97,6 +98,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String PLACENAME = "placename";
     public static final String JOINGROUP = "joinGroupID";
     public static final String USER_JOIN = "userId";
+    public static final String GROUP_DES = "groupDescription";
 
     //latlnt data
     private String token;
@@ -262,17 +264,17 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
-                if (markerID != 0) {
-                    Bundle args = new Bundle();
-                    final long selectedID = markerID;
-                    args.putLong(JOINGROUP, selectedID);
-                    args.putLong(USER_JOIN,userId);
-
-                    FragmentManager manager = getSupportFragmentManager();
-                    JoinGroupFragment dialog = new JoinGroupFragment();
-                    dialog.setArguments(args);
-                    dialog.show(manager, "MessageDialog");
-                }
+//                if (markerID != 0) {
+//                    Bundle args = new Bundle();
+//                    final long selectedID = markerID;
+//                    args.putLong(JOINGROUP, selectedID);
+//                    args.putLong(USER_JOIN,userId);
+//
+//                    FragmentManager manager = getSupportFragmentManager();
+//                    JoinGroupFragment dialog = new JoinGroupFragment();
+//                    dialog.setArguments(args);
+//                    dialog.show(manager, "MessageDialog");
+//                }
             }
         });
 
@@ -299,10 +301,26 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         if (marker.equals(mMarkerList.get(i))) {
                             //handle click here
                             markerID = mGroupInfoList.get(i).getID();
+                            groupDescription = mGroupInfoList.get(i).getDes();
+
                         }
                     }
+
+                    Bundle args = new Bundle();
+                    final long selectedID = markerID;
+                    args.putLong(JOINGROUP, selectedID);
+                    args.putLong(USER_JOIN,userId);
+                    args.putString(GROUP_DES,groupDescription);
+
+                    FragmentManager manager = getSupportFragmentManager();
+                    JoinGroupFragment dialog = new JoinGroupFragment();
+                    dialog.setArguments(args);
+                    dialog.show(manager, "MessageDialog");
                 }
                 return false;
+
+
+
             }
         });
 

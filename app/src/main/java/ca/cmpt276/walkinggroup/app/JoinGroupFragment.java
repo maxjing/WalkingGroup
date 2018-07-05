@@ -25,6 +25,8 @@ import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
 public class JoinGroupFragment extends AppCompatDialogFragment{
     private WGServerProxy proxy;
     private String token;
+    public static final String GROUP_DES = "groupDescription";
+    private String groupDescription;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Create the view to show
@@ -35,6 +37,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
 
         long selectedID = mArgs.getLong(JOINGROUP);
         long userId = mArgs.getLong(USER_JOIN);
+        groupDescription = mArgs.getString(GROUP_DES);
 
         SharedPreferences dataToGet = getActivity().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
@@ -67,9 +70,12 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Join group")
                 .setView(v)
+                .setMessage(groupDescription)
                 .setPositiveButton(android.R.string.ok, listener)
                 .setNegativeButton(android.R.string.cancel, listener)
                 .create();
+
+
     }
     
 }
