@@ -25,7 +25,7 @@ public class GroupTestActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupTestActivity";
     private WGServerProxy proxy;
-    private long groupId = 322;
+    private long groupId = 25;
     private long userId = 0;
     private Group group;
 
@@ -70,7 +70,6 @@ public class GroupTestActivity extends AppCompatActivity {
     }
 
     private void response(Group group) {
-
 
     }
     public static Intent makeIntent(Context context){

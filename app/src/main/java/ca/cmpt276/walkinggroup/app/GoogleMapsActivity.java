@@ -77,7 +77,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private Marker mMarker;
-    private Long markerID = 0L;
+    private long markerID = 0;
+    private long userId = 0;
+    private String meetingPlace;
+
 
     // private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
@@ -93,6 +96,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String LONGTITUDE = "longtitude";
     public static final String PLACENAME = "placename";
     public static final String JOINGROUP = "joinGroupID";
+    public static final String USER_JOIN = "userId";
+    public static final String MEETINGPLACE = "meetingPlace";
 
     //latlnt data
     private String token;
@@ -102,7 +107,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private Double[] longtitudes;
     private String[] groupDes;
     private Long[] groupId;
-
+    private String[] meetPlace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +136,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        userId = dataToGet.getLong("userId",0);
 
         Call<List<Group>> caller = proxy.getGroups();
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
@@ -147,12 +153,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         longtitudes = new Double[groupList.size()];
         groupDes = new String[groupList.size()];
         groupId = new Long[groupList.size()];
+        meetPlace = new String[groupList.size()];
 
         for (int i = 0; i < groupList.size(); i++) {
             latitudes[i] = groupList.get(i).getRouteLatArray().get(0);
             longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
+            meetPlace[i] = groupList.get(i).getMessages().get(0);
+
         }
         for (int i = 0; i < latitudes.length; i++) {
 
@@ -161,7 +170,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 //
 //            Log.i(TAG,"id: "+groupId[i]+" "+"latitude: "+latitudes[i]+" "+"longtitude: "+longtitudes[i]+"\n"+
 //                    "Description: "+groupDes[i]+" \n\n")
-            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
+            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i], meetPlace[i]));
         }
         walkingGroup();
     }
@@ -261,6 +270,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     Bundle args = new Bundle();
                     final long selectedID = markerID;
                     args.putLong(JOINGROUP, selectedID);
+                    args.putLong(USER_JOIN,userId);
+                    args.putString(MEETINGPLACE, meetingPlace);
 
                     FragmentManager manager = getSupportFragmentManager();
                     JoinGroupFragment dialog = new JoinGroupFragment();
@@ -294,12 +305,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             //handle click here
                             Toast.makeText(GoogleMapsActivity.this, "ID: " + mGroupInfoList.get(i).getID(), Toast.LENGTH_SHORT).show();
                             markerID = mGroupInfoList.get(i).getID();
+                            meetingPlace = mGroupInfoList.get(i).getMeetPlace();
                             break;
                         }
                         markerID = 0L;
+                        meetingPlace = null;
                     }
                 }else{
                     markerID = 0L;
+                    meetingPlace = null;
                 }
                 return false;
             }

@@ -22,7 +22,7 @@
     <string name="maps">MAPS</string>
     <string name="my_group">My Group</string>
 
-    <!--Group actiity-->
+    <!--Group activity-->
     <string name="create_new_group">New Group</string>
     <string name="group_description">Description:</string>
     <string name="meet_place">Meet Place:</string>
@@ -51,4 +51,7 @@
     <string name="i_am_a_leader_of">I am a leader of</string>
     <string name="test">test</string>
     <string name="i_am_a_member_of">I am a member of</string>
+    <string name="long_click_to_view_users_groups">Long click to view users\' groups.</string>
+    <string name="click_from_main">Click to stop monitoring.</string>
+    <string name="click_for_join">Click to join the selected group.</string>
 </resources>

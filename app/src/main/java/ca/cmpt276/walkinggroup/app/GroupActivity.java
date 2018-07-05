@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -23,6 +24,8 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class GroupActivity extends AppCompatActivity {
+    public static final String GROUP_REMOVE = "ca.cmpt276.walkinggroup.app - Group - GroupID";
+    public static final String USER_REMOVE = "ca.cmpt276.walkinggroup.app - Group - UserId";
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
@@ -64,8 +67,29 @@ public class GroupActivity extends AppCompatActivity {
 //        childId = intent.getLongExtra(CHILD_ID,0);
 //        Toast.makeText(this,""+childId,Toast.LENGTH_SHORT).show();
 
+        registerClickCallback_Leader();
+        registerClickCallback_Member();
 
         setTestBtn();
+
+    }
+
+    private void registerClickCallback_Member() {
+        ListView list = (ListView) findViewById(R.id.list_member);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle args = new Bundle();
+
+                args.putLong(GROUP_REMOVE, groupsMember.get(position).getId());
+                args.putLong(USER_REMOVE, userId);
+
+                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
+                RemoveMessage dialog = new RemoveMessage();
+                dialog.setArguments(args);
+                dialog.show(manager, "MessageDialog");
+            }
+        });
 
     }
 
@@ -107,8 +131,17 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
-    private void populateList(){
-
+    private void registerClickCallback_Leader() {
+        ListView list = (ListView) findViewById(R.id.list_leader);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
+//                startActivity(intent);
+                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this);
+                startActivity(intent);
+            }
+        });
     }
 
 
