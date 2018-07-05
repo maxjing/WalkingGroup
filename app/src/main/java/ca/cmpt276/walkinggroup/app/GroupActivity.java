@@ -26,6 +26,7 @@ import retrofit2.Call;
 public class GroupActivity extends AppCompatActivity {
     public static final String GROUP_REMOVE = "ca.cmpt276.walkinggroup.app - Group - GroupID";
     public static final String USER_REMOVE = "ca.cmpt276.walkinggroup.app - Group - UserId";
+    public static final String POSITION = "POSITION";
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
@@ -83,6 +84,8 @@ public class GroupActivity extends AppCompatActivity {
 
                 args.putLong(GROUP_REMOVE, groupsMember.get(position).getId());
                 args.putLong(USER_REMOVE, userId);
+                args.putInt(POSITION,position);
+               // args.putStringArray(GROUPS_MEMBER,groupsMemberData);
 
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 RemoveMessage dialog = new RemoveMessage();
@@ -92,6 +95,16 @@ public class GroupActivity extends AppCompatActivity {
         });
 
     }
+
+//    private void populateListView() {
+//        Call<User> caller = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseRemove(returnedUser));
+//        //Toast.makeText(GroupActivity.this,""+userId,Toast.LENGTH_LONG).show();
+//    }
+//
+//    private void responseRemove(User returnedUser) {
+//        Toast.makeText(GroupActivity.this,""+returnedUser.getId(),Toast.LENGTH_LONG).show();
+//    }
 
 
     private void response(User user) {
