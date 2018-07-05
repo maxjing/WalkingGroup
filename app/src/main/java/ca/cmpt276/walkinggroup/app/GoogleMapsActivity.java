@@ -320,6 +320,26 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             }
                         }
                     }
+                    if (mSearchMarkerDetail != null) {
+                        Bundle args = new Bundle();
+                        final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
+                        final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
+                        final String PlaceName = mSearchMarkerDetail.getName();
+                        args.putString(PLACENAME, PlaceName);
+                        args.putDouble(LONGTITUDE, Longtitude);
+                        args.putDouble(LATITUDE, Latitude);
+
+
+                        FragmentManager manager = getSupportFragmentManager();
+                        MessageFragment dialog = new MessageFragment();
+                        dialog.setArguments(args);
+                        dialog.show(manager, "MessageDialog");
+
+                        Log.i(TAG, "show the dialog");
+
+                    } else {
+                        Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
+                    }
                 }
                else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
@@ -336,6 +356,18 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
                         catch(Exception e){
                         }
+                    }
+                    if (markerID != 0) {
+                        Bundle args = new Bundle();
+                        final long selectedID = markerID;
+                        args.putLong(JOINGROUP, selectedID);
+                        args.putLong(USER_JOIN,userId);
+                        args.putString(GROUP_DES,groupDescription);
+
+                        FragmentManager manager = getSupportFragmentManager();
+                        JoinGroupFragment dialog = new JoinGroupFragment();
+                        dialog.setArguments(args);
+                        dialog.show(manager, "MessageDialog");
                     }
                 }
                 return false;
