@@ -149,6 +149,7 @@ public class MonitoringActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context,long groupId) {
         Intent intent = new Intent(context, MonitoringActivity.class);
         intent.putExtra(GROUP_ID_MONITORING,groupId);
+        Toast.makeText(context, ""+groupId, Toast.LENGTH_SHORT).show();
         return intent;
     }
 

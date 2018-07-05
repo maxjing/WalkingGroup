@@ -39,6 +39,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         long userId = mArgs.getLong(USER_JOIN);
         groupDescription = mArgs.getString(GROUP_DES);
 
+
         SharedPreferences dataToGet = getActivity().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
@@ -46,6 +47,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 Log.i("TAG", "You click the dialog button");
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
@@ -53,6 +55,10 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
                         ProxyBuilder.callProxy(getActivity(), caller, returnedUser -> response(returnedUser));
                         getActivity().finish();
                         break;
+                    case DialogInterface.BUTTON_NEUTRAL:
+                        Intent intenttomonitoring = MonitoringActivity.makeIntent(getContext(),selectedID);
+                        startActivity(intenttomonitoring);
+
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
                 }
@@ -72,6 +78,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
                 .setView(v)
                 .setMessage(groupDescription)
                 .setPositiveButton(android.R.string.ok, listener)
+                .setNeutralButton("Join Child",listener)
                 .setNegativeButton(android.R.string.cancel, listener)
                 .create();
 
