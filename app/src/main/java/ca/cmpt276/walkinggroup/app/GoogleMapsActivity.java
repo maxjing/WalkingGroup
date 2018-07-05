@@ -274,10 +274,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     for (int i = 0; i< mMarkerList.size(); i++){
                         if (!mMarkerList.get(i).isVisible()) {
                             mMarkerList.get(i).setVisible(true);
+                            Toast.makeText(GoogleMapsActivity.this, "Show Walking Groups.", Toast.LENGTH_SHORT).show();
                         }else{
                             mMarkerList.get(i).setVisible(false);
+                            Toast.makeText(GoogleMapsActivity.this, "Hide Walking Groups.", Toast.LENGTH_SHORT).show();
                         }
                     }
+                }else {
+                    Toast.makeText(GoogleMapsActivity.this, "To join a group, please select a place specific first", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
@@ -482,9 +487,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             PlaceInfo temPlace = new PlaceInfo(title, title, null, null, null, latLng, 0, null);
             mPlaceDetailsTextList.add(temPlace);
         }
-        Toast.makeText(GoogleMapsActivity.this,
-                "To create the group click the red marker, to join the group, press the blue marker.",
-                Toast.LENGTH_LONG).show();
         hideSoftKeyboard();
     }
 
@@ -498,10 +500,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .position(mGroupInfoList.get(i).getLatLng())
                     .title(WALKING_GROUP)
                     .snippet(snippet)
-                    .visible(false)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
             Marker tempMarker = mMap.addMarker(options);
-            tempMarker.setVisible(false);
+            tempMarker.setVisible(true);
             mMarkerList.add(tempMarker);
         }
     }
