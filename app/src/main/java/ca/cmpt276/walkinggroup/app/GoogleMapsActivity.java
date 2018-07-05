@@ -351,7 +351,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             if (marker.equals(mMarkerList.get(i))) {
                                 //handle click here
                                 markerID = mGroupInfoList.get(i).getID();
-                                Toast.makeText(GoogleMapsActivity.this, "ID: " + markerID, Toast.LENGTH_SHORT).show();
                                 groupDescription = mGroupInfoList.get(i).getDes();
 
                                 break;
