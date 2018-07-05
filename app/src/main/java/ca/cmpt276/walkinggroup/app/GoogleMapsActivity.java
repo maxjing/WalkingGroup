@@ -270,19 +270,22 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mShowWalkingGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                boolean flag = false;
                 if (mMarkerList != null){
                     for (int i = 0; i< mMarkerList.size(); i++){
                         if (!mMarkerList.get(i).isVisible()) {
                             mMarkerList.get(i).setVisible(true);
-                            Toast.makeText(GoogleMapsActivity.this, "Show Walking Groups.", Toast.LENGTH_SHORT).show();
+                            flag = true;
                         }else{
                             mMarkerList.get(i).setVisible(false);
-                            Toast.makeText(GoogleMapsActivity.this, "Hide Walking Groups.", Toast.LENGTH_SHORT).show();
+                            flag = false;
                         }
                     }
+                }
+                if (flag){
+                    Toast.makeText(GoogleMapsActivity.this, "Show Walking Groups.", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(GoogleMapsActivity.this, "To join a group, please select a place specific first", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(GoogleMapsActivity.this, "Hide Walking Groups.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
