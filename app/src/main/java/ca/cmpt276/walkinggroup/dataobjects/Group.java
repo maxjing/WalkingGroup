@@ -19,7 +19,7 @@ public class Group extends IdItemBase{
     private List<Double> routeLatArray = new ArrayList<>();
     private List<Double> routeLngArray = new ArrayList<>();
     private List<Group> memberUsers = new ArrayList<>();
-    private List<Group> messages = new ArrayList<>();
+    private List<String> messages = new ArrayList<>();
     private boolean hasFullData;
 
 
@@ -63,11 +63,11 @@ public class Group extends IdItemBase{
         this.memberUsers = memberUsers;
     }
 
-    public List<Group> getMessages() {
+    public List<String> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Group> messages) {
+    public void setMessages(List<String> messages) {
         this.messages = messages;
     }
 
