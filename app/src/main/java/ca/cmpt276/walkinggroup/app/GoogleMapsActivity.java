@@ -79,6 +79,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private Marker mMarker;
     private long markerID = 0;
     private long userId = 0;
+    private String groupDescription;
     private String meetingPlace;
 
 
@@ -98,6 +99,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String JOINGROUP = "joinGroupID";
     public static final String USER_JOIN = "userId";
     public static final String MEETINGPLACE = "meetingPlace";
+    public static final String GROUP_DES = "groupDescription";
 
     //latlnt data
     private String token;
@@ -268,6 +270,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     final long selectedID = markerID;
                     args.putLong(JOINGROUP, selectedID);
                     args.putLong(USER_JOIN,userId);
+                    args.putString(GROUP_DES,groupDescription);
 
                     FragmentManager manager = getSupportFragmentManager();
                     JoinGroupFragment dialog = new JoinGroupFragment();
@@ -300,11 +303,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 }
                 else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
-                        if (marker.getId().equals(mMarkerList.get(i).getId())) {
-                            //handle click here
-                            markerID = mGroupInfoList.get(i).getID();
-                            //meetingPlace = mGroupInfoList.get(i).getMeetPlace();
-                            break;
+                        try {
+                            if (marker.equals(mMarkerList.get(i))) {
+                                //handle click here
+                                markerID = mGroupInfoList.get(i).getID();
+                                groupDescription = mGroupInfoList.get(i).getDes();
+
+                            }
+                        }
+                        catch(Exception e){
+
                         }
                         markerID = 0L;
                        // meetingPlace = null;

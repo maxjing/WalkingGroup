@@ -27,6 +27,8 @@ import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
 public class JoinGroupFragment extends AppCompatDialogFragment{
     private WGServerProxy proxy;
     private String token;
+    public static final String GROUP_DES = "groupDescription";
+    private String groupDescription;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Create the view to show
@@ -37,6 +39,8 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
 
         long selectedID = mArgs.getLong(JOINGROUP);
         long userId = mArgs.getLong(USER_JOIN);
+        groupDescription = mArgs.getString(GROUP_DES);
+
 
         SharedPreferences dataToGet = getActivity().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
@@ -45,12 +49,17 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 Log.i("TAG", "You click the dialog button");
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
                         Call<User> caller = proxy.getUserById(userId);
                         ProxyBuilder.callProxy(getActivity(), caller, returnedUser -> response(returnedUser));
                         break;
+                    case DialogInterface.BUTTON_NEUTRAL:
+                        Intent intenttomonitoring = MonitoringActivity.makeIntent(getContext(),selectedID);
+                        startActivity(intenttomonitoring);
+
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
                 }
@@ -68,8 +77,12 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Join group")
                 .setView(v)
+                .setMessage(groupDescription)
                 .setPositiveButton(android.R.string.ok, listener)
+                .setNeutralButton("Join Child",listener)
                 .setNegativeButton(android.R.string.cancel, listener)
                 .create();
+
+
     }
 }
