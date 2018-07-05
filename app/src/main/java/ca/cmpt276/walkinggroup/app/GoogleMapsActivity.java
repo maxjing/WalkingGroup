@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -96,7 +95,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     //widgets
     private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mCreateGroup, mJoinGroup, mPlacePicker;
+    private ImageView mGps, mInfo, mCreateGroup, mShowWalkingGroups, mPlacePicker;
 
     //transfer value
 
@@ -131,7 +130,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
         mCreateGroup = findViewById(R.id.create_group);
-        mJoinGroup = findViewById(R.id.search_group);
+        mShowWalkingGroups = findViewById(R.id.search_group);
         mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
@@ -268,21 +267,17 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        mJoinGroup.setOnClickListener(new View.OnClickListener() {
+        mShowWalkingGroups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Toast.makeText(GoogleMapsActivity.this, "should show the group lists around the selected location", Toast.LENGTH_SHORT).show();
-                if (markerID != 0) {
-                    Bundle args = new Bundle();
-                    final long selectedID = markerID;
-                    args.putLong(JOINGROUP, selectedID);
-                    args.putLong(USER_JOIN,userId);
-                    args.putString(GROUP_DES,groupDescription);
-
-                    FragmentManager manager = getSupportFragmentManager();
-                    JoinGroupFragment dialog = new JoinGroupFragment();
-                    dialog.setArguments(args);
-                    dialog.show(manager, "MessageDialog");
+                if (mMarkerList != null){
+                    for (int i = 0; i< mMarkerList.size(); i++){
+                        if (!mMarkerList.get(i).isVisible()) {
+                            mMarkerList.get(i).setVisible(true);
+                        }else{
+                            mMarkerList.get(i).setVisible(false);
+                        }
+                    }
                 }
             }
         });
@@ -503,8 +498,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .position(mGroupInfoList.get(i).getLatLng())
                     .title(WALKING_GROUP)
                     .snippet(snippet)
+                    .visible(false)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-            mMarkerList.add(mMap.addMarker(options));
+            Marker tempMarker = mMap.addMarker(options);
+            tempMarker.setVisible(false);
+            mMarkerList.add(tempMarker);
         }
     }
 
