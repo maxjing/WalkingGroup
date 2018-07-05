@@ -61,23 +61,31 @@ public class MonitoringActivity extends AppCompatActivity {
 }
 
     private void registerClickCallback() {
+        Intent intent = getIntent();
+        groupId = intent.getLongExtra(GROUP_ID_MONITORING,0);
+        TextView tv = (TextView) findViewById(R.id.txtClick);
+        if(groupId == 0){
+            tv.setText(R.string.click_from_main);
+        }else{
+            tv.setText(R.string.click_for_join);
+        }
         ListView list = (ListView) findViewById(R.id.listView_Monitoring);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = getIntent();
-                groupId = intent.getLongExtra(GROUP_ID_MONITORING,0);
-                TextView tv = (TextView) findViewById(R.id.txtClick);
+//                Intent intent = getIntent();
+//                groupId = intent.getLongExtra(GROUP_ID_MONITORING,0);
+//                TextView tv = (TextView) findViewById(R.id.txtClick);
                 //if(source.equals("main")){
                 if(groupId == 0){
-                    tv.setText(R.string.click_from_main);
+                    //tv.setText(R.string.click_from_main);
                     Call<Void> remove = proxy.removeFromMonitorsUsers(userId, monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this, remove, returnedUser -> responseRemove());
                     Call<User> caller = proxy.getUserByEmail(user.getEmail());
                     ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
                 }
                 else{
-                    tv.setText(R.string.click_for_join);
+                    //tv.setText(R.string.click_for_join);
                     Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedUser -> responsejoin(returnedUser));
                     //Call<Void> join = proxy.addGroupMember(groupId,monitorsUsers.get(position).getId())
