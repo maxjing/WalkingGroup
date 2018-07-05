@@ -43,7 +43,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
     private List<Double> routeLatArray;
     private List<Double> routeLngArray;
-    private List<String> message;
+
 
 
     private double latitude;
@@ -60,8 +60,6 @@ public class GroupCreateActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        routeLatArray = new ArrayList<>();
-        routeLngArray = new ArrayList<>();
 
         Intent intent =getIntent();
 
@@ -89,14 +87,18 @@ public class GroupCreateActivity extends AppCompatActivity {
                 editDescription = editDesc.getText().toString();
                 EditText editMeet= (EditText) findViewById(R.id.editMeetPlace);
                 editMeetPlace = editMeet.getText().toString();
+                routeLatArray = new ArrayList<>();
+                routeLngArray = new ArrayList<>();
+
+
 
 
                 user = User.getInstance();
                 Call<User> caller = proxy.getUserByEmail(user.getEmail());
                 ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
 
-                Intent intenttomap = GroupActivity.makeIntent(GroupCreateActivity.this);
-                startActivity(intenttomap);
+                Intent intenttomain = MainActivity.makeIntent(GroupCreateActivity.this);
+                startActivity(intenttomain);
                 finish();
             }
         });
@@ -129,12 +131,14 @@ public class GroupCreateActivity extends AppCompatActivity {
 
         routeLatArray.add(latitude);
         routeLngArray.add(longtitude);
-        message.add(editMeetPlace);
+
+
 
         group.setRouteLatArray(routeLatArray);
         group.setRouteLngArray(routeLngArray);
-        group.setMessages(message);
+
         group.setGroupDescription(editDescription);
+
 
         Call<Group> caller = proxy.createGroup(group);
         ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedGroups -> response(returnedGroups));
@@ -142,7 +146,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
     private void response(Group groups) {
 
-        Toast.makeText(GroupCreateActivity.this, ""+group.toString(), Toast.LENGTH_SHORT).show();
+
 
     }
 

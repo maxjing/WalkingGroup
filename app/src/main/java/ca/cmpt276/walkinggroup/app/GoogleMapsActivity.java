@@ -159,12 +159,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
-            meetPlace[i] = groupList.get(i).getMessages().get(0);
+//            meetPlace[i] = groupList.get(i).getMessages().get(0);
+
+
 
         }
         for (int i = 0; i < latitudes.length; i++) {
-
-            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i],meetPlace[i]));
+//            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
+            mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
         }
         walkingGroup();
     }
