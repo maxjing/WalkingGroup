@@ -24,6 +24,8 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class GroupActivity extends AppCompatActivity {
+    public static final String GROUP_REMOVE = "ca.cmpt276.walkinggroup.app - Group - GroupID";
+    public static final String USER_REMOVE = "ca.cmpt276.walkinggroup.app - Group - UserId";
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
@@ -77,37 +79,16 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Bundle args_remove = new Bundle();
-//
-//                //final long groupId = groupsMember.get(position).getId();
-//                args_remove.putLong(GROUP_REMOVE,groupsMember.get(position).getId());
-//                args_remove.putLong(USER_REMOVE, userId);
+                Bundle args = new Bundle();
 
-               // dialog.setArguments(args);
-//                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
-//                startActivity(intent);
-                //Call<Void> caller = proxy.removeGroupMember()
-//                Intent intent = new Intent();
-//
-//                intent.putExtra(GROUP_ID,groupsMember.get(position).getId());
+                args.putLong(GROUP_REMOVE, groupsMember.get(position).getId());
+                args.putLong(USER_REMOVE, userId);
 
                 android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
                 RemoveMessage dialog = new RemoveMessage();
-//                dialog.setArguments(args_remove);
-                dialog.show(manager,"MessageDialog");
-
-                Intent intent = getIntent();
-                String msg = intent.getStringExtra("REMOVE");
-                if(msg.equals("remove")){
-                    Call<Void> caller = proxy.removeGroupMember(groupsMember.get(position).getId(),userId);
-                    ProxyBuilder.callProxy(GroupActivity.this,caller,returned -> responseForRemove());
-                }
-
+                dialog.setArguments(args);
+                dialog.show(manager, "MessageDialog");
             }
-
-            private void responseForRemove() {
-            }
-
         });
 
     }
