@@ -96,9 +96,9 @@ public class GroupCreateActivity extends AppCompatActivity {
                 user = User.getInstance();
                 Call<User> caller = proxy.getUserByEmail(user.getEmail());
                 ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
-
-                Intent intenttomain = MainActivity.makeIntent(GroupCreateActivity.this);
-                startActivity(intenttomain);
+//
+//                Intent intenttomain = MainActivity.makeIntent(GroupCreateActivity.this);
+//                startActivity(intenttomain);
                 finish();
             }
         });

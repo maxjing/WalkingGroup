@@ -54,4 +54,9 @@
     <string name="long_click_to_view_users_groups">Long click to view users\' groups.</string>
     <string name="click_from_main">Click to stop monitoring.</string>
     <string name="click_for_join">Click to join the selected group.</string>
+    <string name="group_information">Group Information</string>
+    <string name="group_members">Group members:</string>
+    <string name="click_to_view_more_group_information">Click to view more group information.</string>
+    <string name="click_to_leave_the_group">Click to leave the group.</string>
+    <string name="click_member_infoActivity">Click to remove the user from the group.</string>
 </resources>

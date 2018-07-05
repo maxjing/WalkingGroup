@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intentToLogin);
                         break;
                     default:
-                       Intent intentMonitoring = MonitoringActivity.makeIntent(MainActivity.this,0);
+                        Intent intentMonitoring = MonitoringActivity.makeIntent(MainActivity.this,0);
                         startActivity(intentMonitoring);
 
                 }
