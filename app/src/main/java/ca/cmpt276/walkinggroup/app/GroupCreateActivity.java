@@ -37,6 +37,9 @@ public class GroupCreateActivity extends AppCompatActivity {
     public static final String LATITUDE = "latitude";
     public static final String LONGTITUDE = "longtitude";
     public static final String PLACENAME = "placename";
+    public static final String MEETINGPLACE = "meetingPlace";
+    public static final String MEETLAT = "meetLat";
+    public static final String MEETLNG = "meetLng";
 
     private List<Double> routeLatArray;
     private List<Double> routeLngArray;
@@ -46,6 +49,9 @@ public class GroupCreateActivity extends AppCompatActivity {
     private double latitude;
     private double longtitude;
     private String placeName;
+    private String meetingPlace;
+    private double meetLat;
+    private double meetLng;
 
 
     @Override
@@ -62,8 +68,15 @@ public class GroupCreateActivity extends AppCompatActivity {
         longtitude  = intent.getDoubleExtra(LONGTITUDE,0);
         placeName   = intent.getStringExtra(PLACENAME);
 
+        meetingPlace = intent.getStringExtra(MEETINGPLACE);
+        meetLat      = intent.getDoubleExtra(MEETLAT,0);
+        meetLng      = intent.getDoubleExtra(MEETLNG,0);
+
+
         TextView editDest = (TextView) findViewById(R.id.editDestination);
         editDest.setText(placeName);
+        TextView editMeet= (TextView) findViewById(R.id.editMeetPlace);
+        editMeet.setText(meetingPlace);
 
 
         setOKBtn();
@@ -80,8 +93,7 @@ public class GroupCreateActivity extends AppCompatActivity {
 
                 EditText editDesc= (EditText) findViewById(R.id.editDescription);
                 editDescription = editDesc.getText().toString();
-                EditText editMeet= (EditText) findViewById(R.id.editMeetPlace);
-                editMeetPlace = editMeet.getText().toString();
+
                 routeLatArray = new ArrayList<>();
                 routeLngArray = new ArrayList<>();
 
@@ -123,7 +135,10 @@ public class GroupCreateActivity extends AppCompatActivity {
         group.setLeader(user);
 
         routeLatArray.add(latitude);
+        routeLatArray.add(meetLat);
+
         routeLngArray.add(longtitude);
+        routeLngArray.add(meetLng);
 
 
 
