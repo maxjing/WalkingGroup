@@ -38,11 +38,8 @@ public class MonitorActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
-//        Call<User> caller = proxy.getUserByEmail(user.getEmail());
-//        ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
         setAddBtn();
         registerClickCallback();
-        Toast.makeText(this, "from new"+dataToGet.getLong("userId",0), Toast.LENGTH_SHORT).show();
         userId = dataToGet.getLong("userId", 0);
         populateListView();
     }

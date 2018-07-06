@@ -58,8 +58,7 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Extract data from UI
-                EditText editN = (EditText) findViewById(R.id.editName);
-                editName = editN.getText().toString();
+
                 EditText editE = (EditText) findViewById(R.id.editEmail);
                 String editEmail = editE.getText().toString();
                 Call<User> caller = proxy.getUserByEmail(editEmail);

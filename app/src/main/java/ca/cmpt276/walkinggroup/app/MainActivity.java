@@ -44,20 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
 
         if (token==""){
-            Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.GONE);
         }else{
-            Toast.makeText(MainActivity.this,"has token, Email: "+user.getEmail(),Toast.LENGTH_LONG).show();
             btnLogout.setVisibility(View.VISIBLE);
 
         }
 
         setGroupBtn();
-        setDevBtn();
         setLogoutBtn();
         setMonitoringBtn();
         setMonitorBtn();
-        setTestButton();
 
         if (isServicesOK()){
             setMapButton();
@@ -147,16 +143,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setTestButton() {
-        Button btn = findViewById(R.id.btnTest);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,UserinfoActivity.class));
-            }
-        });
-    }
-
     public static Intent makeIntent(Context context){
         return new Intent(context, MainActivity.class);
     }
@@ -201,15 +187,4 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setDevBtn(){
-        Button btnDev = (Button)findViewById(R.id.btnDev);
-        btnDev.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this,ServerTestActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
 }

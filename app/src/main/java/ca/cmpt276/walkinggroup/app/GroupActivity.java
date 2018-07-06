@@ -66,14 +66,10 @@ public class GroupActivity extends AppCompatActivity {
         groupsMember = new ArrayList<>();
         groupsLeader = new ArrayList<>();
 
-//        Intent intent = getIntent();
-//        childId = intent.getLongExtra(CHILD_ID,0);
-//        Toast.makeText(this,""+childId,Toast.LENGTH_SHORT).show();
 
         registerClickCallback_Leader();
         registerClickCallback_Member();
 
-        setTestBtn();
 
     }
 
@@ -97,16 +93,6 @@ public class GroupActivity extends AppCompatActivity {
         });
 
     }
-
-//    private void populateListView() {
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseRemove(returnedUser));
-//        //Toast.makeText(GroupActivity.this,""+userId,Toast.LENGTH_LONG).show();
-//    }
-//
-//    private void responseRemove(User returnedUser) {
-//        Toast.makeText(GroupActivity.this,""+returnedUser.getId(),Toast.LENGTH_LONG).show();
-//    }
 
 
     private void response(User user) {
@@ -151,26 +137,11 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(GroupActivity.this,GroupInfoActivity.class);
-//                startActivity(intent);
                 Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,groupsLeader.get(position).getId());
                 startActivityForResult(intent, REQUEST_CODE_DELETE);
             }
         });
     }
-
-
-    private void setTestBtn(){
-        Button btnDev = (Button)findViewById(R.id.btnTest);
-        btnDev.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(GroupActivity.this,GroupTestActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
 
 
 
