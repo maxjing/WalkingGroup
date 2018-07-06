@@ -69,8 +69,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String WALKING_GROUP = "Walking Group";
     private PlaceInfo mPlaceDetailsText;
-    private PlaceInfo mSearchMarkerDetail;
-    private PlaceInfo mMeetPlaceDetail;
+    private PlaceInfo mSearchMarkerDetail = null;
+    private PlaceInfo mMeetPlaceDetail = null;
     private List<PlaceInfo> mPlaceDetailsTextList = new ArrayList<>();
     private List<Marker> mSearchMarker = new ArrayList<>();
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
