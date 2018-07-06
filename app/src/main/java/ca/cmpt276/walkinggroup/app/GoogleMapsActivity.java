@@ -90,7 +90,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private String meetingPlace;
 
 
-     private List<LatLng> latLngList = new ArrayList<>();
+    private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
 
@@ -145,7 +145,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
+        userId = dataToGet.getLong("userId", 0);
 
         getLocationPermission();
         setUpClearButton();
@@ -251,20 +251,20 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public void onClick(View view) {
                 boolean flag = false;
-                if (mMarkerList != null){
-                    for (int i = 0; i< mMarkerList.size(); i++){
+                if (mMarkerList != null) {
+                    for (int i = 0; i < mMarkerList.size(); i++) {
                         if (!mMarkerList.get(i).isVisible()) {
                             mMarkerList.get(i).setVisible(true);
                             flag = true;
-                        }else{
+                        } else {
                             mMarkerList.get(i).setVisible(false);
                             flag = false;
                         }
                     }
                 }
-                if (flag){
+                if (flag) {
                     Toast.makeText(GoogleMapsActivity.this, "Show Walking Groups.", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     Toast.makeText(GoogleMapsActivity.this, "Hide Walking Groups.", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -289,51 +289,53 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
-                if (!marker.getTitle().equals(WALKING_GROUP)){
-                    if (mPlaceDetailsTextList != null){
-                        for (int i = 0; i < mPlaceDetailsTextList.size(); i++){
-                            try{
-                                if (marker.equals(mSearchMarker.get(i))){
+                if (!marker.getTitle().equals(WALKING_GROUP)) {
+                    if (mPlaceDetailsTextList != null) {
+                        for (int i = 0; i < mPlaceDetailsTextList.size(); i++) {
+                            try {
+                                if (marker.equals(mSearchMarker.get(i))) {
                                     if (mSearchMarkerDetail == null) {
                                         mSearchMarkerDetail = mPlaceDetailsTextList.get(i);
                                         break;
-                                    }
-                                    else {
+                                    } else {
                                         mMeetPlaceDetail = mPlaceDetailsTextList.get(i);
                                     }
                                 }
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
 
                             }
                         }
                     }
                     if (mSearchMarkerDetail != null) {
-                        if (mMeetPlaceDetail != null) {
-                            Toast.makeText(GoogleMapsActivity.this, "Please delect the meeting place!", Toast.LENGTH_SHORT).show();
-                        }else{
-                        Bundle args = new Bundle();
-                        final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
-                        final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
-                        final String PlaceName = mSearchMarkerDetail.getName();
-                        args.putString(PLACENAME, PlaceName);
-                        args.putDouble(LONGTITUDE, Longtitude);
-                        args.putDouble(LATITUDE, Latitude);
+                        if (mMeetPlaceDetail == null) {
+                            Toast.makeText(GoogleMapsActivity.this, "Please select the meeting place!", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(mSearchMarkerDetail == mMeetPlaceDetail) {
+                            Toast.makeText(GoogleMapsActivity.this, "Meeting Place should be different with End Place", Toast.LENGTH_SHORT).show();
+                        }
+
+                        else {
+                            Bundle args = new Bundle();
+                            final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
+                            final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
+                            final String PlaceName = mSearchMarkerDetail.getName();
+                            args.putString(PLACENAME, PlaceName);
+                            args.putDouble(LONGTITUDE, Longtitude);
+                            args.putDouble(LATITUDE, Latitude);
 
 
-                        FragmentManager manager = getSupportFragmentManager();
-                        MessageFragment dialog = new MessageFragment();
-                        dialog.setArguments(args);
-                        dialog.show(manager, "MessageDialog");
+                            FragmentManager manager = getSupportFragmentManager();
+                            MessageFragment dialog = new MessageFragment();
+                            dialog.setArguments(args);
+                            dialog.show(manager, "MessageDialog");
 
-                        Log.i(TAG, "show the dialog");
+                            Log.i(TAG, "show the dialog");
                         }
 
                     } else {
                         Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                     }
-                }
-                else if (mMarkerList != null) {
+                } else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
                         try {
                             if (marker.equals(mMarkerList.get(i))) {
@@ -344,16 +346,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                                 break;
                             }
                             markerID = 0;
-                        }
-                        catch(Exception e){
+                        } catch (Exception e) {
                         }
                     }
                     if (markerID != 0) {
                         Bundle args = new Bundle();
                         final long selectedID = markerID;
                         args.putLong(JOINGROUP, selectedID);
-                        args.putLong(USER_JOIN,userId);
-                        args.putString(GROUP_DES,groupDescription);
+                        args.putLong(USER_JOIN, userId);
+                        args.putString(GROUP_DES, groupDescription);
 
                         FragmentManager manager = getSupportFragmentManager();
                         JoinGroupFragment dialog = new JoinGroupFragment();
@@ -418,13 +419,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
                             Log.d(TAG, "on Complete: Found Location!");
                             Location currentLocation = (Location) task.getResult();
-                            if(currentLocation != null) {
+                            if (currentLocation != null) {
 
                                 moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
                                 // move to the device location and zoom
                             }
-                        }
-                        else {
+                        } else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(GoogleMapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
@@ -510,7 +510,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mapFragment.getMapAsync(GoogleMapsActivity.this);
 
 
-
     }
 
     private void getLocationPermission() {
@@ -586,8 +585,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.getUiSettings().setZoomControlsEnabled(true);
 
 
-                init();
-
+            init();
 
 
         }
