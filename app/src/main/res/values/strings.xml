@@ -48,9 +48,9 @@
     <string name="create_group">CREATE GROUP</string>
     <string name="do_you_want_to_create_a_group">Do you want to create a group?</string>
     <string name="groups">Groups</string>
-    <string name="i_am_a_leader_of">I am a leader of</string>
+    <string name="i_am_a_leader_of">Leader of</string>
     <string name="test">test</string>
-    <string name="i_am_a_member_of">I am a member of</string>
+    <string name="i_am_a_member_of">Member of</string>
     <string name="long_click_to_view_users_groups">Long click to view users\' groups.</string>
     <string name="click_from_main">Click to stop monitoring.</string>
     <string name="click_for_join">Click to join the selected group.</string>
@@ -59,4 +59,8 @@
     <string name="click_to_view_more_group_information">Click to view more group information.</string>
     <string name="click_to_leave_the_group">Click to leave the group.</string>
     <string name="click_member_infoActivity">Click to remove the user from the group.</string>
+    <string name="whom_do_you_want_to_have_join_the_selected_group">Whom do you want to have join the selected group?</string>
+    <string name="myself">Myself</string>
+    <string name="my_child">My Child</string>
+    <string name="delete_this_group">Delete this group</string>
 </resources>

@@ -61,8 +61,8 @@
         <activity android:name=".AddUserActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".GroupCreateActivity" />
-        <activity android:name=".GroupTestActivity" />
-        <activity android:name=".GroupInfoActivity"></activity>
+        <activity android:name=".GroupInfoActivity" />
+        <activity android:name=".JoinGroupActivity"></activity>
     </application>
 
 </manifest>

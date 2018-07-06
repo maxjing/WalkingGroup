@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    android:paddingRight="0dp"
     tools:context="ca.cmpt276.walkinggroup.app.GroupCreateActivity">
 
     <TextView
@@ -104,7 +103,8 @@
             android:ems="10"
             android:textColor="#FFF"
             tools:layout_editor_absoluteX="179dp"
-            tools:layout_editor_absoluteY="202dp" />
+            tools:layout_editor_absoluteY="202dp"
+            android:inputType="" />
 
     </LinearLayout>
 
@@ -136,7 +136,8 @@
             android:ems="10"
             android:textColor="#FFF"
             tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="252dp" />
+            tools:layout_editor_absoluteY="252dp"
+            android:inputType="" />
     </LinearLayout>
 
 

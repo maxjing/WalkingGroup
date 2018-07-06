@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setLoginBtn();
         setRegisterBtn();
-        setDevBtn();
+
 
     }
     private void setRegisterBtn(){
@@ -54,16 +54,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-    private void setDevBtn(){
-        Button btnDev = (Button)findViewById(R.id.btnDev);
-        btnDev.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(LoginActivity.this,ServerTestActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
+
     private void setLoginBtn(){
         Button btnLogin = (Button)findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener(){

@@ -26,16 +26,13 @@ public class GroupCreateActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupCreateActivity";
     private WGServerProxy proxy;
-    private String editDestination;
     private String editDescription;
     private String editMeetPlace;
     private User user;
-    private long userId;
     private Group group;
 
 
 
-    public static final int REQUEST_CODE_TARGET = 64;
 
     public static final String LATITUDE = "latitude";
     public static final String LONGTITUDE = "longtitude";
@@ -49,8 +46,6 @@ public class GroupCreateActivity extends AppCompatActivity {
     private double latitude;
     private double longtitude;
     private String placeName;
-    private List<LatLng> latlng;
-
 
 
     @Override
@@ -96,9 +91,7 @@ public class GroupCreateActivity extends AppCompatActivity {
                 user = User.getInstance();
                 Call<User> caller = proxy.getUserByEmail(user.getEmail());
                 ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
-//
-//                Intent intenttomain = MainActivity.makeIntent(GroupCreateActivity.this);
-//                startActivity(intenttomain);
+
                 finish();
             }
         });

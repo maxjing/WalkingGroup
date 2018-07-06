@@ -20,7 +20,6 @@ public class AddUserActivity extends AppCompatActivity {
     private static final String EXTRA_FLAG = "ca.cmpt276.walkinggroup.app.AddUserActivity - FLAG";
     private User user;
     private WGServerProxy proxy;
-    String editName;
     private long userId;
     private String token;
 
@@ -58,8 +57,7 @@ public class AddUserActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Extract data from UI
-                EditText editN = (EditText) findViewById(R.id.editName);
-                editName = editN.getText().toString();
+
                 EditText editE = (EditText) findViewById(R.id.editEmail);
                 String editEmail = editE.getText().toString();
                 Call<User> caller = proxy.getUserByEmail(editEmail);

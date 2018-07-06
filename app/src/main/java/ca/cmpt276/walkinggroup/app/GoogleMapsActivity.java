@@ -345,13 +345,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                     }
                 }
-               else if (mMarkerList != null) {
+                else if (mMarkerList != null) {
                     for (int i = 0; i < mMarkerList.size(); i++) {
                         try {
                             if (marker.equals(mMarkerList.get(i))) {
                                 //handle click here
                                 markerID = mGroupInfoList.get(i).getID();
-                                Toast.makeText(GoogleMapsActivity.this, "ID: " + markerID, Toast.LENGTH_SHORT).show();
                                 groupDescription = mGroupInfoList.get(i).getDes();
 
                                 break;
@@ -445,9 +444,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo) {
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-       // mMap.clear();
+        // mMap.clear();
 
-       // walkingGroup();
+        // walkingGroup();
         mMap.setInfoWindowAdapter(new CustomInfoWindowAdapter(GoogleMapsActivity.this));
 
         if (placeInfo != null) {
@@ -476,7 +475,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void moveCamera(LatLng latLng, float zoom, String title) {
-       // walkingGroup();
+        // walkingGroup();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
         if (title != "My Location") {

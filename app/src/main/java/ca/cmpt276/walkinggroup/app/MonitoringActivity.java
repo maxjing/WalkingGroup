@@ -89,6 +89,7 @@ public class MonitoringActivity extends AppCompatActivity {
                     Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedUser -> responsejoin(returnedUser));
                     //Call<Void> join = proxy.addGroupMember(groupId,monitorsUsers.get(position).getId())
+                    finish();
                 }
 
             }
@@ -113,12 +114,11 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void responseForJoining(List<User> returnedList) {
-        finish();
+       // finish();
     }
 
     private void responseChild(User returnedChild) {
         Intent intent = GroupActivity.makeChildIntent(MonitoringActivity.this,returnedChild.getId());
-        Toast.makeText(this,""+returnedChild.getId(),Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
 
@@ -150,7 +150,6 @@ public class MonitoringActivity extends AppCompatActivity {
     public static Intent makeIntent(Context context,long groupId) {
         Intent intent = new Intent(context, MonitoringActivity.class);
         intent.putExtra(GROUP_ID_MONITORING,groupId);
-        Toast.makeText(context, ""+groupId, Toast.LENGTH_SHORT).show();
         return intent;
     }
 
