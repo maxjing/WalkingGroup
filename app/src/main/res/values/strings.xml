@@ -62,4 +62,5 @@
     <string name="whom_do_you_want_to_have_join_the_selected_group">Whom do you want to have join the selected group?</string>
     <string name="myself">Myself</string>
     <string name="my_child">My Child</string>
+    <string name="delete_this_group">Delete this group</string>
 </resources>
