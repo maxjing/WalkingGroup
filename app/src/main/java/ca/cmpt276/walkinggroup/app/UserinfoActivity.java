@@ -26,7 +26,6 @@ public class UserinfoActivity extends AppCompatActivity {
     private String userEmail;
     private long userId = 0;
     private String token;
-    List<User> userstomonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -95,19 +95,8 @@ public class RemoveMessage extends AppCompatDialogFragment {
     }
 
     private void response(User returnedUser) {
-        //Log.i("Log",""+returnedUser.getId());
         memberOfGroups = returnedUser.getMemberOfGroups();
-        //Log.i("Log",""+returnedUser.getMemberOfGroups());
 
-//        List<Group> groupsMember = returnedUser.getMemberOfGroups();
-//        try {
-//            String[] groupsMemberData = new String[groupsMember.size()];
-//            for (int i = 0; i < groupsMember.size(); i++) {
-//                groupsMemberData[i] = "Group  - " + groupsMember.get(i).getId();
-//            }
-//        } catch (Exception e) {
-//
-//        }
     }
 
 

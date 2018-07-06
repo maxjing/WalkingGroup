@@ -20,7 +20,6 @@ public class AddUserActivity extends AppCompatActivity {
     private static final String EXTRA_FLAG = "ca.cmpt276.walkinggroup.app.AddUserActivity - FLAG";
     private User user;
     private WGServerProxy proxy;
-    String editName;
     private long userId;
     private String token;
 

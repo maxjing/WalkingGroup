@@ -32,11 +32,6 @@ public class GroupActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
-    private List<Group> groupList;
-    private Double[] latitudes;
-    private Double[] longtitudes;
-    private String[] groupDes;
-    private Long[] groupId;
     private User user;
     private List<Group> groupsMember;
     private List<Group> groupsLeader;

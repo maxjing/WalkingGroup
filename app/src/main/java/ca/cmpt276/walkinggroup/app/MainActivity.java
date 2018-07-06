@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
     private String userEmail;
-    private long userId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
