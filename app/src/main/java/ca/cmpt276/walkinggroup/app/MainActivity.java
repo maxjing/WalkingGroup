@@ -146,9 +146,6 @@ public class MainActivity extends AppCompatActivity {
         return new Intent(context, MainActivity.class);
     }
     private void setGroupBtn(){
-        if (token==""){
-            Toast.makeText(MainActivity.this,"no token",Toast.LENGTH_LONG).show();
-        }
         Button btnGroup = (Button)findViewById(R.id.btnGroup);
         btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override

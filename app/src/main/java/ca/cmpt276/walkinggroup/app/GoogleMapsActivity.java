@@ -89,7 +89,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private String meetingPlace;
 
 
-    // private List<LatLng> latLngList = new ArrayList<>();
+     private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
 
@@ -135,9 +135,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         // Retrieve the TextViews that will display details and attributions of the selected place.
 
         //for Test
-       /* latLngList.add(new LatLng(49.30,-122.80));
-        latLngList.add(new LatLng(49.56, -122.78));
-        latLngList.add(new LatLng(49.2960264,-122.745591));*/
+//        latLngList.add(new LatLng(49.30,-122.80));
+//        latLngList.add(new LatLng(49.56, -122.78));
+//        latLngList.add(new LatLng(49.2960264,-122.745591));
 
 
         //get latlnt data
@@ -177,7 +177,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
         }
-        walkingGroup();
+
     }
 
     private void setUpClearButton() {
@@ -191,6 +191,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void init() {
+        walkingGroup();
         Log.d(TAG, "init: initializing");
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -425,6 +426,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     @Override
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
+
                             Log.d(TAG, "on Complete: Found Location!");
                             Location currentLocation = (Location) task.getResult();
 
@@ -513,6 +515,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "intiMap: initializing map");
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(GoogleMapsActivity.this);
+
+
+
     }
 
     private void getLocationPermission() {
@@ -587,7 +592,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             //mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
 
-            init();
+
+                init();
+
+
 
         }
 
