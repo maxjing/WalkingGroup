@@ -146,10 +146,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userId = dataToGet.getLong("userId",0);
 
-        Call<List<Group>> caller = proxy.getGroups();
-        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
-
-
         getLocationPermission();
         setUpClearButton();
     }
@@ -169,9 +165,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
 //            meetPlace[i] = groupList.get(i).getMessages().get(0);
-
-
-
         }
         for (int i = 0; i < latitudes.length; i++) {
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
@@ -192,6 +185,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
     private void init() {
         Log.d(TAG, "init: initializing");
+
+        Call<List<Group>> caller = proxy.getGroups();
+        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
