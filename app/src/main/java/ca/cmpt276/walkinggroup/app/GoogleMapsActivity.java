@@ -70,6 +70,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String WALKING_GROUP = "Walking Group";
     private PlaceInfo mPlaceDetailsText;
     private PlaceInfo mSearchMarkerDetail;
+    private PlaceInfo mMeetPlaceDetail;
     private List<PlaceInfo> mPlaceDetailsTextList = new ArrayList<>();
     private List<Marker> mSearchMarker = new ArrayList<>();
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
@@ -94,8 +95,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
 
     //widgets
-    private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo, mCreateGroup, mShowWalkingGroups, mPlacePicker;
+    private AutoCompleteTextView mSearchText, mSearchMeetingPlace;
+    private ImageView mGps, mInfo, mClearSelectedPlace, mShowWalkingGroups, mPlacePicker;
 
     //transfer value
 
@@ -129,7 +130,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mSearchText = findViewById(R.id.input_search);
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
-        mCreateGroup = findViewById(R.id.create_group);
+        mClearSelectedPlace = findViewById(R.id.create_group);
         mShowWalkingGroups = findViewById(R.id.search_group);
         mPlacePicker = findViewById(R.id.place_picker);
         // Retrieve the TextViews that will display details and attributions of the selected place.
@@ -238,30 +239,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        mCreateGroup.setOnClickListener(new View.OnClickListener() {
+        mClearSelectedPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mSearchMarkerDetail != null) {
-                    Bundle args = new Bundle();
-                    final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
-                    final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
-                    final String PlaceName = mSearchMarkerDetail.getName();
-                    args.putString(PLACENAME, PlaceName);
-                    args.putDouble(LONGTITUDE, Longtitude);
-                    args.putDouble(LATITUDE, Latitude);
-
-
-                    FragmentManager manager = getSupportFragmentManager();
-                    MessageFragment dialog = new MessageFragment();
-                    dialog.setArguments(args);
-                    dialog.show(manager, "MessageDialog");
-
-                    Log.i(TAG, "show the dialog");
-
-                } else {
-                    Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
-                }
-
+                mSearchMarkerDetail = null;
+                mMeetPlaceDetail = null;
             }
         });
 
@@ -307,14 +289,18 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
-                mSearchMarkerDetail = null;
                 if (!marker.getTitle().equals(WALKING_GROUP)){
                     if (mPlaceDetailsTextList != null){
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++){
                             try{
                                 if (marker.equals(mSearchMarker.get(i))){
-                                    mSearchMarkerDetail = mPlaceDetailsTextList.get(i);
-                                    break;
+                                    if (mSearchMarkerDetail == null) {
+                                        mSearchMarkerDetail = mPlaceDetailsTextList.get(i);
+                                        break;
+                                    }
+                                    else {
+                                        mMeetPlaceDetail = mPlaceDetailsTextList.get(i);
+                                    }
                                 }
                             }
                             catch (Exception e){
@@ -323,6 +309,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
                     }
                     if (mSearchMarkerDetail != null) {
+                        if (mMeetPlaceDetail != null) {
+                            Toast.makeText(GoogleMapsActivity.this, "Please delect the meeting place!", Toast.LENGTH_SHORT).show();
+                        }else{
                         Bundle args = new Bundle();
                         final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                         final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
@@ -338,6 +327,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         dialog.show(manager, "MessageDialog");
 
                         Log.i(TAG, "show the dialog");
+                        }
 
                     } else {
                         Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();

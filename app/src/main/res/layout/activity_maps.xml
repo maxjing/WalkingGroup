@@ -115,5 +115,4 @@
         android:src="@drawable/ic_search_group"
         tools:ignore="ContentDescription" />
 
-
 </RelativeLayout>
