@@ -190,8 +190,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         Log.d(TAG, "init: initializing");
 
-        Call<List<Group>> caller = proxy.getGroups();
-        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
