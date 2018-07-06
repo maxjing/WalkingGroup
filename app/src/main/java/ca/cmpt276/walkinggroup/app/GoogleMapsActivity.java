@@ -146,8 +146,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         userId = dataToGet.getLong("userId",0);
 
-        Call<List<Group>> caller = proxy.getGroups();
-        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+
 
 
         getLocationPermission();
@@ -177,6 +176,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
         }
+        walkingGroup();
 
     }
 
@@ -191,7 +191,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
     private void init() {
-        walkingGroup();
+        Call<List<Group>> caller = proxy.getGroups();
+        ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+
         Log.d(TAG, "init: initializing");
 
         mGeoDataClient = Places.getGeoDataClient(this, null);
@@ -419,6 +421,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         Log.d(TAG, "getDeviceLocation: getting the current devices location");
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
+
         try {
             if (mLocationPermissionsGranted) {
                 Task location = mFusedLocationProviderClient.getLastLocation();
@@ -427,11 +430,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     public void onComplete(@NonNull Task task) {
                         if (task.isSuccessful()) {
 
+
                             Log.d(TAG, "on Complete: Found Location!");
                             Location currentLocation = (Location) task.getResult();
+                            if(currentLocation != null) {
 
-                            moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");  // move to the device location and zoom
-                        } else {
+                                moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()), DEFAULT_ZOOM, "My Location");
+                                // move to the device location and zoom
+                            }
+                        }
+                        else {
                             Log.d(TAG, "onComplete: current location is null");
                             Toast.makeText(GoogleMapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
                         }
