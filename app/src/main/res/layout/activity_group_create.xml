@@ -94,12 +94,12 @@
             tools:layout_editor_absoluteX="14dp"
             tools:layout_editor_absoluteY="194dp" />
 
-        <EditText
+        <TextView
             android:id="@+id/editMeetPlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:width="200dp"
-            android:background="@drawable/background_edittext"
+            android:textSize="18sp"
             android:ems="10"
             android:textColor="#FFF"
             tools:layout_editor_absoluteX="179dp"
