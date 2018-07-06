@@ -13,6 +13,9 @@ import android.widget.Toast;
 
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.LATITUDE;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.LONGTITUDE;
+import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETINGPLACE;
+import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETLAT;
+import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETLNG;
 import static ca.cmpt276.walkinggroup.app.GroupCreateActivity.PLACENAME;
 
 public class MessageFragment extends AppCompatDialogFragment {
@@ -27,6 +30,10 @@ public class MessageFragment extends AppCompatDialogFragment {
         Double Longtitude = mArgs.getDouble(LONGTITUDE, 0);
         String PlaceName = mArgs.getString(PLACENAME, "");
 
+        Double meetLat = mArgs.getDouble(MEETLAT, 0);
+        Double meetLng = mArgs.getDouble(MEETLNG, 0);
+        String meetingPlace = mArgs.getString(MEETINGPLACE);
+
         // Create a button listener
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
             @Override
@@ -40,6 +47,9 @@ public class MessageFragment extends AppCompatDialogFragment {
                             intentToCreate.putExtra(LATITUDE, Latitude);
                             intentToCreate.putExtra(LONGTITUDE, Longtitude);
                             intentToCreate.putExtra(PLACENAME, PlaceName);
+                            intentToCreate.putExtra(MEETLAT, meetLat);
+                            intentToCreate.putExtra(MEETLNG, meetLng);
+                            intentToCreate.putExtra(MEETINGPLACE, meetingPlace);
 
                             startActivity(intentToCreate);
                         } catch (Exception e) {

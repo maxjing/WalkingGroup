@@ -107,6 +107,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String USER_JOIN = "userId";
     public static final String MEETINGPLACE = "meetingPlace";
     public static final String GROUP_DES = "groupDescription";
+    public static final String MEETLAT = "meetLat";
+    public static final String MEETLNG = "meetLng";
 
     //latlnt data
     private String token;
@@ -319,9 +321,15 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                             final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
                             final String PlaceName = mSearchMarkerDetail.getName();
+                            final double meetLat = mMeetPlaceDetail.getLatLng().latitude;
+                            final double meetLng = mMeetPlaceDetail.getLatLng().longitude;
+                            final String meetName = mMeetPlaceDetail.getName();
                             args.putString(PLACENAME, PlaceName);
                             args.putDouble(LONGTITUDE, Longtitude);
                             args.putDouble(LATITUDE, Latitude);
+                            args.putString(MEETINGPLACE, meetName);
+                            args.putDouble(MEETLAT, meetLat);
+                            args.putDouble(MEETLNG, meetLng);
 
 
                             FragmentManager manager = getSupportFragmentManager();
