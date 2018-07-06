@@ -10,19 +10,11 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
-import java.util.List;
-
-import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
-import retrofit2.Call;
 
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.JOINGROUP;
-import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETINGPLACE;
-import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
-import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.USER_JOIN;
 
 public class JoinGroupFragment extends AppCompatDialogFragment{
     private WGServerProxy proxy;
@@ -38,7 +30,6 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
         Bundle mArgs = getArguments();
 
         long selectedID = mArgs.getLong(JOINGROUP);
-        long userId = mArgs.getLong(USER_JOIN);
         groupDescription = mArgs.getString(GROUP_DES);
 
 
@@ -53,24 +44,12 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
                 Log.i("TAG", "You click the dialog button");
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        Call<User> caller = proxy.getUserById(userId);
-                        ProxyBuilder.callProxy(getActivity(), caller, returnedUser -> response(returnedUser));
+                        Intent intent = JoinGroupActivity.makeIntent(getContext(),selectedID);
+                        startActivity(intent);
                         break;
-                    case DialogInterface.BUTTON_NEUTRAL:
-                        Intent intenttomonitoring = MonitoringActivity.makeIntent(getContext(),selectedID);
-                        startActivity(intenttomonitoring);
-
                     case DialogInterface.BUTTON_NEGATIVE:
                         break;
                 }
-            }
-
-            private void response(User returnedUser) {
-                Call<List<User>>  caller = proxy.addGroupMember(selectedID,returnedUser);
-                ProxyBuilder.callProxy(getActivity(), caller, returnedList -> responseForJoining(returnedList));
-            }
-
-            private void responseForJoining(List<User> returnedList) {
             }
         };
         // Build the alert dialog
@@ -79,10 +58,7 @@ public class JoinGroupFragment extends AppCompatDialogFragment{
                 .setView(v)
                 .setMessage(groupDescription)
                 .setPositiveButton(android.R.string.ok, listener)
-                .setNeutralButton("Join Child",listener)
                 .setNegativeButton(android.R.string.cancel, listener)
                 .create();
-
-
     }
 }

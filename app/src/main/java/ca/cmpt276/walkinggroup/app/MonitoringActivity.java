@@ -89,6 +89,7 @@ public class MonitoringActivity extends AppCompatActivity {
                     Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedUser -> responsejoin(returnedUser));
                     //Call<Void> join = proxy.addGroupMember(groupId,monitorsUsers.get(position).getId())
+                    finish();
                 }
 
             }
@@ -113,7 +114,7 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void responseForJoining(List<User> returnedList) {
-        finish();
+       // finish();
     }
 
     private void responseChild(User returnedChild) {
