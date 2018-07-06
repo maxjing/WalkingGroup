@@ -73,7 +73,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<PlaceInfo> mPlaceDetailsTextList = new ArrayList<>();
     private List<Marker> mSearchMarker = new ArrayList<>();
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40, -168), new LatLng(71, 136)
+            new LatLng(-34.041458, 150.790100), new LatLng(-33.682247, 151.383362)
     );
 
     //vars
