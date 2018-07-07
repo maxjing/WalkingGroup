@@ -21,6 +21,11 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Show the list of users who they monitor.
+ * Be able to click to remove them or join them in the selected group based on which previous activity is.
+ */
+
 public class MonitoringActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_Monitoring = 01;
@@ -73,22 +78,15 @@ public class MonitoringActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = getIntent();
-//                groupId = intent.getLongExtra(GROUP_ID_MONITORING,0);
-//                TextView tv = (TextView) findViewById(R.id.txtClick);
-                //if(source.equals("main")){
                 if(groupId == 0){
-                    //tv.setText(R.string.click_from_main);
                     Call<Void> remove = proxy.removeFromMonitorsUsers(userId, monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this, remove, returnedUser -> responseRemove());
                     Call<User> caller = proxy.getUserByEmail(user.getEmail());
                     ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
                 }
                 else{
-                    //tv.setText(R.string.click_for_join);
                     Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedUser -> responsejoin(returnedUser));
-                    //Call<Void> join = proxy.addGroupMember(groupId,monitorsUsers.get(position).getId())
                     finish();
                 }
 
@@ -100,8 +98,6 @@ public class MonitoringActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Call<User> caller = proxy.getUserById(monitorsUsers.get(position).getId());
                 ProxyBuilder.callProxy(MonitoringActivity.this,caller,returnedChild -> responseChild(returnedChild));
-//                Intent intent = GroupActivity.makeChildIntent(MonitoringActivity.this,);
-//                startActivity(intent);
                 return true;
             }
         });
@@ -114,7 +110,6 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void responseForJoining(List<User> returnedList) {
-       // finish();
     }
 
     private void responseChild(User returnedChild) {
