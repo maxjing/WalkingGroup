@@ -37,6 +37,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -399,7 +400,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
                     }
                     if (markerID != 0) {
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM));
+                        moveCamera(position, 10f, MEETING_PLACE);
                         Toast.makeText(GoogleMapsActivity.this, "Press yellow markers to join the group.", Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -514,7 +515,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         // walkingGroup();
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + " , lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
-        if (title != "My Location") {
+        if (!title.equals("My Location") && !title.equals(MEETING_PLACE)) {
             MarkerOptions options = new MarkerOptions()
                     .position(latLng)
                     .title(title)
