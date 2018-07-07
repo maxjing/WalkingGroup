@@ -69,7 +69,7 @@
     <string name="different_place">Meeting Place should be different with End Place</string>
     <string name="clear_selected_place">To clear selected places, press pencil button.</string>
     <string name="create_group_select">To create a group, please select a place specific first</string>
-    <string name="yellow_marker">Press yellow markers to join the group.</string>
+    <string name="yellow_marker">Start from yellow maker,Press yellow markers to join the group.</string>
     <string name="unable_get_location">unable to get current location</string>
     <string name="red_blue_marker">To create the group click the red marker, to join the group, press the blue marker.</string>
     <string name="map_is_ready">Map is Ready</string>
