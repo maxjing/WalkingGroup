@@ -15,6 +15,9 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Add an existing user to the lists of who they monitor and whom monitors them.
+ */
 public class AddUserActivity extends AppCompatActivity {
 
     private static final String EXTRA_FLAG = "ca.cmpt276.walkinggroup.app.AddUserActivity - FLAG";

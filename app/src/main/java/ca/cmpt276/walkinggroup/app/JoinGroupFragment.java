@@ -16,6 +16,9 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.JOINGROUP;
 
+/**
+ * Show a dialog to make sure that the user select the correct group he/she wants to join themselves of their children..
+ */
 public class JoinGroupFragment extends AppCompatDialogFragment{
     private WGServerProxy proxy;
     private String token;

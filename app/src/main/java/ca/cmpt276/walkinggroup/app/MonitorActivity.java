@@ -20,6 +20,9 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Show the list of users whom monitors them.
+ */
 public class MonitorActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_Monitored = 02;
