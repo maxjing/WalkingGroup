@@ -1,4 +1,4 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.app.Adapter;
 
 import android.content.Context;
 import android.location.Location;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
+
+import ca.cmpt276.walkinggroup.app.R;
 
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 

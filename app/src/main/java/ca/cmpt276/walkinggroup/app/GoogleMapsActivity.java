@@ -52,6 +52,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.Adapter.CustomInfoWindowAdapter;
+import ca.cmpt276.walkinggroup.app.Adapter.PlaceAutocompleteAdapter;
+import ca.cmpt276.walkinggroup.app.DialogFragment.JoinGroupFragment;
+import ca.cmpt276.walkinggroup.app.DialogFragment.MessageFragment;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.PlaceInfo;
