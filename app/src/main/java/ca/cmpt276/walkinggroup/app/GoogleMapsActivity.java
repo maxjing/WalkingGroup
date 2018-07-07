@@ -311,9 +311,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
-               /* for (int i = 0; i < mMeetGroupMarkerList.size(); i++){
+                for (int i = 0; i < mMeetGroupMarkerList.size(); i++){
                     mMeetGroupMarkerList.get(i).setVisible(false);
-                }*/
+                }
                 if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE)) {
                     if (mPlaceDetailsTextList != null) {
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++) {
@@ -381,7 +381,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         FragmentManager manager = getSupportFragmentManager();
                         JoinGroupFragment dialog = new JoinGroupFragment();
                         dialog.setArguments(args);
-                        dialog.show(manager, "MessageDialog");
+                        dialog.show(manager, "MessageDialog");;
                     }else {
                         for (int i = 0; i < mMarkerList.size(); i++) {
                             try {
