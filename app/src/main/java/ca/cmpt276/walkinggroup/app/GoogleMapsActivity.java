@@ -297,9 +297,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                 }
                 if (flag) {
-                    Toast.makeText(GoogleMapsActivity.this, "Show Walking Groups.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoogleMapsActivity.this, R.string.show_walking_groups, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(GoogleMapsActivity.this, "Hide Walking Groups.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoogleMapsActivity.this, R.string.hide_walking_groups, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -345,14 +345,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (mSearchMarkerDetail != null) {
                         if (mMeetPlaceDetail == null) {
-                            Toast.makeText(GoogleMapsActivity.this, "Please select the meeting place! To clear the selected places, press pencil button", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, R.string.select_meet_place, Toast.LENGTH_SHORT).show();
                         }
                         else if(mSearchMarkerDetail == mMeetPlaceDetail) {
-                            Toast.makeText(GoogleMapsActivity.this, "Meeting Place should be different with End Place", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, R.string.different_place, Toast.LENGTH_SHORT).show();
                         }
 
                         else {
-                            Toast.makeText(GoogleMapsActivity.this, "To clear selected places, press pencil button.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, R.string.clear_selected_place, Toast.LENGTH_SHORT).show();
                             Bundle args = new Bundle();
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                             final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
@@ -379,7 +379,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
 
                     } else {
-                        Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
                     if (marker.getTitle().equals(MEETING_PLACE) && position != null){
@@ -412,7 +412,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (markerID != 0) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10f));
-                        Toast.makeText(GoogleMapsActivity.this, "Press yellow markers to join the group.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GoogleMapsActivity.this, R.string.yellow_marker, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -479,7 +479,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             }
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(GoogleMapsActivity.this, "unable to get current location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, R.string.unable_get_location, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -517,7 +517,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mSearchMarker.add(mMap.addMarker(new MarkerOptions().position(latLng)));
         }
         Toast.makeText(GoogleMapsActivity.this,
-                "To create the group click the red marker, to join the group, press the blue marker.",
+                R.string.red_blue_marker,
                 Toast.LENGTH_LONG).show();
         hideSoftKeyboard();
     }
@@ -632,7 +632,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(this, "Map is Ready", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.map_is_ready, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "OnMapReady: Map is Ready");
         mMap = googleMap;
 
