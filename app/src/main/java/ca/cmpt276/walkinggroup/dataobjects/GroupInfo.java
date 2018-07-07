@@ -8,7 +8,7 @@ public class GroupInfo {
     private LatLng latLng;
     private String Des;
     private Long ID;
-    private String meetPlace;
+
 
     public GroupInfo() {}
     public GroupInfo(LatLng latLng, String des, Long ID) {

@@ -117,6 +117,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<Group> groupList;
     private Double[] latitudes;
     private Double[] longtitudes;
+    private Double[] meetlat;
+    private Double[] meetlng;
     private String[] groupDes;
     private Long[] groupId;
     private String[] meetPlace;
@@ -162,16 +164,24 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         groupDes = new String[groupList.size()];
         groupId = new Long[groupList.size()];
         meetPlace = new String[groupList.size()];
+        meetlat = new Double[groupList.size()];
+        meetlng = new Double[groupList.size()];
 
         for (int i = 0; i < groupList.size(); i++) {
             latitudes[i] = groupList.get(i).getRouteLatArray().get(0);
             longtitudes[i] = groupList.get(i).getRouteLngArray().get(0);
+
+            meetlat[i] = groupList.get(i).getRouteLatArray().get(1);
+            meetlng[i] = groupList.get(i).getRouteLngArray().get(1);
+
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
-//            meetPlace[i] = groupList.get(i).getMessages().get(0);
+
+
         }
         for (int i = 0; i < latitudes.length; i++) {
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
+
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
             mMeetingGroupInfoList.add(new GroupInfo());
         }
