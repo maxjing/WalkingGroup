@@ -34,10 +34,22 @@
     <ListView
         android:id="@+id/listView_Monitored"
         android:layout_width="368dp"
-        android:layout_height="482dp"
+        android:layout_height="438dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtMonitored" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/click_to_stop_being_monitored"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView_Monitored" />
 
 </android.support.constraint.ConstraintLayout>

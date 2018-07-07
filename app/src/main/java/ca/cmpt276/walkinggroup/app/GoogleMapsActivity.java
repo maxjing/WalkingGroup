@@ -373,7 +373,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             FragmentManager manager = getSupportFragmentManager();
                             MessageFragment dialog = new MessageFragment();
                             dialog.setArguments(args);
-                            dialog.show(manager, "MessageDialog");
+                            dialog.show(manager, getString(R.string.message_dialog));
 
                             Log.i(TAG, "show the dialog");
                         }
@@ -393,7 +393,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         FragmentManager manager = getSupportFragmentManager();
                         JoinGroupFragment dialog = new JoinGroupFragment();
                         dialog.setArguments(args);
-                        dialog.show(manager, "MessageDialog");;
+                        dialog.show(manager, getString(R.string.message_dialog));;
                     }else {
                         for (int i = 0; i < mMarkerList.size(); i++) {
                             try {

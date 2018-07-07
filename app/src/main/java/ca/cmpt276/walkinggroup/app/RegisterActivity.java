@@ -85,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     private void response(User user) {
-        notifyUserViaLogAndToast("Server replied with user: " + user.toString());
+        notifyUserViaLogAndToast(getString(R.string.replied)+" " + user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
         user.setId(user.getId());
