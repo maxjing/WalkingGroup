@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }else {
-            Toast.makeText(this,"We can't make map requests",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.cant_make_map,Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor PrefEditor = dataToSave.edit();
                 PrefEditor.putString("userToken","");
                 PrefEditor.apply();
-                Toast.makeText(MainActivity.this,"Log out success",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, R.string.log_out_success,Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                 startActivity(intentToLogin);
                 finish();

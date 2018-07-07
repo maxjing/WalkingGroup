@@ -95,7 +95,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void responseGroup_leader(Group returnedGroup) {
         leadID.add(returnedGroup.getId());
-        groupsLeaderDes.add("Group - " + returnedGroup.getGroupDescription());
+        groupsLeaderDes.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription());
         if(leadID.size() == groupsLeader.size()){
             populateLeader();
         }
@@ -138,7 +138,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private void responseGroup_member(Group returnedGroup) {
         memberID.add(returnedGroup.getId());
-        groupsMemberDes.add("Group - " + returnedGroup.getGroupDescription());
+        groupsMemberDes.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription());
         if(memberID.size() == groupsMember.size()){
             populateMember();
         }
@@ -157,7 +157,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
-                Toast.makeText(GroupActivity.this, "Leave the group Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
             }
         });
     }

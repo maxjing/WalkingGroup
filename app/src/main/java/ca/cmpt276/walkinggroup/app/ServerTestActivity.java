@@ -86,7 +86,7 @@ public class ServerTestActivity extends AppCompatActivity {
         });
     }
     private void response(User user) {
-        notifyUserViaLogAndToast("Server replied with user: " + user.toString());
+        notifyUserViaLogAndToast(getString(R.string.replied)+" "+ user.toString());
         userId = user.getId();
         userEmail = user.getEmail();
     }
@@ -144,7 +144,7 @@ public class ServerTestActivity extends AppCompatActivity {
     }
 
     private void response(List<User> returnedUsers) {
-        notifyUserViaLogAndToast("Got list of " + returnedUsers.size() + " users! See logcat.");
+        notifyUserViaLogAndToast(getString(R.string.list) +" "+ returnedUsers.size() + " "+getString(R.string.logcat));
         Log.w(TAG, "All Users:");
         for (User user : returnedUsers) {
             Log.w(TAG, "    User: " + user.toString());
