@@ -22,8 +22,11 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 /**
- * As a leader, the user can view the selected group's description and the list of members.
+ * View the selected group's description and members.
+ * When the group is led by the user logged in, the user is able to remove members and delete the group when there is no member.
+ * When the group is led by whom the user monitors, the user could only see the information.
  */
+
 public class GroupInfoActivity extends AppCompatActivity {
 
     public static final String INFO_GROUPID = "ca.cmpt276.walkinggroup.app - GroupInfo - GroupId";

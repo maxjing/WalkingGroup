@@ -16,8 +16,10 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 /**
- * Add an existing user to the lists of who they monitor and whom monitors them.
+ * Add an existing user by entering a specific email address to the lists of who they monitor and whom monitors them.
+ * Be able to return back to the previous activity by clicking CANCEL button.
  */
+
 public class AddUserActivity extends AppCompatActivity {
 
     private static final String EXTRA_FLAG = "ca.cmpt276.walkinggroup.app.AddUserActivity - FLAG";

@@ -16,8 +16,9 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 /**
- * Ask the user who wants to join the selected walking group
+ * Ask the user who wants to join the selected walking group.
  */
+
 public class JoinGroupActivity extends AppCompatActivity {
 
     public static final String GROUPID = "GROUPID";

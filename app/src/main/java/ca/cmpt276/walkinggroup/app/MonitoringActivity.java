@@ -23,7 +23,9 @@ import retrofit2.Call;
 
 /**
  * Show the list of users who they monitor.
- * Be able to click to remove them or join them in the selected group based on which previous activity is.
+ * If the previous activity is MainActivity, add (jump to AddUserActivity) or remove (click the list) the users whom they monitor.
+ * If the previous activity is JoinGroupActivity, join the selected usesr in the selected group.
+ * Be able to long click the list to view the users' groups.
  */
 
 public class MonitoringActivity extends AppCompatActivity {

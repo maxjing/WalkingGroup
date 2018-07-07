@@ -22,7 +22,9 @@ import retrofit2.Call;
 
 /**
  * Show the list of users whom monitors them.
+ * Be able to add (jump to AddUserActivity) or remove (click the list) the users who monitors them.
  */
+
 public class MonitorActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_Monitored = 02;

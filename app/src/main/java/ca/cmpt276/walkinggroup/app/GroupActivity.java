@@ -23,10 +23,9 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 /**
- * Show lists of groups the user as a leader or a member.
- * The lists may belong to the user who logged in or whom they monitor.
- * Be able to click to view group information if the user or whom they monitor is a leader.
- * Be able to click to leave the group if the user or whom they monitor is a member.
+ * List the groups the user joined as a leader or a member.
+ * Be able to click the list of groups to view group information if the user is a leader.
+ * Be able to click the list of groups to leave the group if the user is a member.
  */
 
 public class GroupActivity extends AppCompatActivity {
