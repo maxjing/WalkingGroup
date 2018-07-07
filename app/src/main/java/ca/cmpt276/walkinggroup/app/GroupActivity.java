@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,6 +33,10 @@ public class GroupActivity extends AppCompatActivity {
     private User user;
     private List<Group> groupsMember;
     private List<Group> groupsLeader;
+    private List<String> groupsLeaderDes = new ArrayList<>();
+    private List<Long> leadID = new ArrayList<>();
+    private List<Long> memberID = new ArrayList<>();
+    private List<String> groupsMemberDes = new ArrayList<>();
 
     private Long userId;
     private Long childId;
@@ -57,10 +59,9 @@ public class GroupActivity extends AppCompatActivity {
             userId = childId;
         }
         Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> response(returnedUser));
-        groupsMember = new ArrayList<>();
-        groupsLeader = new ArrayList<>();
-
+        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
+        Call<User> caller_m = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
 
         registerClickCallback_Leader();
         registerClickCallback_Member();
@@ -68,63 +69,36 @@ public class GroupActivity extends AppCompatActivity {
 
     }
 
-    private void registerClickCallback_Member() {
-        ListView list = (ListView) findViewById(R.id.list_member);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle args = new Bundle();
-
-                args.putLong(GROUP_REMOVE, groupsMember.get(position).getId());
-                args.putLong(USER_REMOVE, userId);
-                args.putInt(POSITION,position);
-               // args.putStringArray(GROUPS_MEMBER,groupsMemberData);
-
-                android.support.v4.app.FragmentManager manager = getSupportFragmentManager();
-                RemoveMessage dialog = new RemoveMessage();
-                dialog.setArguments(args);
-                dialog.show(manager, "MessageDialog");
-            }
-        });
-
-    }
-
-
-    private void response(User user) {
-        groupsMember = user.getMemberOfGroups();
+    private void responseL(User user) {
         groupsLeader = user.getLeadsGroups();
         try {
-            String[] groupsLeaderData = new String[groupsLeader.size()];
-            for (int i = 0; i < groupsLeader.size(); i++) {
-                groupsLeaderData[i] = "Group  - " + groupsLeader.get(i).getId();
+            groupsLeaderDes.clear();
+            leadID.clear();
+            if(groupsLeader.size() > 0){
+                for(int i = 0; i < groupsLeader.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groupsLeader.get(i).getId());
+                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> responseGroup_leader(returnedGroup));
+                }
+            }else{
+                populateLeader();
             }
-            ArrayAdapter<String> adapterLead = new ArrayAdapter<String>(this, R.layout.lead, groupsLeaderData);
-            ListView listLead = (ListView) findViewById(R.id.list_leader);
-            listLead.setAdapter(adapterLead);
+        } catch (Exception e) {
 
         }
-            catch(Exception e){
+    }
 
-            }
-
-        try{
-
-            String[] groupsMemberData = new String[groupsMember.size()];
-            for (int i = 0; i < groupsMember.size(); i++) {
-                groupsMemberData[i] = "Group  - " + groupsMember.get(i).getId();
-            }
-
-
-
-            ArrayAdapter<String> adapterMember = new ArrayAdapter<String>(this, R.layout.member, groupsMemberData);
-            ListView listMember = (ListView) findViewById(R.id.list_member);
-            listMember.setAdapter(adapterMember);
-
-        }catch(Exception e){
-
+    private void responseGroup_leader(Group returnedGroup) {
+        leadID.add(returnedGroup.getId());
+        groupsLeaderDes.add("Group - " + returnedGroup.getGroupDescription());
+        if(leadID.size() == groupsLeader.size()){
+            populateLeader();
         }
+    }
 
-
+    private void populateLeader() {
+        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.lead, groupsLeaderDes);
+        ListView listLeader = (ListView) findViewById(R.id.list_leader);
+        listLeader.setAdapter(adapterLeader);
     }
 
     private void registerClickCallback_Leader() {
@@ -132,13 +106,60 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,groupsLeader.get(position).getId());
+                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,leadID.get(position));
                 startActivityForResult(intent, REQUEST_CODE_DELETE);
             }
         });
     }
 
+    private void responseM(User user) {
+        groupsMember = user.getMemberOfGroups();
+        try {
+            groupsMemberDes.clear();
+            memberID.clear();
+            if(groupsMember.size() > 0){
+                for(int i = 0; i < groupsMember.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groupsMember.get(i).getId());
+                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedGroup -> responseGroup_member(returnedGroup));
+                }
+            }else {
+                populateMember();
+            }
+        } catch (Exception e) {
 
+        }
+    }
+
+    private void responseGroup_member(Group returnedGroup) {
+        memberID.add(returnedGroup.getId());
+        groupsMemberDes.add("Group - " + returnedGroup.getGroupDescription());
+        if(memberID.size() == groupsMember.size()){
+            populateMember();
+        }
+    }
+
+    private void populateMember() {
+        ArrayAdapter<String> adapterMember = new ArrayAdapter<>(this, R.layout.member, groupsMemberDes);
+        ListView listLeader = (ListView) findViewById(R.id.list_member);
+        listLeader.setAdapter(adapterMember);
+    }
+
+    private void registerClickCallback_Member() {
+        ListView list = (ListView) findViewById(R.id.list_member);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
+                ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
+                Toast.makeText(GroupActivity.this, "Leave the group Successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void responseForRemove() {
+        Call<User> caller_m = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
+    }
 
     public static Intent makeIntent(Context context){
         return new Intent(context, GroupActivity.class);
@@ -159,7 +180,7 @@ public class GroupActivity extends AppCompatActivity {
                     proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
                     user = User.getInstance();
                     Call<User> caller = proxy.getUserByEmail(user.getEmail());
-                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> response(returnedUser));
+                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
                 }
         }
     }
