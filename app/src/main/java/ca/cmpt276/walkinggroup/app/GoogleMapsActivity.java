@@ -93,6 +93,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<LatLng> latLngList = new ArrayList<>();
     private List<Marker> mMarkerList = new ArrayList<>();
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
+    private List<GroupInfo> mMeetingGroupInfoList = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText, mSearchMeetingPlace;
@@ -172,6 +173,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         for (int i = 0; i < latitudes.length; i++) {
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
+            mMeetingGroupInfoList.add(new GroupInfo());
         }
         walkingGroup();
 
@@ -317,6 +319,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
 
                         else {
+                            Toast.makeText(GoogleMapsActivity.this, "To clear selected places, press penseil button.", Toast.LENGTH_SHORT).show();
                             Bundle args = new Bundle();
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                             final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
