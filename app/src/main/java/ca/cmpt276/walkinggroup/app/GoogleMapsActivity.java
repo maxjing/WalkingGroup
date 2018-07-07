@@ -39,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -72,6 +73,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final float DEFAULT_ZOOM = 15f;
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String WALKING_GROUP = "Walking Group";
+    public static final String MEETING_PLACE = "Meeting Place";
     private PlaceInfo mPlaceDetailsText;
     private PlaceInfo mSearchMarkerDetail = null;
     private PlaceInfo mMeetPlaceDetail = null;
@@ -98,6 +100,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<Marker> mMarkerList = new ArrayList<>();
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
     private List<GroupInfo> mMeetingGroupInfoList = new ArrayList<>();
+    private List<Marker> mMeetGroupMarkerList = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText, mSearchMeetingPlace;
@@ -187,7 +190,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
 
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
-            mMeetingGroupInfoList.add(new GroupInfo());
+            mMeetingGroupInfoList.add(new GroupInfo(new LatLng(meetlat[i], meetlng[i]), groupDes[i], groupId[i]));
         }
         walkingGroup();
 
@@ -307,7 +310,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             @Override
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
-                if (!marker.getTitle().equals(WALKING_GROUP)) {
+                for (int i = 0; i < mMeetGroupMarkerList.size(); i++){
+                    mMeetGroupMarkerList.get(i).setVisible(false);
+                }
+                if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE)) {
                     if (mPlaceDetailsTextList != null) {
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++) {
                             try {
@@ -326,14 +332,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (mSearchMarkerDetail != null) {
                         if (mMeetPlaceDetail == null) {
-                            Toast.makeText(GoogleMapsActivity.this, "Please select the meeting place!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, "Please select the meeting place! To clear the selected places, press pencil button", Toast.LENGTH_SHORT).show();
                         }
                         else if(mSearchMarkerDetail == mMeetPlaceDetail) {
                             Toast.makeText(GoogleMapsActivity.this, "Meeting Place should be different with End Place", Toast.LENGTH_SHORT).show();
                         }
 
                         else {
-                            Toast.makeText(GoogleMapsActivity.this, "To clear selected places, press penseil button.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GoogleMapsActivity.this, "To clear selected places, press pencil button.", Toast.LENGTH_SHORT).show();
                             Bundle args = new Bundle();
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                             final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
@@ -363,20 +369,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         Toast.makeText(GoogleMapsActivity.this, "To create a group, please select a place specific first", Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
-                    for (int i = 0; i < mMarkerList.size(); i++) {
-                        try {
-                            if (marker.equals(mMarkerList.get(i))) {
-                                //handle click here
-                                markerID = mGroupInfoList.get(i).getID();
-                                groupDescription = mGroupInfoList.get(i).getDes();
-
-                                break;
-                            }
-                            markerID = 0;
-                        } catch (Exception e) {
-                        }
-                    }
-                    if (markerID != 0) {
+                    LatLng position = null;
+                    if (marker.getTitle().equals(MEETING_PLACE) && position != null){
+                        marker.setVisible(true);
                         Bundle args = new Bundle();
                         final long selectedID = markerID;
                         args.putLong(JOINGROUP, selectedID);
@@ -387,6 +382,24 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         JoinGroupFragment dialog = new JoinGroupFragment();
                         dialog.setArguments(args);
                         dialog.show(manager, "MessageDialog");
+                    }else {
+                        for (int i = 0; i < mMarkerList.size(); i++) {
+                            try {
+                                if (marker.equals(mMarkerList.get(i))) {
+                                    //handle click here
+                                    markerID = mGroupInfoList.get(i).getID();
+                                    groupDescription = mGroupInfoList.get(i).getDes();
+                                    mMeetGroupMarkerList.get(i).setVisible(true);
+                                    position = mMeetingGroupInfoList.get(i).getLatLng();
+                                    break;
+                                }
+                                markerID = 0;
+                            } catch (Exception e) {
+                            }
+                        }
+                    }
+                    if (markerID != 0) {
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM));
                     }
                 }
                 return false;
@@ -525,9 +538,20 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     .title(WALKING_GROUP)
                     .snippet(snippet)
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+
+            MarkerOptions meetOptions = new MarkerOptions()
+                    .position(mMeetingGroupInfoList.get(i).getLatLng())
+                    .title(MEETING_PLACE)
+                    .snippet(snippet)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+
             Marker tempMarker = mMap.addMarker(options);
             tempMarker.setVisible(true);
             mMarkerList.add(tempMarker);
+
+            Marker tempMeeting = mMap.addMarker(meetOptions);
+            tempMeeting.setVisible(false);
+            mMeetGroupMarkerList.add(tempMeeting);
         }
     }
 
