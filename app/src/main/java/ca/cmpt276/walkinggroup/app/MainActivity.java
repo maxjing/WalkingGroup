@@ -20,6 +20,14 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Based button access to different activities
+ * Check if user login at first beginning
+ * logout button show after login only
+ */
+
+
+
 public class MainActivity extends AppCompatActivity {
     private String token;
     private String TAG = "MainActivity";

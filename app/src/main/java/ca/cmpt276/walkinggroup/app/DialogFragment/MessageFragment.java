@@ -1,4 +1,4 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.app.DialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -10,6 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
+
+import ca.cmpt276.walkinggroup.app.GroupCreateActivity;
+import ca.cmpt276.walkinggroup.app.R;
 
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.LATITUDE;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.LONGTITUDE;

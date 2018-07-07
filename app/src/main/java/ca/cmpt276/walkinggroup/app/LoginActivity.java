@@ -20,6 +20,12 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Handding login process by calling server
+ * Set useremail local for future use
+ * Set token for future user
+ */
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN";
 

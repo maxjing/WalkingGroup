@@ -22,6 +22,12 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+
+/**
+ * Jump from map, and fetch the intent from map including target and meet place latitude and longtitude
+ * Able to fetch both place name, not need to fill by typing, do this for users automatically
+ */
+
 public class GroupCreateActivity extends AppCompatActivity {
     private String token;
     private String TAG = "GroupCreateActivity";

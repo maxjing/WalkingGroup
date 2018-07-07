@@ -18,6 +18,10 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Handle Register, create new user, call server to established
+ * Able to back to login, if cancel pressed
+ */
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "Register";
@@ -87,7 +91,6 @@ public class RegisterActivity extends AppCompatActivity {
         user.setId(user.getId());
         Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
         startActivity(intent);
-        Toast.makeText(RegisterActivity.this, ""+userId, Toast.LENGTH_SHORT).show();
 
 
     }
