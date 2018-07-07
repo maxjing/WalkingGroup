@@ -322,11 +322,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override                                           // setting the click marker activity
             public boolean onMarkerClick(Marker marker) {
-                markerID = 0;
                 for (int i = 0; i < mMeetGroupMarkerList.size(); i++){ // hide all meeting place marker
                     mMeetGroupMarkerList.get(i).setVisible(false);
                 }
                 if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE)) {
+                    markerID = 0;
                     if (mPlaceDetailsTextList != null) {
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++) {
                             try {
@@ -382,7 +382,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         Toast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
-                    if (marker.getTitle().equals(MEETING_PLACE) && position != null){
+                    if (marker.getTitle().equals(MEETING_PLACE) && position != null ){
                         marker.setVisible(true);
                         Bundle args = new Bundle();
                         final long selectedID = markerID;
