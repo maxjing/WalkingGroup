@@ -396,6 +396,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (markerID != 0) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, DEFAULT_ZOOM));
+                        Toast.makeText(GoogleMapsActivity.this, "Press yellow markers to join the group.", Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
