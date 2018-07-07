@@ -4,6 +4,11 @@ import android.net.Uri;
 
 import com.google.android.gms.maps.model.LatLng;
 
+/**
+ * the customize data type to store information get from Place
+ * usually used as list
+ */
+
 public class PlaceInfo {
     private String name;
     private String address;

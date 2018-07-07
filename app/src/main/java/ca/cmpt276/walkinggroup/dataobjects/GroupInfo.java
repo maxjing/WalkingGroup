@@ -4,6 +4,11 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+/**
+ * a customize data type to store LatLng, Description, and group ID for walking group
+ * usually used as list
+ */
+
 public class GroupInfo {
     private LatLng latLng;
     private String Des;

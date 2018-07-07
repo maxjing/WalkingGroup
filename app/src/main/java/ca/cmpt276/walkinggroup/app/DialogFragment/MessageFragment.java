@@ -21,6 +21,10 @@ import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETLAT;
 import static ca.cmpt276.walkinggroup.app.GoogleMapsActivity.MEETLNG;
 import static ca.cmpt276.walkinggroup.app.GroupCreateActivity.PLACENAME;
 
+/**
+ * show a dialog make sure the user want to create a walking group.
+ */
+
 public class MessageFragment extends AppCompatDialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {

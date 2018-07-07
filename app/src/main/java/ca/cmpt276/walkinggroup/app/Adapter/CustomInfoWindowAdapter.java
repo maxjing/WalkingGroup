@@ -12,6 +12,12 @@ import com.google.android.gms.maps.model.Marker;
 
 import ca.cmpt276.walkinggroup.app.R;
 
+/**
+ * customize Info window to show marker's information
+ * can be hidden by information button on GoogleMap Activity
+ */
+
+
 public class CustomInfoWindowAdapter implements GoogleMap.InfoWindowAdapter {
 
     private final View mWindow;
