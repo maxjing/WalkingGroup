@@ -140,7 +140,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
 
-        mSearchText = findViewById(R.id.input_search);
+        mSearchText = findViewById(R.id.input_search);     // setting up
         mGps = findViewById(R.id.ic_gps);
         mInfo = findViewById(R.id.place_info);
         mClearSelectedPlace = findViewById(R.id.create_group);
@@ -165,7 +165,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     }
 
 
-    private void response(List<Group> groups) {
+    private void response(List<Group> groups) {   // get group info from lists
         groupList = groups;
         latitudes = new Double[groupList.size()];
         longtitudes = new Double[groupList.size()];
@@ -190,14 +190,16 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         for (int i = 0; i < latitudes.length; i++) {
 //            Toast.makeText(this, ""+meetPlace[i], Toast.LENGTH_SHORT).show();
 
+            // get the list for target place
             mGroupInfoList.add(new GroupInfo(new LatLng(latitudes[i], longtitudes[i]), groupDes[i], groupId[i]));
+            // get the list for meeting place
             mMeetingGroupInfoList.add(new GroupInfo(new LatLng(meetlat[i], meetlng[i]), groupDes[i], groupId[i]));
         }
-        walkingGroup();
+        walkingGroup(); // call walkingGroup function to show markers for group
 
     }
 
-    private void setUpClearButton() {
+    private void setUpClearButton() {  // clear the text in searching bar
         ImageView btn = findViewById(R.id.clear_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,7 +219,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mGeoDataClient = Places.getGeoDataClient(this, null);
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, LAT_LNG_BOUNDS, null);
 
-        mSearchText.setOnItemClickListener(mAutocompleteClickerListener);
+        mSearchText.setOnItemClickListener(mAutocompleteClickerListener);       // setting auto fill for search bar
 
         mSearchText.setAdapter(mPlaceAutocompleteAdapter);
 
@@ -236,7 +238,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        mGps.setOnClickListener(new View.OnClickListener() {
+        mGps.setOnClickListener(new View.OnClickListener() { // move camera and zoom to device location
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked gps icon");
@@ -244,14 +246,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
         });
 
-        mInfo.setOnClickListener(new View.OnClickListener() {
+        mInfo.setOnClickListener(new View.OnClickListener() { // hide or show Info Window
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: clicked place info");
                 try {
-                    if (mMarker.isInfoWindowShown()) {
+                    if (mMarker.isInfoWindowShown()) { // if window is open, hide
                         mMarker.hideInfoWindow();
-                    } else {
+                    } else { // if is close, show
                         Log.d(TAG, "onClick: place info: " + mPlaceDetailsText.toString());
                         mMarker.showInfoWindow();
                     }
@@ -263,14 +265,14 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         mClearSelectedPlace.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                mSearchMarkerDetail = null;
-                mMeetPlaceDetail = null;
+            public void onClick(View view) {    // clear the selected place.
+                mSearchMarkerDetail = null;     // clear the selected target place
+                mMeetPlaceDetail = null;        // clear the selected meeting place
             }
         });
 
         mShowWalkingGroups.setOnClickListener(new View.OnClickListener() {
-            @Override
+            @Override                                   // show or hide walking groups, the blue marker
             public void onClick(View view) {
                 boolean flag = false;
                 if (mMarkerList != null) {
@@ -293,12 +295,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         });
 
         mPlacePicker.setOnClickListener(new View.OnClickListener() {
-            @Override
+            @Override                               // pick the near place in the map
             public void onClick(View view) {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
                 try {
-                    startActivityForResult(builder.build(GoogleMapsActivity.this), PLACE_PICKER_REQUEST);
+                    startActivityForResult(builder.build(GoogleMapsActivity.this), PLACE_PICKER_REQUEST);  // go to place picker api
                 } catch (GooglePlayServicesRepairableException e) {
                     Log.e(TAG, "GooglePlayServicesRepairableException: " + e.getMessage());
                 } catch (GooglePlayServicesNotAvailableException e) {
@@ -308,10 +310,10 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         });
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
+            @Override                                           // setting the click marker activity
             public boolean onMarkerClick(Marker marker) {
                 markerID = 0;
-                for (int i = 0; i < mMeetGroupMarkerList.size(); i++){
+                for (int i = 0; i < mMeetGroupMarkerList.size(); i++){ // hide all meeting place marker
                     mMeetGroupMarkerList.get(i).setVisible(false);
                 }
                 if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE)) {
