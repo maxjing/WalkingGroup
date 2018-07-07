@@ -75,7 +75,6 @@ public interface WGServerProxy {
     @DELETE("/users/{id}/monitorsUsers/{childId}")
     Call<Void> removeFromMonitorsUsers(@Path("id") Long userId, @Path("childId") Long childId);
 
-
     // -----------------------------
     // Groups
     // -----------------------------
