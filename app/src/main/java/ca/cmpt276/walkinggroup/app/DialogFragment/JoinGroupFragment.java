@@ -1,4 +1,4 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.app.DialogFragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import ca.cmpt276.walkinggroup.app.JoinGroupActivity;
+import ca.cmpt276.walkinggroup.app.R;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 

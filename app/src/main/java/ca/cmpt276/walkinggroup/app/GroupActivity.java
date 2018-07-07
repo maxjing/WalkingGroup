@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +158,7 @@ public class GroupActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
+                Toast.makeText(GroupActivity.this, "Leave the group Successfully", Toast.LENGTH_SHORT).show();
             }
         });
     }

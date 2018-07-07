@@ -1,4 +1,4 @@
-package ca.cmpt276.walkinggroup.app;
+package ca.cmpt276.walkinggroup.app.Adapter;
 
 /*
  * Copyright (C) 2015 Google Inc. All Rights Reserved.
