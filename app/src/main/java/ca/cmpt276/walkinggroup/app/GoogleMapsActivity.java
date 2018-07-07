@@ -344,7 +344,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             args.putDouble(MEETLAT, meetLat);
                             args.putDouble(MEETLNG, meetLng);
 
-
+                            mSearchMarkerDetail = null;
+                            mMeetPlaceDetail = null;
 
                             FragmentManager manager = getSupportFragmentManager();
                             MessageFragment dialog = new MessageFragment();
