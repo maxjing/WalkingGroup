@@ -31,6 +31,8 @@ public interface WGServerProxy {
     @POST("/users/signup")
     Call<User> createUser(@Body User user);
 
+
+
     @POST("/login")
     Call<Void> login(@Body User userWithEmailAndPassword);
 
@@ -39,6 +41,9 @@ public interface WGServerProxy {
 
     @GET("/users/{id}")
     Call<User> getUserById(@Path("id") Long userId);
+
+    @POST("/users/{id}")
+    Call<User> editUserById(@Path("id") Long userId);
 
     @GET("/users/byEmail")
     Call<User> getUserByEmail(@Query("email") String email);
