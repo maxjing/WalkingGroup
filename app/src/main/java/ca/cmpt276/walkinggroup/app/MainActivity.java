@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setLogoutBtn();
         setMonitoringBtn();
         setMonitorBtn();
+        setMsgBtn();
 
         if (isServicesOK()){
             setMapButton();
@@ -190,5 +191,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setMsgBtn(){
+        Button btnGroup = (Button)findViewById(R.id.btnMsg);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        break;
+                    default:
+                        Intent intent = MessagesActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
+
+                }
+
+            }
+        });
+    }
+
 
 }
