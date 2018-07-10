@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiActivity;
 
+import ca.cmpt276.walkinggroup.app.Adapter.LocationService;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         if (isServicesOK()){
             setMapButton();
         }
+        startService(new Intent(this, LocationService.class));
     }
 
 

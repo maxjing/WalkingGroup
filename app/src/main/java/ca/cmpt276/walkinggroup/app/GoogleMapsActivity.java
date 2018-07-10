@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -52,6 +54,8 @@ import com.google.android.gms.tasks.Task;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.app.Adapter.CustomInfoWindowAdapter;
 import ca.cmpt276.walkinggroup.app.Adapter.PlaceAutocompleteAdapter;
@@ -172,8 +176,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
         getLocationPermission();
         setUpClearButton();
-    }
 
+    }
 
     private void response(List<Group> groups) {   // get group info from lists
         groupList = groups;
@@ -194,7 +198,6 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
             groupDes[i] = groupList.get(i).getGroupDescription();
             groupId[i] = groupList.get(i).getId();
-
 
         }
         for (int i = 0; i < latitudes.length; i++) {
@@ -278,6 +281,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             public void onClick(View view) {    // clear the selected place.
                 mSearchMarkerDetail = null;     // clear the selected target place
                 mMeetPlaceDetail = null;        // clear the selected meeting place
+
             }
         });
 
