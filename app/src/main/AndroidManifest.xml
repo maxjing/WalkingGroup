@@ -61,7 +61,8 @@
         <activity android:name=".GroupInfoActivity" />
         <activity android:name=".JoinGroupActivity" />
         <activity android:name=".UserInfoActivity" />
-        <activity android:name=".EditActivity"></activity>
+        <activity android:name=".EditActivity" />
+        <activity android:name=".ChildInfoActivity"></activity>
     </application>
 
 </manifest>

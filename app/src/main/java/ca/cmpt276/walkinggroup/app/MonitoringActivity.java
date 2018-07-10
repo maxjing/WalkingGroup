@@ -83,7 +83,7 @@ public class MonitoringActivity extends AppCompatActivity {
                 if(groupId == 0){
                     Call<Void> remove = proxy.removeFromMonitorsUsers(userId, monitorsUsers.get(position).getId());
                     ProxyBuilder.callProxy(MonitoringActivity.this, remove, returnedUser -> responseRemove());
-                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    Call<User> caller = proxy.getUserById(userId);
                     ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
                 }
                 else{
@@ -115,7 +115,7 @@ public class MonitoringActivity extends AppCompatActivity {
     }
 
     private void responseChild(User returnedChild) {
-        Intent intent = GroupActivity.makeChildIntent(MonitoringActivity.this,returnedChild.getId());
+        Intent intent = ChildInfoActivity.makeChildIntent(MonitoringActivity.this,returnedChild.getId());
         startActivity(intent);
     }
 
@@ -159,10 +159,16 @@ public class MonitoringActivity extends AppCompatActivity {
                     token = dataToGet.getString("userToken","");
                     proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
                     user = User.getInstance();
-                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
+                    Call<User> caller = proxy.getUserById(userId);
                     ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
                 }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateListView();
     }
 }
 
