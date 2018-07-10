@@ -82,4 +82,15 @@
     <string name="replied">Server replied with user:</string>
     <string name="list">Got list of</string>
     <string name="logcat">users! See logcat.</string>
+    <string name="user_information">User Information</string>
+    <string name="birth_year">Birth Year:</string>
+    <string name="birth_month">Birth Month:</string>
+    <string name="address">Address:</string>
+    <string name="cell_phone">Cell Phone:</string>
+    <string name="home_phone">Home Phone:</string>
+    <string name="grade">Grade:</string>
+    <string name="teacher_name">Teacher Name:</string>
+    <string name="emergency_contact_info">Emergency Contact Info:</string>
+    <string name="edit">Edit</string>
+    <string name="edit_user_information">Edit User Information</string>
 </resources>
