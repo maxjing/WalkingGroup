@@ -37,7 +37,6 @@ public class MessagesNewActivity extends AppCompatActivity {
         userId = dataToGet.getLong("userId", 0);
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesNewActivity.this, caller_user, returnedUser -> response(returnedUser));
-
         message = new Message();
         setSendToGroup();
         setSendToPLBtn();
