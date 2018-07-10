@@ -66,7 +66,7 @@ public class MonitorActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Call<Void> removeMonitor = proxy.removeFromMonitorsUsers(monitoredByUsers.get(position).getId(),userId);
                 ProxyBuilder.callProxy(MonitorActivity.this, removeMonitor, returnedUser -> responseRemove());
-                Call<User> caller = proxy.getUserById(userId);
+                Call<User> caller = proxy.getUserByEmail(user.getEmail());
                 ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
             }
         });
@@ -109,8 +109,7 @@ public class MonitorActivity extends AppCompatActivity {
                     token = dataToGet.getString("userToken","");
                     proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
                     user = User.getInstance();
-                    userId = dataToGet.getLong("userId", 0);
-                    Call<User> caller = proxy.getUserById(userId);
+                    Call<User> caller = proxy.getUserByEmail(user.getEmail());
                     ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
                 }
         }
