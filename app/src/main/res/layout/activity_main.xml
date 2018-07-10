@@ -105,6 +105,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
+
     <Button
         android:id="@+id/btnInfo"
         android:layout_width="wrap_content"
@@ -120,5 +121,6 @@
         app:layout_constraintStart_toEndOf="@+id/btnMonitor"
         app:layout_constraintTop_toBottomOf="@+id/btnLogout"
         app:layout_constraintVertical_bias="0.345" />
+
 
 </android.support.constraint.ConstraintLayout>
