@@ -63,6 +63,9 @@
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".EditActivity" />
         <activity android:name=".ChildInfoActivity"></activity>
+        <activity android:name=".JoinGroupActivity" />
+        <activity android:name=".MessagesActivity" />
+        <activity android:name=".MessagesNewActivity"></activity>
     </application>
 
 </manifest>
