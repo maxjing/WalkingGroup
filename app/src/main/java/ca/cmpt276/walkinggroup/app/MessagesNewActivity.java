@@ -41,6 +41,9 @@ public class MessagesNewActivity extends AppCompatActivity {
         setSendToGroup();
         setSendToPLBtn();
     }
+    private void response(User returnedUser) {
+        user = returnedUser;
+    }
 
 
 
@@ -91,11 +94,7 @@ public class MessagesNewActivity extends AppCompatActivity {
     private void response(List<Message> returnedMsg) {
 
     }
-    private void response(User returnedUser) {
 
-        user = returnedUser;
-
-    }
 
 
 

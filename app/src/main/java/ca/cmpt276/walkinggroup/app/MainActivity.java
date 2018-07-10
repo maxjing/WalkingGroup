@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiActivity;
 
+import ca.cmpt276.walkinggroup.app.Adapter.LocationService;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         user.setEmail(userEmail);
 
 
+
         if (token==""){
             btnLogout.setVisibility(View.GONE);
         }else{
@@ -61,32 +63,12 @@ public class MainActivity extends AppCompatActivity {
         setLogoutBtn();
         setMonitoringBtn();
         setMonitorBtn();
-        setInfoBtn();
         setMsgBtn();
 
         if (isServicesOK()){
             setMapButton();
         }
-    }
-
-    private void setInfoBtn() {
-        Button btnInfo = (Button)findViewById(R.id.btnInfo);
-        btnInfo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                switch (token){
-                    case "":
-                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
-                        startActivity(intentToLogin);
-                        break;
-                    default:
-                        Intent intentInfo = UserInfoActivity.makeIntent(MainActivity.this);
-                        startActivity(intentInfo);
-
-                }
-
-            }
-        });
+        startService(new Intent(this, LocationService.class));
     }
 
 

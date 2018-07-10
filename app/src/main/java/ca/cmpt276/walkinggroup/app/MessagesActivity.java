@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,7 +30,8 @@ public class MessagesActivity extends AppCompatActivity {
     private Long userId;
     private Message message;
     private User user;
-    private List<String> messagesList;
+    private List<String> readMsgList;
+    private List<String> unreadMsgList;
     private List<Message> messagesItem;
 
 
@@ -65,44 +67,65 @@ public class MessagesActivity extends AppCompatActivity {
         });
     }
 
-    private void populateMsg() {
-        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.messages, messagesList);
-        ListView listLeader = (ListView) findViewById(R.id.listView_Messages);
-        listLeader.setAdapter(adapterLeader);
+    private void populateMsgRead() {
+        ArrayAdapter<String> adapterRead = new ArrayAdapter<>(this, R.layout.messages_read, readMsgList);
+        ListView listRead = (ListView) findViewById(R.id.listView_Messages_read);
+        listRead.setAdapter(adapterRead);
     }
 
-
-
-
-
-
-    public static Intent makeIntent(Context context){
-        return new Intent(context, MessagesActivity.class);
+    private void populateMsgUnRead() {
+        ArrayAdapter<String> adapterUnread = new ArrayAdapter<>(this, R.layout.messages_unread, unreadMsgList);
+        ListView listUnRead = (ListView) findViewById(R.id.listView_Messages_unread);
+        listUnRead.setAdapter(adapterUnread);
+//        listUnRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
+//                ProxyBuilder.callProxy(MessagesActivity.this, caller, returned -> responseCickRead());
+//            }
+//        });
     }
 
     private void response(User returnedUser) {
         user = returnedUser;
 
-            Call<List<Message>> caller = proxy.getMessages(user.getId());
-            ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> response(returnedMsg));
+        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),false);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseRead(returnedMsg));
+        Call<List<Message>> caller_unread = proxy.getUnreadMessages(user.getId(),false);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseUnRead(returnedMsg));
 
 
     }
 
-    private void response(List<Message> returnedMsg){
-        messagesList = new ArrayList<>(returnedMsg.size());
+    private void responseRead(List<Message> returnedMsg){
+        readMsgList = new ArrayList<>(returnedMsg.size());
         try {
         for(int i = 0; i<returnedMsg.size();i++){
-            messagesList.add(returnedMsg.get(i).getText());
+            readMsgList.add(returnedMsg.get(i).getText());
         }
         } catch (Exception e) {
 
         }
 
-        populateMsg();
+        populateMsgRead();
     }
 
+    private void responseUnRead(List<Message> returnedMsg){
+        unreadMsgList = new ArrayList<>(returnedMsg.size());
+        try {
+            for(int i = 0; i<returnedMsg.size();i++){
+                unreadMsgList.add(returnedMsg.get(i).getText());
+            }
+        } catch (Exception e) {
 
+        }
+
+        populateMsgUnRead();
+    }
+
+    public static Intent makeIntent(Context context){
+        return new Intent(context, MessagesActivity.class);
+    }
 
 
 
