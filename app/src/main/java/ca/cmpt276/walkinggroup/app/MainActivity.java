@@ -62,12 +62,33 @@ public class MainActivity extends AppCompatActivity {
         setLogoutBtn();
         setMonitoringBtn();
         setMonitorBtn();
+        setInfoBtn();
         setMsgBtn();
 
         if (isServicesOK()){
             setMapButton();
         }
         startService(new Intent(this, LocationService.class));
+    }
+
+    private void setInfoBtn() {
+        Button btnInfo = (Button)findViewById(R.id.btnInfo);
+        btnInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                switch (token){
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        Intent intentInfo = UserInfoActivity.makeIntent(MainActivity.this);
+                        startActivity(intentInfo);
+
+                }
+
+            }
+        });
     }
 
 
