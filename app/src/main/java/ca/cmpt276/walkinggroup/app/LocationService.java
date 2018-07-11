@@ -72,6 +72,7 @@ public class LocationService extends Service {
 
                     gpsLocation.setLat(tempLat);
                     gpsLocation.setLng(tempLng);
+                    gpsLocation.setLatLng(new LatLng(tempLat, tempLng));
                     sendBroadcast(intent);
             }
 
