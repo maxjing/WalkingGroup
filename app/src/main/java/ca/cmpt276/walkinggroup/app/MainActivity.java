@@ -65,10 +65,23 @@ public class MainActivity extends AppCompatActivity {
         setMonitorBtn();
         setInfoBtn();
         setMsgBtn();
+        setLocationUpdate();
 
         if (isServicesOK()){
             setMapButton();
         }
+    }
+
+    private void setLocationUpdate() {
+        Button btnUpdate = findViewById(R.id.start_update_location);
+        Button btnStop = findViewById(R.id.stop_location_update);
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startService(new Intent(getApplicationContext(), LocationService.class));
+            }
+        });
     }
 
     private void setInfoBtn() {

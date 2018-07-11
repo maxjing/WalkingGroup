@@ -121,5 +121,35 @@
         app:layout_constraintHorizontal_bias="0.609"
         app:layout_constraintStart_toEndOf="@+id/btnMonitor" />
 
+    <Button
+        android:id="@+id/stop_location_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:width="110dp"
+        android:background="@drawable/background_button"
+        android:padding="10dp"
+        android:text="@string/stop_update"
+        android:textColor="#FFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_marginLeft="30dp" />
+
+    <Button
+        android:id="@+id/start_update_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="15dp"
+        android:width="110dp"
+        android:background="@drawable/background_button"
+        android:padding="10dp"
+        android:text="@string/start_update"
+        android:textColor="#FFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="MissingConstraints" />
+
 
 </android.support.constraint.ConstraintLayout>
