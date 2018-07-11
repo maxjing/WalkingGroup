@@ -5,7 +5,6 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
 
-
 /**
  * Store information about a GPS location of a user.
  *
@@ -19,11 +18,11 @@ public class GpsLocation {
     private Double lat;
     private Double lng;
 
-    public GpsLocation(Date timestamp, Double lat, Double lng) {
-        this.timestamp = timestamp;
-        this.lat = lat;
-        this.lng = lng;
-    }
+//    public GpsLocation(Date timestamp, Double lat, Double lng) {
+//        this.timestamp = timestamp;
+//        this.lat = lat;
+//        this.lng = lng;
+//    }
 
     public GpsLocation() {
 

@@ -110,13 +110,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void response(User user) {
-        userId = user.getId();
+    private void response(User returnedUser) {
+        userId = returnedUser.getId();
         savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
-
 
     }
 

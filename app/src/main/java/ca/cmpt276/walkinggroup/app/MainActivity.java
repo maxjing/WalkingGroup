@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         user.setEmail(userEmail);
 
 
+
         if (token == "") {
             btnLogout.setVisibility(View.GONE);
         } else {

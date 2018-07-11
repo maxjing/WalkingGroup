@@ -50,8 +50,6 @@ public class MessagesActivity extends AppCompatActivity {
         user = User.getInstance();
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
-
-
         setMsgBtn();
     }
 

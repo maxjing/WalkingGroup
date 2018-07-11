@@ -163,13 +163,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnMsg" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnPanic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_button"
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="10dp"
         android:text="Panic"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="317dp" />
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/location_Information"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMsg" />
 
 
 </android.support.constraint.ConstraintLayout>
