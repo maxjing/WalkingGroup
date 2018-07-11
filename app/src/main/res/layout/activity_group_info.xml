@@ -80,7 +80,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/click_member_infoActivity"
+        android:text=""
         android:textColor="#fff"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -101,11 +101,11 @@
         app:layout_constraintTop_toBottomOf="@+id/txtInstruction" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txt_Long_Inst"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="@string/long_click_to_view_users_parents"
+        android:text=""
         android:textColor="#fff"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"

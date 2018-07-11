@@ -80,6 +80,10 @@ public class GroupInfoActivity extends AppCompatActivity {
 
     private void registerClickCallback() {
         if(childId == 0){
+            TextView tv = (TextView) findViewById(R.id.txtInstruction);
+            tv.setText(R.string.click_member_infoActivity);
+            TextView tv_long = (TextView) findViewById(R.id.txt_Long_Inst);
+            tv_long.setText(R.string.long_click_to_view_users_parents);
             ListView list = (ListView) findViewById(R.id.list_group_member);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
