@@ -80,6 +80,7 @@ public class MonitorActivity extends AppCompatActivity {
             tv.setText(R.string.click_to_view_monitors_personal_information);
         }
         ListView list = (ListView) findViewById(R.id.listView_Monitored);
+       // ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
