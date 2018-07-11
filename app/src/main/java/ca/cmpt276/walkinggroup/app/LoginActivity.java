@@ -136,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
         if (dataToGet==null)return;
         userToken = dataToGet.getString("userToken","");
+        Log.i(TAG,userToken);
 
 
     }

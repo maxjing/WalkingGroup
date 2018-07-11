@@ -12,7 +12,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="376dp"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="@string/maps"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,21 +26,25 @@
         android:id="@+id/btnGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="@string/my_group"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintHorizontal_bias="0.049"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.163" />
+        app:layout_constraintVertical_bias="0.382" />
 
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="@string/log_out"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +58,9 @@
         android:id="@+id/btnMonitoring"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="@string/monitoring"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -67,7 +75,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="@string/monitor"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,10 +90,12 @@
     <Button
         android:id="@+id/btnMsg"
         android:layout_width="wrap_content"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="376dp"
         android:layout_marginStart="64dp"
+        android:width="110dp"
         android:background="@drawable/background_button"
+        android:padding="10dp"
         android:text="Messages"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -92,5 +104,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+
+    <Button
+        android:id="@+id/btnInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:width="110dp"
+        android:background="@drawable/background_button"
+        android:padding="10dp"
+        android:text="My Info"
+        android:textColor="#FFF"
+        app:layout_constraintBottom_toTopOf="@+id/google_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintStart_toEndOf="@+id/btnMonitor" />
+
 
 </android.support.constraint.ConstraintLayout>
