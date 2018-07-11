@@ -16,6 +16,7 @@ import android.util.Log;
 
 
 public class LocationService extends Service {
+    private Location userPosition = null;
     private String TAG = "LocationListener";
     private LocationManager mLocationManager = null;
     private static final int LOCATION_TIME = 30000;
@@ -68,7 +69,7 @@ public class LocationService extends Service {
     @Override
     public void onCreate() {
         Log.d(TAG, "onCreate");
-        
+
         init();
     }
 
