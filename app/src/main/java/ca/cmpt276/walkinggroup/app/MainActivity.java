@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         if (isServicesOK()){
             setMapButton();
         }
-        startService(new Intent(this, LocationService.class));
     }
 
     private void setInfoBtn() {
@@ -223,10 +222,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 switch (token){
                     case "":
+                        Intent intent = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
                         break;
                     default:
-                        Intent intent = MessagesActivity.makeIntent(MainActivity.this);
-                        startActivity(intent);
+                        Intent intenttomsg = MessagesActivity.makeIntent(MainActivity.this);
+                        startActivity(intenttomsg);
 
                 }
 
