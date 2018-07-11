@@ -64,8 +64,12 @@
         <activity android:name=".EditActivity" />
         <activity android:name=".ChildInfoActivity"/>
         <activity android:name=".MessagesActivity" />
-        <activity android:name=".MessagesNewActivity"></activity>
+        <activity android:name=".MessagesNewActivity" />
+
         <service android:name=".Adapter.LocationService" />
+
+        <activity android:name=".MessagesDetailActivity" android:parentActivityName=".MessagesActivity"/>
+        <activity android:name=".MessagesGroupsActivity"></activity>
     </application>
 
 </manifest>
