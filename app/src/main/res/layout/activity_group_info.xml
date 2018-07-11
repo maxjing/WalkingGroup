@@ -22,7 +22,7 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="390dp"
-        android:layout_height="90dp"
+        android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:orientation="horizontal"
@@ -80,9 +80,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:text="@string/click_member_infoActivity"
+        android:text=""
         android:textColor="#fff"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_group_member" />
 
@@ -91,13 +91,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/delete_this_group"
-
+        android:layout_marginTop="24dp"
         android:background="@drawable/background_button"
+
+        android:text="@string/delete_this_group"
         android:textColor="#FFF"
 
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtInstruction" />
+
+    <TextView
+        android:id="@+id/txt_Long_Inst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text=""
+        android:textColor="#fff"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtInstruction" />
 
 </android.support.constraint.ConstraintLayout>

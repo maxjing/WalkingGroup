@@ -57,7 +57,7 @@
     <string name="group_information">Group Information</string>
     <string name="group_members">Group members:</string>
     <string name="click_to_view_more_group_information">Click to view more group information.</string>
-    <string name="click_to_leave_the_group">Click to leave the group.</string>
+    <string name="long_click_to_leave_the_group">Long click to leave the group.</string>
     <string name="click_member_infoActivity">Click to remove the user from the group.</string>
     <string name="whom_do_you_want_to_have_join_the_selected_group">Whom do you want to have join the selected group?</string>
     <string name="myself">Myself</string>
@@ -94,6 +94,8 @@
     <string name="edit">Edit</string>
     <string name="edit_user_information">Edit User Information</string>
     <string name="personal_information">Personal Information</string>
+    <string name="long_click_to_view_users_parents">Long click to view users\' parents.</string>
+    <string name="click_to_view_monitors_personal_information">Click to view monitors\' personal information.</string>
     <string name="stop_update">Stop Update</string>
     <string name="start_update">Start Update</string>
 </resources>
