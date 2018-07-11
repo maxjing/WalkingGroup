@@ -2,8 +2,11 @@ package ca.cmpt276.walkinggroup.dataobjects;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.android.gms.maps.model.LatLng;
+<<<<<<< HEAD
 
 import java.util.Date;
+=======
+>>>>>>> 4f8e3fd854b55b758175fe7d7ca2263749c4f88d
 
 /**
  * Store information about a GPS location of a user.
@@ -13,6 +16,7 @@ import java.util.Date;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GpsLocation {
+<<<<<<< HEAD
     private Date timestamp;
     private Double lat;
     private Double lng;
