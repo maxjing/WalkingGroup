@@ -11,6 +11,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,11 +29,13 @@ import retrofit2.Call;
 public class MonitorActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_Monitored = 02;
+    public static final String MEMBER_ID = "Member_Id";
     private User user;
     private List<User> monitoredByUsers;
     private WGServerProxy proxy;
     private String token;
     private long userId;
+    private long memberId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +46,17 @@ public class MonitorActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken","");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
-        setAddBtn();
-        registerClickCallback();
+
         userId = dataToGet.getLong("userId", 0);
+
+        Intent intent = getIntent();
+        memberId = intent.getLongExtra(MEMBER_ID,0);
+        if(memberId != 0){
+            userId = memberId;
+        }
         populateListView();
+        registerClickCallback();
+        setAddBtn();
     }
 
     private void setAddBtn() {
@@ -60,14 +71,28 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
+//        Intent intent = getIntent();
+//        memberId = intent.getLongExtra(MEMBER_ID,0);
+        TextView tv = (TextView) findViewById(R.id.Inst_monitored);
+        if(memberId == 0){
+           tv.setText(R.string.click_to_stop_being_monitored);
+        }else{
+            tv.setText(R.string.click_to_view_monitors_personal_information);
+        }
         ListView list = (ListView) findViewById(R.id.listView_Messages);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Call<Void> removeMonitor = proxy.removeFromMonitorsUsers(monitoredByUsers.get(position).getId(),userId);
-                ProxyBuilder.callProxy(MonitorActivity.this, removeMonitor, returnedUser -> responseRemove());
-                Call<User> caller = proxy.getUserById(userId);
-                ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
+                if(memberId == 0){
+                    Call<Void> removeMonitor = proxy.removeFromMonitorsUsers(monitoredByUsers.get(position).getId(),userId);
+                    ProxyBuilder.callProxy(MonitorActivity.this, removeMonitor, returnedUser -> responseRemove());
+                    Call<User> caller = proxy.getUserById(userId);
+                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+                else{
+                    Intent intent = UserInfoActivity.makeParentIntent(MonitorActivity.this,monitoredByUsers.get(position).getId());
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -96,8 +121,14 @@ public class MonitorActivity extends AppCompatActivity {
         list.setAdapter(adapter);
     }
 
-    public static Intent makeIntent(Context context) {
-        return new Intent(context,MonitorActivity.class);
+    public static Intent makeIntent(Context context){
+        return new Intent(context, MonitorActivity.class);
+    }
+
+    public static Intent makeMemberIntent(Context context, long id) {
+        Intent intent =  new Intent(context,MonitorActivity.class);
+        intent.putExtra(MEMBER_ID,id);
+        return intent;
     }
 
     @Override

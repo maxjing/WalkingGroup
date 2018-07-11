@@ -88,7 +88,21 @@ public class GroupInfoActivity extends AppCompatActivity {
                     ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returned -> responseForRemove());
                 }
             });
+
+            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    Call<User> caller = proxy.getUserById(members.get(position).getId());
+                    ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returnedUser -> responseForMonitor(returnedUser));
+                    return true;
+                }
+            });
         }
+    }
+
+    private void responseForMonitor(User returnedUser) {
+        Intent intent = MonitorActivity.makeMemberIntent(GroupInfoActivity.this,returnedUser.getId());
+        startActivity(intent);
     }
 
     private void responseForRemove() {

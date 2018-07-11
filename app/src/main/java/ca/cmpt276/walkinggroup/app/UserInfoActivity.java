@@ -34,11 +34,13 @@ public class UserInfoActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_EDIT = 10;
     public static final String CHILD_ID_USER_INFO = "ca.cmpt276.walkinggroup.app.UserInfo - ChildId";
+    public static final String PARENT_ID = "Parent_Id";
     private User user;
     private WGServerProxy proxy;
     private String token;
     private long userId;
     private long childId;
+    private long parentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +52,22 @@ public class UserInfoActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
         userId = dataToGet.getLong("userId", 0);
+
+        Button btn = (Button) findViewById(R.id.btnEdit);
+        btn.setVisibility(View.GONE);
+
         Intent intent = getIntent();
         childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
         if(childId != 0){
             userId = childId;
+            btn.setVisibility(View.VISIBLE);
         }
+
+        parentId = intent.getLongExtra(PARENT_ID,0);
+        if(parentId != 0){
+            userId =  parentId;
+        }
+
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
 
@@ -162,6 +175,12 @@ public class UserInfoActivity extends AppCompatActivity {
     public static Intent makeChildIntent(Context context, long childId) {
         Intent intent = new Intent(context,UserInfoActivity.class);
         intent.putExtra(CHILD_ID_USER_INFO,childId);
+        return intent;
+    }
+
+    public static Intent makeParentIntent(Context context, long parentId){
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        intent.putExtra(PARENT_ID, parentId);
         return intent;
     }
 }
