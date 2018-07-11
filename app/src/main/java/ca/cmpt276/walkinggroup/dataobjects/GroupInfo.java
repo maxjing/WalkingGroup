@@ -15,6 +15,7 @@ public class GroupInfo {
     private Long ID;
 
 
+
     public GroupInfo() {}
     public GroupInfo(LatLng latLng, String des, Long ID) {
         this.latLng = latLng;

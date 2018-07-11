@@ -24,9 +24,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.List;
+
+import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 /**
  * Based button access to different activities
@@ -50,33 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView locationInfo;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (mBroadcastReceiver == null) {
-            mBroadcastReceiver = new BroadcastReceiver() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onReceive(Context context, Intent intent) {
-                    double tempLat = intent.getDoubleExtra("UpdateLat", 0);
-                    double tempLng = intent.getDoubleExtra("UpdateLng", 0);
-                    LatLng latLng = new LatLng(tempLat, tempLng);
-                    locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng);
-                }
-            };
-        }
-        // get Intent from LocationService
-        registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mBroadcastReceiver != null) {
-            unregisterReceiver(mBroadcastReceiver);
-        }
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -84,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         token = dataToGet.getString("userToken", "");
         userEmail = dataToGet.getString("userEmail", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
 
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
         user = User.getInstance();
@@ -94,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
             btnLogout.setVisibility(View.GONE);
         } else {
             btnLogout.setVisibility(View.VISIBLE);
+            Call<User> caller_user = proxy.getUserByEmail(userEmail);
+            ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
 
         }
 
@@ -116,6 +96,45 @@ public class MainActivity extends AppCompatActivity {
             setMapButton();
         }
     }
+
+
+
+    private void response(User returnedUser) {
+        user = returnedUser;
+
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mBroadcastReceiver == null) {
+            mBroadcastReceiver = new BroadcastReceiver() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    double tempLat = intent.getDoubleExtra("UpdateLat", 0);
+                    double tempLng = intent.getDoubleExtra("UpdateLng", 0);
+                    LatLng latLng = new LatLng(tempLat, tempLng);
+                    locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng);
+//                    user.setLastGpsLocation();
+
+                }
+            };
+        }
+        // get Intent from LocationService
+        registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+        }
+    }
+
 
     private boolean runtime_permissions() {
         if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, Manifest.permission
