@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
-        ListView list = (ListView) findViewById(R.id.listView_Messages);
+        ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,7 +93,7 @@ public class MonitorActivity extends AppCompatActivity {
             items[i] = monitoredByUsers.get(i).getName() + " - " + monitoredByUsers.get(i).getEmail();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitored,items);
-        ListView list = (ListView) findViewById(R.id.listView_Messages);
+        ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setAdapter(adapter);
     }
 

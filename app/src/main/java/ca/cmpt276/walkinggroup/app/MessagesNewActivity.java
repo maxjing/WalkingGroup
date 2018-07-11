@@ -47,11 +47,6 @@ public class MessagesNewActivity extends AppCompatActivity {
 
 
 
-
-    public static Intent makeIntent(Context context){
-        return new Intent(context, MessagesNewActivity.class);
-    }
-
     private void setSendToPLBtn(){
         Button btnGroup = (Button)findViewById(R.id.btnSendToPL);
         btnGroup.setOnClickListener(new View.OnClickListener(){
@@ -84,15 +79,28 @@ public class MessagesNewActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                EditText editMsg = (EditText)findViewById(R.id.editTextMsg);
+                String msg = editMsg.getText().toString();
+                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+                PrefEditor.putString("pMessage",msg);
 
-                Intent intent = GroupActivity.makeIntent(MessagesNewActivity.this);
+                PrefEditor.apply();
+
+                Intent intent = MessagesGroupsActivity.makeIntent(MessagesNewActivity.this);
                 startActivity(intent);
+                finish();
 
             }
         });
     }
     private void response(List<Message> returnedMsg) {
 
+    }
+
+
+    public static Intent makeIntent(Context context){
+        return new Intent(context, MessagesNewActivity.class);
     }
 
 
