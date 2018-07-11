@@ -5,52 +5,53 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="ca.cmpt276.walkinggroup.app.MonitorActivity">
+    tools:context=".app.MessagesGroupsActivity">
+
 
     <TextView
-        android:id="@+id/txtMonitored"
+        android:id="@+id/chooseGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="@string/monitored_by"
+        android:text="Choose one group or All"
         android:textColor="#FFF"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ListView
+        android:id="@+id/listView_LeadersGroup"
+        android:layout_width="368dp"
+        android:layout_height="510dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chooseGroup" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="16dp"
+        android:text="click to send"
+        android:textColor="#fff"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView_LeadersGroup" />
+
     <Button
-        android:id="@+id/btnAdd_ed"
+        android:id="@+id/btnSendAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/background_button"
-        android:text="@string/add"
+        android:text="Send All"
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <ListView
-        android:id="@+id/listView_Monitored"
-        android:layout_width="368dp"
-        android:layout_height="438dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtMonitored" />
-
-    <TextView
-        android:id="@+id/Inst_monitored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text=""
-        android:textColor="#fff"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listView_Monitored" />
 
 
 </android.support.constraint.ConstraintLayout>

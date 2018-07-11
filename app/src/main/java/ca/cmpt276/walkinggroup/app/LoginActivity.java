@@ -128,7 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         PrefEditor.putString("userEmail",userEmail);
         PrefEditor.putLong("userId",userId);
 
-
         PrefEditor.apply();
 
     }

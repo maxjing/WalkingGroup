@@ -96,4 +96,6 @@
     <string name="personal_information">Personal Information</string>
     <string name="long_click_to_view_users_parents">Long click to view users\' parents.</string>
     <string name="click_to_view_monitors_personal_information">Click to view monitors\' personal information.</string>
+    <string name="stop_update">Stop Update</string>
+    <string name="start_update">Start Update</string>
 </resources>

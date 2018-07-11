@@ -33,6 +33,7 @@ public class GroupActivity extends AppCompatActivity {
     public static final String USER_REMOVE = "ca.cmpt276.walkinggroup.app - Group - UserId";
     public static final String POSITION = "POSITION";
     public static final int REQUEST_CODE_DELETE = 07;
+    public static final int REQUEST_SEND_GROUPMSGS = 33;
     private String token;
     private String TAG = "GroupActivity";
     private WGServerProxy proxy;
@@ -46,6 +47,7 @@ public class GroupActivity extends AppCompatActivity {
 
     private Long userId;
     private Long childId;
+    private boolean isSendMsg;
 
     public static final String CHILD_ID = "ca.cmpt276.walkinggroup.app - GroupActivity.class";
 
@@ -72,7 +74,6 @@ public class GroupActivity extends AppCompatActivity {
         registerClickCallback_Leader();
         registerClickCallback_Member();
 
-
     }
 
     private void responseL(User user) {
@@ -91,6 +92,8 @@ public class GroupActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+
+
     }
 
     private void responseGroup_leader(Group returnedGroup) {

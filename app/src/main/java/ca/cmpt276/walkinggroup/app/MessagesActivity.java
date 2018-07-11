@@ -33,6 +33,8 @@ public class MessagesActivity extends AppCompatActivity {
     private List<String> readMsgList;
     private List<String> unreadMsgList;
     private List<Message> messagesItem;
+    private List<Long> readId;
+    private List<Long> unreadId;
 
 
     @Override
@@ -71,20 +73,59 @@ public class MessagesActivity extends AppCompatActivity {
         ArrayAdapter<String> adapterRead = new ArrayAdapter<>(this, R.layout.messages_read, readMsgList);
         ListView listRead = (ListView) findViewById(R.id.listView_Messages_read);
         listRead.setAdapter(adapterRead);
+        listRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Call<Message> caller = proxy.markMessageAsRead(readId.get(position),true);
+                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> response(returnedMsg));
+
+                Intent intent = MessagesDetailActivity.makeIntent(MessagesActivity.this);
+                intent.putExtra("msgId",readId.get(position));
+                startActivity(intent);
+            }
+        });
+
+        listRead.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View viewClicked, int position, long id) {
+                Call<Message> caller = proxy.markMessageAsRead(readId.get(position),false);
+                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> response(returnedMsg));
+                return true;
+            }
+        });
+
     }
 
     private void populateMsgUnRead() {
         ArrayAdapter<String> adapterUnread = new ArrayAdapter<>(this, R.layout.messages_unread, unreadMsgList);
         ListView listUnRead = (ListView) findViewById(R.id.listView_Messages_unread);
         listUnRead.setAdapter(adapterUnread);
-//        listUnRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
-//                ProxyBuilder.callProxy(MessagesActivity.this, caller, returned -> responseCickRead());
-//            }
-//        });
+        listUnRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Call<Message> caller = proxy.markMessageAsRead(unreadId.get(position),true);
+                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> response(returnedMsg));
+
+                Intent intent = MessagesDetailActivity.makeIntent(MessagesActivity.this);
+                intent.putExtra("msgId",unreadId.get(position));
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+
     }
+
+
+
+    private void response(Message message){
+        Call<User> caller_user = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+    }
+
 
     private void response(User returnedUser) {
         user = returnedUser;
@@ -97,12 +138,15 @@ public class MessagesActivity extends AppCompatActivity {
 
     }
 
+
     private void responseRead(List<Message> returnedMsg){
         readMsgList = new ArrayList<>(returnedMsg.size());
+        readId      = new ArrayList<>(returnedMsg.size());
         try {
-        for(int i = 0; i<returnedMsg.size();i++){
-            readMsgList.add(returnedMsg.get(i).getText());
-        }
+            for(int i = 0; i<returnedMsg.size();i++){
+                readMsgList.add(returnedMsg.get(i).getText());
+                readId.add(returnedMsg.get(i).getId());
+            }
         } catch (Exception e) {
 
         }
@@ -112,9 +156,11 @@ public class MessagesActivity extends AppCompatActivity {
 
     private void responseUnRead(List<Message> returnedMsg){
         unreadMsgList = new ArrayList<>(returnedMsg.size());
+        unreadId      = new ArrayList<>(returnedMsg.size());
         try {
             for(int i = 0; i<returnedMsg.size();i++){
                 unreadMsgList.add(returnedMsg.get(i).getText());
+                unreadId.add(returnedMsg.get(i).getId());
             }
         } catch (Exception e) {
 

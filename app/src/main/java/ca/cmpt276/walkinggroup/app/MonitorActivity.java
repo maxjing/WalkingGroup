@@ -79,7 +79,7 @@ public class MonitorActivity extends AppCompatActivity {
         }else{
             tv.setText(R.string.click_to_view_monitors_personal_information);
         }
-        ListView list = (ListView) findViewById(R.id.listView_Messages);
+        ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -117,7 +117,7 @@ public class MonitorActivity extends AppCompatActivity {
             items[i] = monitoredByUsers.get(i).getName() + " - " + monitoredByUsers.get(i).getEmail();
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.monitored,items);
-        ListView list = (ListView) findViewById(R.id.listView_Messages);
+        ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setAdapter(adapter);
     }
 

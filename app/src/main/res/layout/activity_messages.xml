@@ -25,6 +25,7 @@
         android:layout_width="395dp"
         android:layout_height="202dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Messages_unread" />
 
@@ -48,6 +49,7 @@
         android:layout_width="395dp"
         android:layout_height="202dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Messages_read" />
 
@@ -63,6 +65,34 @@
         android:textColor="#FFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:text="click to view"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintStart_toEndOf="@+id/Messages_unread"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.045" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:text="Press to mark as unread"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/listView_Messages_read"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toEndOf="@+id/Messages_read"
+        app:layout_constraintTop_toBottomOf="@+id/listView_Messages_unread"
+        app:layout_constraintVertical_bias="0.782" />
 
 
 </android.support.constraint.ConstraintLayout>
