@@ -79,8 +79,13 @@ public class GroupInfoActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
+        ListView list = (ListView) findViewById(R.id.list_group_member);
         if(childId == 0){
-            ListView list = (ListView) findViewById(R.id.list_group_member);
+            TextView tv = (TextView) findViewById(R.id.txtInstruction);
+            tv.setText(R.string.click_member_infoActivity);
+//            TextView tv_long = (TextView) findViewById(R.id.txt_Long_Inst);
+//            tv_long.setText(R.string.long_click_to_view_users_parents);
+            //ListView list = (ListView) findViewById(R.id.list_group_member);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -88,7 +93,31 @@ public class GroupInfoActivity extends AppCompatActivity {
                     ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returned -> responseForRemove());
                 }
             });
+
+//            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//                @Override
+//                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Call<User> caller = proxy.getUserById(members.get(position).getId());
+//                    ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returnedUser -> responseForMonitor(returnedUser));
+//                    return true;
+//                }
+//            });
         }
+        TextView tv_long = (TextView) findViewById(R.id.txt_Long_Inst);
+        tv_long.setText(R.string.long_click_to_view_users_parents);
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Call<User> caller = proxy.getUserById(members.get(position).getId());
+                ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returnedUser -> responseForMonitor(returnedUser));
+                return true;
+            }
+        });
+    }
+
+    private void responseForMonitor(User returnedUser) {
+        Intent intent = MonitorActivity.makeMemberIntent(GroupInfoActivity.this,returnedUser.getId());
+        startActivity(intent);
     }
 
     private void responseForRemove() {
