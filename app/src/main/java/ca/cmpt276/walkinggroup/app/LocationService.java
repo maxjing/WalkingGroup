@@ -15,6 +15,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
@@ -37,6 +39,7 @@ public class LocationService extends Service {
     private String token;
     private WGServerProxy proxy;
     private long userId;
+    private LatLng latLng;
 
     @Nullable
     @Override
@@ -66,6 +69,7 @@ public class LocationService extends Service {
                     double tempLng = location.getLongitude();
                     intent.putExtra("UpdateLat", tempLat);
                     intent.putExtra("UpdateLng", tempLng);
+
                     gpsLocation.setLat(tempLat);
                     gpsLocation.setLng(tempLng);
                     sendBroadcast(intent);
