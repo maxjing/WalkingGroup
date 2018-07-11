@@ -38,7 +38,8 @@ public class AddUserActivity extends AppCompatActivity {
 
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         user = User.getInstance();
-        Call<User> caller = proxy.getUserByEmail(user.getEmail());
+        userId = dataToGet.getLong("userId", 0);
+        Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
 
         setCancelBtn();
