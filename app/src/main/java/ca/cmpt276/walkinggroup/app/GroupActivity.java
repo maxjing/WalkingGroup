@@ -155,9 +155,23 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
+//                ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
+//                Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
+                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,memberID.get(position),userId);
+                startActivity(intent);
+            }
+        });
+
+        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,memberID.get(position),userId);
+//                startActivity(intent);
                 Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
                 Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
+                return true;
             }
         });
     }

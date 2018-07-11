@@ -53,19 +53,21 @@ public class UserInfoActivity extends AppCompatActivity {
         user = User.getInstance();
         userId = dataToGet.getLong("userId", 0);
 
-        Button btn = (Button) findViewById(R.id.btnEdit);
-        btn.setVisibility(View.GONE);
+//        Button btn = (Button) findViewById(R.id.btnEdit);
+//        btn.setVisibility(View.GONE);
 
         Intent intent = getIntent();
         childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
         if(childId != 0){
             userId = childId;
-            btn.setVisibility(View.VISIBLE);
+//            btn.setVisibility(View.VISIBLE);
         }
 
         parentId = intent.getLongExtra(PARENT_ID,0);
         if(parentId != 0){
             userId =  parentId;
+            Button btn = (Button) findViewById(R.id.btnEdit);
+            btn.setVisibility(View.GONE);
         }
 
         Call<User> caller = proxy.getUserById(userId);
