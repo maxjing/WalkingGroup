@@ -30,9 +30,8 @@ public class MessagesGroupsActivity extends AppCompatActivity {
     private String token;
     private User user;
     private List<Group> groupsLeader;
-    private List<String> groupsLeaderDes = new ArrayList<>();
-    private List<Long> leadID = new ArrayList<>();
-    private List<Long> memberID;
+    private List<String> groupsLeaderDes;
+    private List<Long> leadID;
     private String msg;
     private Message message;
     private String TAG = "MessagesGroupsActivity";
@@ -59,7 +58,8 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         user = returnedUser;
         groupsLeader = user.getLeadsGroups();
         groupsLeaderDes = new ArrayList<>();
-        memberID  = new ArrayList<>();
+        leadID = new ArrayList<>();
+
         try {
 
             for(int i = 0; i < groupsLeader.size(); i++){
@@ -90,7 +90,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Toast.makeText(MessagesGroupsActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
+
                 Call<List<Message>> caller = proxy.newMessageToGroup(leadID.get(position),message);
                 ProxyBuilder.callProxy(MessagesGroupsActivity.this, caller, returnedMsg -> response(returnedMsg));
 
@@ -100,7 +100,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
 
     }
     private void response(List<Message> returnedMsg) {
-
+        Toast.makeText(MessagesGroupsActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
 
 
     }
@@ -116,6 +116,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
                 for(int i=0;i<leadID.size();i++){
                     Call<List<Message>> caller = proxy.newMessageToGroup(leadID.get(i),message);
                     ProxyBuilder.callProxy(MessagesGroupsActivity.this, caller, returnedMsg -> response(returnedMsg));
+
                 }
 
             }

@@ -17,20 +17,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
-import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private String userEmail;
     private Long userId;
 
+    private List<Group> groups = new ArrayList<>();
+    private List<String> groupsDestination = new ArrayList<>();
+    private List<Long> groupID = new ArrayList<>();
+
     // LocationUpdate values and widges
     private BroadcastReceiver mBroadcastReceiver;
     private Button btnUpdate;
@@ -70,8 +76,7 @@ public class MainActivity extends AppCompatActivity {
         userId = dataToGet.getLong("userId", 0);
 
         user = User.getInstance();
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
+
 
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
@@ -90,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         setMonitorBtn();
         setInfoBtn();
         setMsgBtn();
+        setPanicBtn();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -102,12 +108,51 @@ public class MainActivity extends AppCompatActivity {
         if (isServicesOK()) {
             setMapButton();
         }
+
+        populate();
     }
 
-    private void response(User user) {
-        Toast.makeText(this, "" + user.getLastGpsLocation().getLat() + " " + user.getLastGpsLocation().getLng() + " ", Toast.LENGTH_SHORT).show();
+    private void populate() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
 
+    private void responseForMain(User user) {
+        groups.clear();
+        groups.addAll(user.getLeadsGroups());
+        groups.addAll(user.getMemberOfGroups());
+        try {
+            groupsDestination.clear();
+            groupID.clear();
+            if(groups.size() > 0){
+                for(int i = 0; i < groups.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groups.get(i).getId());
+                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup(returnedGroup));
+                }
+            }else{
+                populateGroup();
+            }
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    private void responseGroup(Group returnedGroup) {
+        groupID.add(returnedGroup.getId());
+        groupsDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" ["+ returnedGroup.getRouteLatArray().get(0)+" , "+returnedGroup.getRouteLngArray().get(0)+"]");
+        if(groupID.size() == groups.size()){
+            populateGroup();
+        }
+    }
+
+
+    private void populateGroup() {
+        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination, groupsDestination);
+        ListView listLeader = (ListView) findViewById(R.id.list_group_destination);
+        listLeader.setAdapter(adapterLeader);
+    }
 
     @Override
     protected void onResume() {
@@ -131,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
 
                     Call<GpsLocation> caller = proxy.setLastGpsLocation(userId, gpsLocation);
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> response(returnedUser));
+
                 }
             };
         }
@@ -365,6 +411,25 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         Intent intenttomsg = MessagesActivity.makeIntent(MainActivity.this);
                         startActivity(intenttomsg);
+
+                }
+
+            }
+        });
+    }
+    private void setPanicBtn() {
+        Button btnGroup = (Button) findViewById(R.id.btnPanic);
+        btnGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (token) {
+                    case "":
+                        Intent intent = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
+                        break;
+                    default:
+                        Intent intenttoEmsg= MessagesEmergencyActivity.makeIntent(MainActivity.this);
+                        startActivity(intenttoEmsg);
 
                 }
 

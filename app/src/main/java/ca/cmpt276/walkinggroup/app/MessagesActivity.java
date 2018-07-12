@@ -28,11 +28,9 @@ public class MessagesActivity extends AppCompatActivity {
     private String token;
     private WGServerProxy proxy;
     private Long userId;
-    private Message message;
     private User user;
     private List<String> readMsgList;
     private List<String> unreadMsgList;
-    private List<Message> messagesItem;
     private List<Long> readId;
     private List<Long> unreadId;
 
@@ -51,6 +49,8 @@ public class MessagesActivity extends AppCompatActivity {
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
         setMsgBtn();
+        setDeleteAllBtn();
+        setCancel();
     }
 
 
@@ -62,6 +62,7 @@ public class MessagesActivity extends AppCompatActivity {
 
                 Intent intent = MessagesNewActivity.makeIntent(MessagesActivity.this);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -109,7 +110,7 @@ public class MessagesActivity extends AppCompatActivity {
                 Intent intent = MessagesDetailActivity.makeIntent(MessagesActivity.this);
                 intent.putExtra("msgId",unreadId.get(position));
                 startActivity(intent);
-                finish();
+
             }
         });
 
@@ -128,18 +129,32 @@ public class MessagesActivity extends AppCompatActivity {
     private void response(User returnedUser) {
         user = returnedUser;
 
-        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),false);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseRead(returnedMsg));
-        Call<List<Message>> caller_unread = proxy.getUnreadMessages(user.getId(),false);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseUnRead(returnedMsg));
+        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
+        Call<List<Message>> caller_unread = proxy.getUnreadMessages(user.getId(),true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseEMUnRead(returnedMsg));
 
 
     }
 
 
-    private void responseRead(List<Message> returnedMsg){
+    private void responseEMRead(List<Message> returnedMsg){
         readMsgList = new ArrayList<>(returnedMsg.size());
         readId      = new ArrayList<>(returnedMsg.size());
+        try {
+            for(int i = 0; i<returnedMsg.size();i++){
+                readMsgList.add("Emergency: "+returnedMsg.get(i).getText());
+                readId.add(returnedMsg.get(i).getId());
+            }
+        } catch (Exception e) {
+
+        }
+
+        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),false);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedRMsg -> responseRead(returnedRMsg));
+    }
+
+    private void responseRead(List<Message> returnedMsg){
         try {
             for(int i = 0; i<returnedMsg.size();i++){
                 readMsgList.add(returnedMsg.get(i).getText());
@@ -148,13 +163,27 @@ public class MessagesActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-
         populateMsgRead();
     }
 
-    private void responseUnRead(List<Message> returnedMsg){
+    private void responseEMUnRead(List<Message> returnedMsg){
         unreadMsgList = new ArrayList<>(returnedMsg.size());
         unreadId      = new ArrayList<>(returnedMsg.size());
+        try {
+            for(int i = 0; i<returnedMsg.size();i++){
+                unreadMsgList.add("Emergency: "+returnedMsg.get(i).getText());
+                unreadId.add(returnedMsg.get(i).getId());
+            }
+        } catch (Exception e) {
+
+        }
+
+        Call<List<Message>> caller_read = proxy.getUnreadMessages(userId,false);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedRMsg -> responseUnRead(returnedRMsg));
+
+    }
+
+    private void responseUnRead(List<Message> returnedMsg){
         try {
             for(int i = 0; i<returnedMsg.size();i++){
                 unreadMsgList.add(returnedMsg.get(i).getText());
@@ -163,12 +192,51 @@ public class MessagesActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-
         populateMsgUnRead();
     }
 
     public static Intent makeIntent(Context context){
         return new Intent(context, MessagesActivity.class);
+    }
+
+    private void setDeleteAllBtn(){
+        Button btnGroup = (Button)findViewById(R.id.btnDeleteAll);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                Call<List<Message>> caller = proxy.getMessages();
+                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> responseDeleteAll(returnedMsg));
+
+
+            }
+        });
+    }
+
+    private void responseDeleteAll(List<Message> messages){
+        for(int i = 0;i<messages.size();i++){
+            Call<Void> caller = proxy.deleteMessage(messages.get(i).getId());
+            ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedNothing -> response(returnedNothing));
+
+        }
+
+
+    }
+    private void response(Void returnedNothing) {
+
+    }
+
+    private void setCancel(){
+        Button btnGroup = (Button)findViewById(R.id.btnMsgBack);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = MainActivity.makeIntent(MessagesActivity.this);
+                startActivity(intent);
+                finish();
+
+            }
+        });
     }
 
 
