@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
     private String userEmail;
+    private Long userId;
 
     // LocationUpdate values and widges
     private BroadcastReceiver mBroadcastReceiver;
@@ -57,24 +59,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        userEmail = dataToGet.getString("userEmail", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+        token = dataToGet.getString("userToken","");
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        userId = dataToGet.getLong("userId",0);
+
+        user = User.getInstance();
+        Call<User> caller_user = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
 
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
-        user = User.getInstance();
-        user.setEmail(userEmail);
-
 
 
         if (token == "") {
             btnLogout.setVisibility(View.GONE);
         } else {
             btnLogout.setVisibility(View.VISIBLE);
-            Call<User> caller_user = proxy.getUserByEmail(userEmail);
-            ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
+
 
         }
 
@@ -98,12 +100,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    private void response(User returnedUser) {
-        user = returnedUser;
-
-
+    private void response(User user){
+        Toast.makeText(this, ""+user.getLastGpsLocation().getLat()+" "+user.getLastGpsLocation().getLng()+" ", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -117,15 +115,24 @@ public class MainActivity extends AppCompatActivity {
                 public void onReceive(Context context, Intent intent) {
                     double tempLat = intent.getDoubleExtra("UpdateLat", 0);
                     double tempLng = intent.getDoubleExtra("UpdateLng", 0);
-                    LatLng latLng = new LatLng(tempLat, tempLng);
                     locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng);
-//                    user.setLastGpsLocation();
+
+                    GpsLocation gpsLocation = new GpsLocation();
+                    gpsLocation.setLat(tempLat);
+                    gpsLocation.setLng(tempLng);
+
+                    Call<GpsLocation> caller  =proxy.setLastGpsLocation(userId,gpsLocation);
+                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> response(returnedUser));
 
                 }
             };
         }
         // get Intent from LocationService
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
+    }
+
+    private void response(GpsLocation location){
+
     }
 
     @Override

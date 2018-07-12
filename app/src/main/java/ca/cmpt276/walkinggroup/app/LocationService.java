@@ -34,12 +34,9 @@ public class LocationService extends Service {
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
     private static final int LOCATION_TIME = 3000;
-    private GpsLocation gpsLocation;
-    private User user;
-    private String token;
-    private WGServerProxy proxy;
-    private long userId;
-    private LatLng latLng;
+
+    double tempLat;
+    double tempLng;
 
     @Nullable
     @Override
@@ -50,30 +47,19 @@ public class LocationService extends Service {
     @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
-        user = User.getInstance();
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
-        gpsLocation = new GpsLocation();
-
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(LocationService.this, caller_user, returnedUser -> response(returnedUser));
 
         Log.d(TAG, "onCreate");
         mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
                     Intent intent = new Intent("UpdateLocation");
-                    double tempLat = location.getLatitude();
-                    double tempLng = location.getLongitude();
+                    tempLat = location.getLatitude();
+                    tempLng = location.getLongitude();
                     intent.putExtra("UpdateLat", tempLat);
                     intent.putExtra("UpdateLng", tempLng);
 
-                    gpsLocation.setLat(tempLat);
-                    gpsLocation.setLng(tempLng);
-                    gpsLocation.setLatLng(new LatLng(tempLat, tempLng));
                     sendBroadcast(intent);
+
             }
 
             @Override
@@ -101,20 +87,7 @@ public class LocationService extends Service {
         }
     }
 
-    private void response(User returnedUser) {
-        returnedUser.setLastGpsLocation(gpsLocation);
 
-        Call<User> caller = proxy.editUserById(userId,returnedUser);
-        Toast.makeText(this, ""+gpsLocation, Toast.LENGTH_SHORT).show();
-        ProxyBuilder.callProxy(LocationService.this,caller,returnedUserForUpdate -> responseGps(returnedUserForUpdate));
-    }
-
-
-    private void responseGps(User returnedUser){
-        Log.i(TAG,returnedUser.toString());
-        Toast.makeText(this, ""+user.getLastGpsLocation(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "successful gps", Toast.LENGTH_SHORT).show();
-    }
     @Override
     public void onDestroy() {
         super.onDestroy();

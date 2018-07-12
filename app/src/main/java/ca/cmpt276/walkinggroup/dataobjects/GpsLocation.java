@@ -17,14 +17,14 @@ public class GpsLocation {
     private Date timestamp;
     private Double lat;
     private Double lng;
-    private LatLng latLng;
+
 
 
     public GpsLocation(Date timestamp, Double lat, Double lng, LatLng latLng) {
         this.timestamp = timestamp;
         this.lat = lat;
         this.lng = lng;
-        this.latLng = latLng;
+
     }
 
 
@@ -32,13 +32,13 @@ public class GpsLocation {
 
     }
 
-    public LatLng getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(LatLng latLng) {
-        this.latLng = latLng;
-    }
+//    public LatLng getLatLng() {
+//        return latLng;
+//    }
+//
+//    public void setLatLng(LatLng latLng) {
+//        this.latLng = latLng;
+//    }
 
     public Date getTimestamp() {
         return timestamp;
