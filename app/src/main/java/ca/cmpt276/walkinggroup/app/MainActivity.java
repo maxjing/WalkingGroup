@@ -16,7 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +26,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
+import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -48,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
     private User user;
     private String userEmail;
     private Long userId;
+
+    private List<Group> groupsMember;
+    private List<Group> groupsLeader;
+    private List<String> groupsLeaderDestination = new ArrayList<>();
+    private List<Long> leadID = new ArrayList<>();
+    private List<Long> memberID = new ArrayList<>();
+    private List<String> groupsMemberDestination = new ArrayList<>();
 
     // LocationUpdate values and widges
     private BroadcastReceiver mBroadcastReceiver;
@@ -98,13 +109,88 @@ public class MainActivity extends AppCompatActivity {
         if (isServicesOK()) {
             setMapButton();
         }
+
+        populate();
+    }
+
+    private void populate() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseL(returnedUser));
+        Call<User> caller_m = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MainActivity.this, caller_m, returnedUser -> responseM(returnedUser));
+    }
+
+    private void responseL(User user) {
+        groupsLeader = user.getLeadsGroups();
+        try {
+            groupsLeaderDestination.clear();
+            leadID.clear();
+            if(groupsLeader.size() > 0){
+                for(int i = 0; i < groupsLeader.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groupsLeader.get(i).getId());
+                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup_leader(returnedGroup));
+                }
+            }else{
+                populateLeader();
+            }
+        } catch (Exception e) {
+
+        }
+
+
+    }
+
+    private void responseGroup_leader(Group returnedGroup) {
+        leadID.add(returnedGroup.getId());
+        groupsLeaderDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" "+ returnedGroup.getRouteLatArray().get(0)+" "+returnedGroup.getRouteLngArray().get(0));
+        if(leadID.size() == groupsLeader.size()){
+            populateLeader();
+        }
+    }
+
+    private void populateLeader() {
+        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination_leader, groupsLeaderDestination);
+        ListView listLeader = (ListView) findViewById(R.id.list_group_destination);
+        listLeader.setAdapter(adapterLeader);
+    }
+
+
+
+    private void responseM(User user) {
+        groupsMember = user.getMemberOfGroups();
+        try {
+            groupsMemberDestination.clear();
+            memberID.clear();
+            if(groupsMember.size() > 0){
+                for(int i = 0; i < groupsMember.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groupsMember.get(i).getId());
+                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup_member(returnedGroup));
+                }
+            }else {
+                populateMember();
+            }
+        } catch (Exception e) {
+
+        }
+    }
+
+    private void responseGroup_member(Group returnedGroup) {
+        memberID.add(returnedGroup.getId());
+        groupsMemberDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" "+ returnedGroup.getRouteLatArray().get(0)+" "+returnedGroup.getRouteLngArray().get(0));
+        if(memberID.size() == groupsMember.size()){
+            populateMember();
+        }
+    }
+
+    private void populateMember() {
+        ArrayAdapter<String> adapterMember = new ArrayAdapter<>(this, R.layout.group_destination_member, groupsMemberDestination);
+        ListView listLeader = (ListView) findViewById(R.id.list_member_destination);
+        listLeader.setAdapter(adapterMember);
     }
 
     private void response(User user){
         Toast.makeText(this, ""+user.getLastGpsLocation().getLat()+" "+user.getLastGpsLocation().getLng()+" ", Toast.LENGTH_SHORT).show();
     }
-
-
     @Override
     protected void onResume() {
         super.onResume();

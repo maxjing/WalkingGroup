@@ -180,5 +180,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMsg" />
 
+    <ListView
+        android:id="@+id/list_group_destination"
+        android:layout_width="395dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="11dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPanic" />
+
+    <ListView
+        android:id="@+id/list_member_destination"
+        android:layout_width="395dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/location_Information" />
+
 
 </android.support.constraint.ConstraintLayout>

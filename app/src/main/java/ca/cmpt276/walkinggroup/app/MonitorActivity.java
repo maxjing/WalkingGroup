@@ -53,6 +53,9 @@ public class MonitorActivity extends AppCompatActivity {
         memberId = intent.getLongExtra(MEMBER_ID,0);
         if(memberId != 0){
             userId = memberId;
+
+            Button btn = (Button) findViewById(R.id.btnAdd_ed);
+            btn.setVisibility(View.GONE);
         }
         populateListView();
         registerClickCallback();
