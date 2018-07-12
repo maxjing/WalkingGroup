@@ -91,6 +91,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.setId(user.getId());
         Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
         startActivity(intent);
+        finish();
 
 
     }

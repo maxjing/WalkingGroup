@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
         userId = dataToGet.getLong("userId",0);
 
         user = User.getInstance();
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
+
 
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         setMonitorBtn();
         setInfoBtn();
         setMsgBtn();
-        setPanicButton();
+        setPanicBtn();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -151,9 +150,6 @@ public class MainActivity extends AppCompatActivity {
         listLeader.setAdapter(adapterLeader);
     }
 
-    private void response(User user){
-        Toast.makeText(this, ""+user.getLastGpsLocation().getLat()+" "+user.getLastGpsLocation().getLng()+" ", Toast.LENGTH_SHORT).show();
-    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -335,28 +331,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setPanicButton() {
-        Button btn = findViewById(R.id.btnPanic);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                switch (token) {
-                    case "":
-                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
-                        startActivity(intentToLogin);
-                        break;
-                    default:
-                        Intent intentMonitoring = MessagesEmergencyActivity.makeIntent(MainActivity.this);
-                        startActivity(intentMonitoring);
-
-
-                }
-
-            }
-        });
-    }
-
     public static Intent makeIntent(Context context) {
         return new Intent(context, MainActivity.class);
     }
@@ -413,6 +387,24 @@ public class MainActivity extends AppCompatActivity {
                         Intent intenttomsg = MessagesActivity.makeIntent(MainActivity.this);
                         startActivity(intenttomsg);
 
+                }
+
+            }
+        });
+    }
+    private void setPanicBtn() {
+        Button btnGroup = (Button) findViewById(R.id.btnPanic);
+        btnGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (token) {
+                    case "":
+                        Intent intent = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
+                        break;
+                    default:
+                        Intent intenttoEmsg= MessagesEmergencyActivity.makeIntent(MainActivity.this);
+                        startActivity(intenttoEmsg);
 
                 }
 
