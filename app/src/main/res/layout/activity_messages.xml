@@ -94,5 +94,19 @@
         app:layout_constraintTop_toBottomOf="@+id/listView_Messages_unread"
         app:layout_constraintVertical_bias="0.782" />
 
+    <Button
+        android:id="@+id/btnDeleteAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_button"
+        android:text="Delete ALL"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnSend"
+        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/listView_Messages_read"
+        app:layout_constraintVertical_bias="0.2" />
+
 
 </android.support.constraint.ConstraintLayout>

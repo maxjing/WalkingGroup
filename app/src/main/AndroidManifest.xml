@@ -63,15 +63,17 @@
         <activity android:name=".JoinGroupActivity" />
         <activity android:name=".UserInfoActivity" />
         <activity android:name=".EditActivity" />
-        <activity android:name=".ChildInfoActivity"/>
+        <activity android:name=".ChildInfoActivity" />
         <activity android:name=".MessagesActivity" />
         <activity android:name=".MessagesNewActivity" />
-
-        <activity android:name=".MessagesDetailActivity" android:parentActivityName=".MessagesActivity"/>
-        <activity android:name=".MessagesGroupsActivity"></activity>
+        <activity
+            android:name=".MessagesDetailActivity"
+            android:parentActivityName=".MessagesActivity" />
+        <activity android:name=".MessagesGroupsActivity" />
 
         <service android:name=".LocationService" />
 
+        <activity android:name=".MessagesEmergencyActivity"></activity>
     </application>
 
 </manifest>

@@ -51,6 +51,7 @@ public class MessagesActivity extends AppCompatActivity {
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
         setMsgBtn();
+        setDeleteAllBtn();
     }
 
 
@@ -169,6 +170,33 @@ public class MessagesActivity extends AppCompatActivity {
 
     public static Intent makeIntent(Context context){
         return new Intent(context, MessagesActivity.class);
+    }
+
+    private void setDeleteAllBtn(){
+        Button btnGroup = (Button)findViewById(R.id.btnDeleteAll);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                Call<List<Message>> caller = proxy.getMessages();
+                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> responseDeleteAll(returnedMsg));
+
+
+            }
+        });
+    }
+
+    private void responseDeleteAll(List<Message> messages){
+        for(int i = 0;i<messages.size();i++){
+            Call<Void> caller = proxy.deleteMessage(messages.get(i).getId());
+            ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedNothing -> response(returnedNothing));
+
+        }
+
+
+    }
+    private void response(Void returnedNothing) {
+
     }
 
 

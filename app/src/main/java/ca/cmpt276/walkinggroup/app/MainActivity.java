@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
         setMonitorBtn();
         setInfoBtn();
         setMsgBtn();
+        setPanicButton();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -334,6 +335,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setPanicButton() {
+        Button btn = findViewById(R.id.btnPanic);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                switch (token) {
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        Intent intentMonitoring = MessagesEmergencyActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitoring);
+
+
+                }
+
+            }
+        });
+    }
+
     public static Intent makeIntent(Context context) {
         return new Intent(context, MainActivity.class);
     }
@@ -389,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                     default:
                         Intent intenttomsg = MessagesActivity.makeIntent(MainActivity.this);
                         startActivity(intenttomsg);
+
 
                 }
 
