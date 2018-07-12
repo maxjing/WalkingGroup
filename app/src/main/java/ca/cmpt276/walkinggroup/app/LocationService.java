@@ -4,27 +4,15 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.List;
-
-import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
-import ca.cmpt276.walkinggroup.dataobjects.Message;
-import ca.cmpt276.walkinggroup.dataobjects.User;
-import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
-import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
-import retrofit2.Call;
 
 // get the example from https://github.com/codepath/android_guides/issues/220
 
@@ -49,10 +37,11 @@ public class LocationService extends Service {
     public void onCreate() {
 
         Log.d(TAG, "onCreate");
+
         mLocationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                    Intent intent = new Intent("UpdateLocation");
+                Intent intent = new Intent("UpdateLocation");
                     tempLat = location.getLatitude();
                     tempLng = location.getLongitude();
                     intent.putExtra("UpdateLat", tempLat);
@@ -83,10 +72,9 @@ public class LocationService extends Service {
         mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         if (mLocationManager != null) {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_TIME, 0, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_TIME, 100f, mLocationListener);
         }
     }
-
 
     @Override
     public void onDestroy() {

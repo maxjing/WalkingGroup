@@ -10,6 +10,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +25,9 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.sql.Time;
 import java.util.List;
+import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
@@ -54,16 +57,17 @@ public class MainActivity extends AppCompatActivity {
     private Button btnUpdate;
     private Button btnStop;
     private TextView locationInfo;
+    private Boolean mStopSignal = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        token = dataToGet.getString("userToken", "");
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
+        userId = dataToGet.getLong("userId", 0);
 
         user = User.getInstance();
         Call<User> caller_user = proxy.getUserById(userId);
@@ -100,30 +104,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void response(User user){
-        Toast.makeText(this, ""+user.getLastGpsLocation().getLat()+" "+user.getLastGpsLocation().getLng()+" ", Toast.LENGTH_SHORT).show();
+    private void response(User user) {
+        Toast.makeText(this, "" + user.getLastGpsLocation().getLat() + " " + user.getLastGpsLocation().getLng() + " ", Toast.LENGTH_SHORT).show();
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+        handler.postDelayed(toastRunnable, 5000);
+        handler.postDelayed(checkChangeRunnable, 10000);
+
         if (mBroadcastReceiver == null) {
             mBroadcastReceiver = new BroadcastReceiver() {
                 @SuppressLint("SetTextI18n")
                 @Override
                 public void onReceive(Context context, Intent intent) {
+                    mStopSignal = false;
                     double tempLat = intent.getDoubleExtra("UpdateLat", 0);
                     double tempLng = intent.getDoubleExtra("UpdateLng", 0);
-                    locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng);
+                    locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
 
                     GpsLocation gpsLocation = new GpsLocation();
                     gpsLocation.setLat(tempLat);
                     gpsLocation.setLng(tempLng);
 
-                    Call<GpsLocation> caller  =proxy.setLastGpsLocation(userId,gpsLocation);
+                    Call<GpsLocation> caller = proxy.setLastGpsLocation(userId, gpsLocation);
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> response(returnedUser));
-
                 }
             };
         }
@@ -131,7 +138,24 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
     }
 
-    private void response(GpsLocation location){
+
+    Handler handler = new Handler();
+    Runnable toastRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Toast.makeText(MainActivity.this, "mStopSignal: " + mStopSignal, Toast.LENGTH_SHORT).show();
+            handler.postDelayed(this, 5000);
+        }
+    };
+    Runnable checkChangeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            mStopSignal = true;
+            handler.postDelayed(this, 10000);
+        }
+    };
+
+    private void response(GpsLocation location) {
 
     }
 
