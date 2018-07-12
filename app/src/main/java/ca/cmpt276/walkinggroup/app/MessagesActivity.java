@@ -50,6 +50,7 @@ public class MessagesActivity extends AppCompatActivity {
         ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
         setMsgBtn();
         setDeleteAllBtn();
+        setCancel();
     }
 
 
@@ -61,6 +62,7 @@ public class MessagesActivity extends AppCompatActivity {
 
                 Intent intent = MessagesNewActivity.makeIntent(MessagesActivity.this);
                 startActivity(intent);
+                finish();
 
             }
         });
@@ -222,6 +224,19 @@ public class MessagesActivity extends AppCompatActivity {
     }
     private void response(Void returnedNothing) {
 
+    }
+
+    private void setCancel(){
+        Button btnGroup = (Button)findViewById(R.id.btnMsgBack);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = MainActivity.makeIntent(MessagesActivity.this);
+                startActivity(intent);
+                finish();
+
+            }
+        });
     }
 
 

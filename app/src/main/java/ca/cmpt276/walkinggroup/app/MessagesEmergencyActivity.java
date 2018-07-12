@@ -44,6 +44,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
         ProxyBuilder.callProxy(MessagesEmergencyActivity.this, caller_user, returnedUser -> response(returnedUser));
         message = new Message();
         setSendEmergencyBtn();
+        setCancel();
     }
 
 
@@ -80,12 +81,26 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
         });
     }
 
+    private void setCancel(){
+        Button btnGroup = (Button)findViewById(R.id.btnEmergencyMsgCancel);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = MainActivity.makeIntent(MessagesEmergencyActivity.this);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+    }
+
+
     private void response(User returnedUser) {
         user = returnedUser;
     }
 
     private void response(List<Message> returnedMsg) {
-        Toast.makeText(this, ""+returnedMsg.get(0).getText(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(MessagesEmergencyActivity.this, "Emergency Message Sent", Toast.LENGTH_SHORT).show();
 
     }
 

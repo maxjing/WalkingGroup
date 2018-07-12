@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class MessagesNewActivity extends AppCompatActivity {
         message = new Message();
         setSendToGroup();
         setSendToPLBtn();
+        setCancel();
     }
     private void response(User returnedUser) {
         user = returnedUser;
@@ -94,7 +96,21 @@ public class MessagesNewActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setCancel(){
+        Button btnGroup = (Button)findViewById(R.id.btnMsgCancel);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = MessagesActivity.makeIntent(MessagesNewActivity.this);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+    }
     private void response(List<Message> returnedMsg) {
+        Toast.makeText(MessagesNewActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
 
     }
 
