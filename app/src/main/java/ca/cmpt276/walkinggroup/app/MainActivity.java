@@ -24,14 +24,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
-import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -53,12 +51,9 @@ public class MainActivity extends AppCompatActivity {
     private String userEmail;
     private Long userId;
 
-    private List<Group> groupsMember;
-    private List<Group> groupsLeader;
-    private List<String> groupsLeaderDestination = new ArrayList<>();
-    private List<Long> leadID = new ArrayList<>();
-    private List<Long> memberID = new ArrayList<>();
-    private List<String> groupsMemberDestination = new ArrayList<>();
+    private List<Group> groups = new ArrayList<>();
+    private List<String> groupsDestination = new ArrayList<>();
+    private List<Long> groupID = new ArrayList<>();
 
     // LocationUpdate values and widges
     private BroadcastReceiver mBroadcastReceiver;
@@ -115,23 +110,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void populate() {
         Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseL(returnedUser));
-        Call<User> caller_m = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MainActivity.this, caller_m, returnedUser -> responseM(returnedUser));
+        ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
 
-    private void responseL(User user) {
-        groupsLeader = user.getLeadsGroups();
+    private void responseForMain(User user) {
+        groups.clear();
+        groups.addAll(user.getLeadsGroups());
+        groups.addAll(user.getMemberOfGroups());
         try {
-            groupsLeaderDestination.clear();
-            leadID.clear();
-            if(groupsLeader.size() > 0){
-                for(int i = 0; i < groupsLeader.size(); i++){
-                    Call<Group> caller = proxy.getGroupById(groupsLeader.get(i).getId());
-                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup_leader(returnedGroup));
+            groupsDestination.clear();
+            groupID.clear();
+            if(groups.size() > 0){
+                for(int i = 0; i < groups.size(); i++){
+                    Call<Group> caller = proxy.getGroupById(groups.get(i).getId());
+                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup(returnedGroup));
                 }
             }else{
-                populateLeader();
+                populateGroup();
             }
         } catch (Exception e) {
 
@@ -140,52 +135,19 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void responseGroup_leader(Group returnedGroup) {
-        leadID.add(returnedGroup.getId());
-        groupsLeaderDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" "+ returnedGroup.getRouteLatArray().get(0)+" "+returnedGroup.getRouteLngArray().get(0));
-        if(leadID.size() == groupsLeader.size()){
-            populateLeader();
+    private void responseGroup(Group returnedGroup) {
+        groupID.add(returnedGroup.getId());
+        groupsDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" ["+ returnedGroup.getRouteLatArray().get(0)+" , "+returnedGroup.getRouteLngArray().get(0)+"]");
+        if(groupID.size() == groups.size()){
+            populateGroup();
         }
     }
 
-    private void populateLeader() {
-        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination_leader, groupsLeaderDestination);
+
+    private void populateGroup() {
+        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination, groupsDestination);
         ListView listLeader = (ListView) findViewById(R.id.list_group_destination);
         listLeader.setAdapter(adapterLeader);
-    }
-
-
-
-    private void responseM(User user) {
-        groupsMember = user.getMemberOfGroups();
-        try {
-            groupsMemberDestination.clear();
-            memberID.clear();
-            if(groupsMember.size() > 0){
-                for(int i = 0; i < groupsMember.size(); i++){
-                    Call<Group> caller = proxy.getGroupById(groupsMember.get(i).getId());
-                    ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup_member(returnedGroup));
-                }
-            }else {
-                populateMember();
-            }
-        } catch (Exception e) {
-
-        }
-    }
-
-    private void responseGroup_member(Group returnedGroup) {
-        memberID.add(returnedGroup.getId());
-        groupsMemberDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" "+ returnedGroup.getRouteLatArray().get(0)+" "+returnedGroup.getRouteLngArray().get(0));
-        if(memberID.size() == groupsMember.size()){
-            populateMember();
-        }
-    }
-
-    private void populateMember() {
-        ArrayAdapter<String> adapterMember = new ArrayAdapter<>(this, R.layout.group_destination_member, groupsMemberDestination);
-        ListView listLeader = (ListView) findViewById(R.id.list_member_destination);
-        listLeader.setAdapter(adapterMember);
     }
 
     private void response(User user){
