@@ -202,25 +202,26 @@ public class MainActivity extends AppCompatActivity {
     Runnable checkChangeRunnable = new Runnable() {
         @Override
         public void run() {
-                if (tempUserLocation != null && upGroups != null) {
-                        for (int i = 0; i < upGroups.size(); i++) {
-                            List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
-                            List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
-                            LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
-                            Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
-                            float results[] = new float[2];
-                            Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
+            if (tempUserLocation != null && upGroups != null) {
+                for (int i = 0; i < upGroups.size(); i++) {
+                    List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
+                    List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
+                    LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
+                    Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
+                    float results[] = new float[2];
+                    Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
 
-                            if (results[0] <= 200f) {
-                                mStopSignal = true;
-                                break;
-                            }
+                    if (results[0] <= 200f) {
+                        mStopSignal = true;
+                        break;
+                    }
 
-                            mStopSignal = false;
-                        }
+                    mStopSignal = false;
                 }
+            }
 
-            if (mStopSignal){
+            if (mStopSignal) {
+                Toast.makeText(MainActivity.this, "Arrive Target Place!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
             }
             handler.postDelayed(this, 10000);
