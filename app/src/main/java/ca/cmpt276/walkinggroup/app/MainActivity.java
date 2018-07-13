@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     private Button btnStop;
     private TextView locationInfo;
     private Boolean mStopSignal = false;
+    private LatLng tempUserLocation;
+    private List<Group> upGroups = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,12 +128,12 @@ public class MainActivity extends AppCompatActivity {
         try {
             groupsDestination.clear();
             groupID.clear();
-            if(groups.size() > 0){
-                for(int i = 0; i < groups.size(); i++){
+            if (groups.size() > 0) {
+                for (int i = 0; i < groups.size(); i++) {
                     Call<Group> caller = proxy.getGroupById(groups.get(i).getId());
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup(returnedGroup));
                 }
-            }else{
+            } else {
                 populateGroup();
             }
         } catch (Exception e) {
@@ -141,8 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void responseGroup(Group returnedGroup) {
         groupID.add(returnedGroup.getId());
-        groupsDestination.add(getString(R.string.Group_)+" " + returnedGroup.getGroupDescription()+" ["+ returnedGroup.getRouteLatArray().get(0)+" , "+returnedGroup.getRouteLngArray().get(0)+"]");
-        if(groupID.size() == groups.size()){
+        groupsDestination.add(getString(R.string.Group_) + " " + returnedGroup.getGroupDescription() + " [" + returnedGroup.getRouteLatArray().get(0) + " , " + returnedGroup.getRouteLngArray().get(0) + "]");
+        upGroups.add(returnedGroup);
+        if (groupID.size() == groups.size()) {
             populateGroup();
         }
     }
@@ -168,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     mStopSignal = false;
                     double tempLat = intent.getDoubleExtra("UpdateLat", 0);
                     double tempLng = intent.getDoubleExtra("UpdateLng", 0);
+                    tempUserLocation = new LatLng(tempLat, tempLng);
                     locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
 
                     GpsLocation gpsLocation = new GpsLocation();
@@ -196,7 +202,27 @@ public class MainActivity extends AppCompatActivity {
     Runnable checkChangeRunnable = new Runnable() {
         @Override
         public void run() {
-            mStopSignal = true;
+                if (tempUserLocation != null && upGroups != null) {
+                        for (int i = 0; i < upGroups.size(); i++) {
+                            List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
+                            List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
+                            LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
+                            Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
+                            float results[] = new float[2];
+                            Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
+
+                            if (results[0] <= 200f) {
+                                mStopSignal = true;
+                                break;
+                            }
+
+                            mStopSignal = false;
+                        }
+                }
+
+            if (mStopSignal){
+                stopService(new Intent(getApplicationContext(), LocationService.class));
+            }
             handler.postDelayed(this, 10000);
         }
     };
@@ -417,6 +443,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setPanicBtn() {
         Button btnGroup = (Button) findViewById(R.id.btnPanic);
         btnGroup.setOnClickListener(new View.OnClickListener() {
@@ -428,7 +455,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     default:
-                        Intent intenttoEmsg= MessagesEmergencyActivity.makeIntent(MainActivity.this);
+                        Intent intenttoEmsg = MessagesEmergencyActivity.makeIntent(MainActivity.this);
                         startActivity(intenttoEmsg);
 
                 }
