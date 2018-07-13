@@ -49,11 +49,13 @@ import retrofit2.Call;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static final Handler handler = new Handler();
     private String token;
     private String TAG = "MainActivity";
     private WGServerProxy proxy;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
+    private User currentUser;
     private String userEmail;
     private Long userId;
 
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean mStopSignal = false;
     private LatLng tempUserLocation;
     private List<Group> upGroups = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +120,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
+
+
     }
+
+
 
     private void showChildGPS() {
         Call<List<User>> caller = proxy.getMonitorsUsers(userId);
@@ -145,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         groups.clear();
         groups.addAll(user.getLeadsGroups());
         groups.addAll(user.getMemberOfGroups());
+        currentUser = user;
         try {
             groupsDestination.clear();
             groupID.clear();
@@ -207,18 +215,19 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
 
         populate();
-        showChildGPS();
+//        showChildGPS();
     }
 
-
-    Handler handler = new Handler();
     Runnable toastRunnable = new Runnable() {
         @Override
         public void run() {
+
             Toast.makeText(MainActivity.this, "mStopSignal: " + mStopSignal, Toast.LENGTH_SHORT).show();
             handler.postDelayed(this, 5000);
         }
     };
+
+
     Runnable checkChangeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -443,6 +452,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
                 SharedPreferences.Editor PrefEditor = dataToSave.edit();
                 PrefEditor.putString("userToken", "");
+
                 PrefEditor.apply();
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
