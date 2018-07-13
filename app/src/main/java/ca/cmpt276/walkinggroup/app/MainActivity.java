@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     GpsLocation gpsLocation = new GpsLocation();
                     gpsLocation.setLat(tempLat);
                     gpsLocation.setLng(tempLng);
+                    gpsLocation.setTimestamp(Calendar.getInstance().getTime());
 
                     Call<GpsLocation> caller = proxy.setLastGpsLocation(userId, gpsLocation);
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> response(returnedUser));
