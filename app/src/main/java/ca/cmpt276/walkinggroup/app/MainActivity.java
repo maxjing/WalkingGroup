@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        handler.postDelayed(toastRunnable, 5000);
-        handler.postDelayed(checkChangeRunnable, 10000);
 
         if (mBroadcastReceiver == null) {
             mBroadcastReceiver = new BroadcastReceiver() {
@@ -225,8 +223,11 @@ public class MainActivity extends AppCompatActivity {
             if (mStopSignal) {
                 Toast.makeText(MainActivity.this, "Arrive Target Place!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
+                handler.removeCallbacks(toastRunnable);
+                handler.removeCallbacks(checkChangeRunnable);
+            }else {
+                handler.postDelayed(this, 10000);
             }
-            handler.postDelayed(this, 10000);
         }
     };
 
@@ -271,6 +272,9 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                handler.postDelayed(toastRunnable, 5000);
+                handler.postDelayed(checkChangeRunnable, 10000);
+
                 startService(new Intent(getApplicationContext(), LocationService.class));
             }
         });
@@ -279,6 +283,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 stopService(new Intent(getApplicationContext(), LocationService.class));
+                handler.removeCallbacks(toastRunnable);
+                handler.removeCallbacks(checkChangeRunnable);
             }
         });
     }
