@@ -205,6 +205,9 @@ public class MainActivity extends AppCompatActivity {
         }
         // get Intent from LocationService
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
+
+        populate();
+        showChildGPS();
     }
 
 
@@ -489,6 +492,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
