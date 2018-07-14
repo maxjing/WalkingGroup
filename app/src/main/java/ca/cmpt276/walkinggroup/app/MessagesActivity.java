@@ -3,6 +3,7 @@ package ca.cmpt276.walkinggroup.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 public class MessagesActivity extends AppCompatActivity {
+    private static final Handler handler = new Handler();
     private String TAG = "MessagesActivity";
     private String token;
     private WGServerProxy proxy;
@@ -46,14 +48,28 @@ public class MessagesActivity extends AppCompatActivity {
         userId = dataToGet.getLong("userId", 0);
 
         user = User.getInstance();
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+        populate();
         setMsgBtn();
         setDeleteAllBtn();
         setCancel();
+        handler.postDelayed(update, 1000*5);
+
     }
 
 
+    Runnable update = new Runnable() {
+        @Override
+        public void run() {
+            populate();
+            handler.postDelayed(this, 5000);
+        }
+    };
+
+
+    private void populate(){
+        Call<User> caller_user = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+    }
     private void setMsgBtn(){
         Button btnGroup = (Button)findViewById(R.id.btnSend);
         btnGroup.setOnClickListener(new View.OnClickListener(){

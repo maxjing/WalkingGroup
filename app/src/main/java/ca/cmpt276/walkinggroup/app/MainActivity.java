@@ -49,17 +49,21 @@ import retrofit2.Call;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static final Handler handler = new Handler();
     private String token;
     private String TAG = "MainActivity";
     private WGServerProxy proxy;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
+    private User currentUser;
     private String userEmail;
     private Long userId;
 
     private List<Group> groups = new ArrayList<>();
     private List<String> groupsDestination = new ArrayList<>();
     private List<Long> groupID = new ArrayList<>();
+
+    private List<User> monitorsUsers = new ArrayList<>();
 
     // LocationUpdate values and widges
     private BroadcastReceiver mBroadcastReceiver;
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean mStopSignal = false;
     private LatLng tempUserLocation;
     private List<Group> upGroups = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +95,8 @@ public class MainActivity extends AppCompatActivity {
             btnLogout.setVisibility(View.GONE);
         } else {
             btnLogout.setVisibility(View.VISIBLE);
-
-
+            populate();
+            showChildGPS();
         }
 
         setGroupBtn();
@@ -114,10 +119,29 @@ public class MainActivity extends AppCompatActivity {
             setMapButton();
         }
 
-        if (token != "") {
-            populate();
-        }
+
+
+
     }
+
+
+
+    private void showChildGPS() {
+        Call<List<User>> caller = proxy.getMonitorsUsers(userId);
+        ProxyBuilder.callProxy(MainActivity.this,caller,returnedList -> responseForGPS(returnedList));
+    }
+
+    private void responseForGPS(List<User> returnedList) {
+        monitorsUsers = returnedList;
+        String[] items = new String[monitorsUsers.size()];
+        for (int i = 0; i < monitorsUsers.size(); i++) {
+            items[i] = monitorsUsers.get(i).getName() + " - " + monitorsUsers.get(i).getEmail() + " " + monitorsUsers.get(i).getLastGpsLocation();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.child_gps, items);
+        ListView list = (ListView) findViewById(R.id.list_child_gps);
+        list.setAdapter(adapter);
+    }
+
 
     private void populate() {
         Call<User> caller = proxy.getUserById(userId);
@@ -128,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         groups.clear();
         groups.addAll(user.getLeadsGroups());
         groups.addAll(user.getMemberOfGroups());
+        currentUser = user;
         try {
             groupsDestination.clear();
             groupID.clear();
@@ -190,17 +215,21 @@ public class MainActivity extends AppCompatActivity {
         }
         // get Intent from LocationService
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
+
+        populate();
+//        showChildGPS();
     }
 
-
-    Handler handler = new Handler();
     Runnable toastRunnable = new Runnable() {
         @Override
         public void run() {
+
             Toast.makeText(MainActivity.this, "mStopSignal: " + mStopSignal, Toast.LENGTH_SHORT).show();
             handler.postDelayed(this, 5000);
         }
     };
+
+
     Runnable checkChangeRunnable = new Runnable() {
         @Override
         public void run() {
@@ -274,12 +303,10 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (token != "") {
-                    handler.postDelayed(toastRunnable, 5000);
-                    handler.postDelayed(checkChangeRunnable, 10000);
+                handler.postDelayed(toastRunnable, 5000);
+                handler.postDelayed(checkChangeRunnable, 10000);
 
-                    startService(new Intent(getApplicationContext(), LocationService.class));
-                }
+                startService(new Intent(getApplicationContext(), LocationService.class));
             }
         });
 
@@ -427,6 +454,7 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
                 SharedPreferences.Editor PrefEditor = dataToSave.edit();
                 PrefEditor.putString("userToken", "");
+
                 PrefEditor.apply();
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
@@ -476,6 +504,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
