@@ -111,6 +111,15 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.start_update_location);
         btnStop = findViewById(R.id.stop_location_update);
         locationInfo = findViewById(R.id.location_Information);
+        if (token == "") {
+            btnUpdate.setVisibility(View.GONE);
+            btnStop.setVisibility(View.GONE);
+            locationInfo.setVisibility(View.GONE);
+        }else {
+            btnUpdate.setVisibility(View.VISIBLE);
+            btnStop.setVisibility(View.VISIBLE);
+            locationInfo.setVisibility(View.VISIBLE);
+        }
         if (!runtime_permissions()) {
             setLocationUpdate();
         }
@@ -451,6 +460,10 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                stopService(new Intent(getApplicationContext(), GpsLocation.class));
+                handler.removeCallbacks(toastRunnable);
+                handler.removeCallbacks(checkChangeRunnable);
+
                 SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
                 SharedPreferences.Editor PrefEditor = dataToSave.edit();
                 PrefEditor.putString("userToken", "");
