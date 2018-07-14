@@ -114,7 +114,9 @@ public class MainActivity extends AppCompatActivity {
             setMapButton();
         }
 
-        populate();
+        if (token != "") {
+            populate();
+        }
     }
 
     private void populate() {
@@ -272,10 +274,12 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.postDelayed(toastRunnable, 5000);
-                handler.postDelayed(checkChangeRunnable, 10000);
+                if (token != "") {
+                    handler.postDelayed(toastRunnable, 5000);
+                    handler.postDelayed(checkChangeRunnable, 10000);
 
-                startService(new Intent(getApplicationContext(), LocationService.class));
+                    startService(new Intent(getApplicationContext(), LocationService.class));
+                }
             }
         });
 
