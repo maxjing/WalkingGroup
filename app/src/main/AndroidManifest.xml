@@ -73,7 +73,8 @@
 
         <service android:name=".LocationService" />
 
-        <activity android:name=".MessagesEmergencyActivity"></activity>
+        <activity android:name=".MessagesEmergencyActivity" />
+        <activity android:name=".ParentActivity"></activity>
     </application>
 
 </manifest>

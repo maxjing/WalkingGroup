@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         setInfoBtn();
         setMsgBtn();
         setPanicBtn();
+        setParentBtn();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -325,6 +326,25 @@ public class MainActivity extends AppCompatActivity {
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
+            }
+        });
+    }
+
+    private void setParentBtn() {
+        Button btnParent = (Button) findViewById(R.id.btnParent);
+        btnParent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (token) {
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        break;
+                    default:
+                        Intent intentParent = ParentActivity.makeIntent(MainActivity.this);
+                        startActivity(intentParent);
+
+                }
             }
         });
     }
