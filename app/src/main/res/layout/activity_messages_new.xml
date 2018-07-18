@@ -15,7 +15,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="32dp"
         android:layout_marginTop="31dp"
-        android:text="New Messages"
+        android:text="@string/new_messages"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 
@@ -40,7 +40,7 @@
         android:layout_marginBottom="196dp"
         android:background="@drawable/background_button"
         android:padding="10dp"
-        android:text="Send To Parents and Group leaders"
+        android:text="@string/send_to_parents_and_group_leaders"
         android:textColor="#FFF" />
 
     <Button
@@ -63,7 +63,7 @@
         android:layout_marginBottom="119dp"
         android:background="@drawable/background_button"
         android:padding="10dp"
-        android:text="Send to Group"
+        android:text="@string/send_to_group"
         android:textColor="#FFF" />
 
 </RelativeLayout>

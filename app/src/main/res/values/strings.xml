@@ -102,4 +102,24 @@
     <string name="messages">Messages</string>
     <string name="my_info">My Info</string>
     <string name="panic">Panic</string>
+    <string name="choose_one_group_or_all">Choose one group or All</string>
+    <string name="click_to_send">click to send</string>
+    <string name="new_messages">New Messages</string>
+    <string name="send_to_parents_and_group_leaders">Send To Parents and Group leaders</string>
+    <string name="send_to_group">Send to Group</string>
+    <string name="send_all">Send All</string>
+    <string name="read">Read</string>
+    <string name="new_message">New Message</string>
+    <string name="click_to_view">click to view</string>
+    <string name="press_to_mark_as_unread">Press to mark as unread</string>
+    <string name="delete_all">Delete ALL</string>
+    <string name="from">From:</string>
+    <string name="content">Content:</string>
+    <string name="delete">Delete</string>
+    <string name="no_unread">No Unread</string>
+    <string name="unread">Unread</string>
+    <string name="emergency_message">Emergency Message</string>
+    <string name="help">Help!!!!!</string>
+    <string name="send">Send</string>
+    <string name="send_directly_with_the_hint">SEND DIRECTLY WITH THE HINT</string>
 </resources>
