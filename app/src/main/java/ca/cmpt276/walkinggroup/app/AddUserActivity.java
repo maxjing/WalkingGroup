@@ -33,17 +33,17 @@ public class AddUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        userId = dataToGet.getLong("userId", 0);
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
-
-        setCancelBtn();
-        setOKBtn();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        user = User.getInstance();
+//        userId = dataToGet.getLong("userId", 0);
+//        Call<User> caller = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
+//
+//        setCancelBtn();
+//        setOKBtn();
     }
 
     private void setCancelBtn() {

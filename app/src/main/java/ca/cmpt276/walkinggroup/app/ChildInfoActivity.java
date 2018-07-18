@@ -15,11 +15,11 @@ public class ChildInfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_info);
-        Intent intent = getIntent();
-        childId = intent.getLongExtra(CHILD_ID,0);
-
-        setPersonalBtn();
-        setGroupBtn();
+//        Intent intent = getIntent();
+//        childId = intent.getLongExtra(CHILD_ID,0);
+//
+//        setPersonalBtn();
+//        setGroupBtn();
     }
 
     private void setPersonalBtn() {

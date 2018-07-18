@@ -36,6 +36,7 @@ import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean mStopSignal = false;
     private LatLng tempUserLocation;
     private List<Group> upGroups = new ArrayList<>();
+    private Session session;
 
 
     @Override
@@ -80,18 +82,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+//        token = dataToGet.getString("userToken", "");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        userId = dataToGet.getLong("userId", 0);
+//
+//        user = User.getInstance();
 
-        user = User.getInstance();
 
-
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = new User();
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
 
-        if (token == "") {
+        if (session.getToken() == "") {
             btnLogout.setVisibility(View.GONE);
         } else {
             btnLogout.setVisibility(View.VISIBLE);
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate = findViewById(R.id.start_update_location);
         btnStop = findViewById(R.id.stop_location_update);
         locationInfo = findViewById(R.id.location_Information);
-        if (token == "") {
+        if (session.getToken() == "") {
             btnUpdate.setVisibility(View.GONE);
             btnStop.setVisibility(View.GONE);
             locationInfo.setVisibility(View.GONE);
@@ -120,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             btnUpdate.setVisibility(View.VISIBLE);
             btnStop.setVisibility(View.VISIBLE);
             locationInfo.setVisibility(View.VISIBLE);
+            user = session.getUser();
         }
         if (!runtime_permissions()) {
             setLocationUpdate();
@@ -137,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void showChildGPS() {
-        Call<List<User>> caller = proxy.getMonitorsUsers(userId);
+        Call<List<User>> caller = proxy.getMonitorsUsers(user.getId());
         ProxyBuilder.callProxy(MainActivity.this,caller,returnedList -> responseForGPS(returnedList));
     }
 
@@ -154,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void populate() {
-        Call<User> caller = proxy.getUserById(userId);
+        Call<User> caller = proxy.getUserById(user.getId());
         ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
 
@@ -226,8 +232,11 @@ public class MainActivity extends AppCompatActivity {
         // get Intent from LocationService
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
 
-        populate();
-        showChildGPS();
+        if(session.getToken() != ""){
+            populate();
+            showChildGPS();
+        }
+
     }
 
     Runnable toastRunnable = new Runnable() {
@@ -335,7 +344,7 @@ public class MainActivity extends AppCompatActivity {
         btnParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -354,7 +363,7 @@ public class MainActivity extends AppCompatActivity {
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -376,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
         btnMonitor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -397,7 +406,7 @@ public class MainActivity extends AppCompatActivity {
         btnMonitoring.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -440,7 +449,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -464,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
@@ -508,7 +517,7 @@ public class MainActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intent = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intent);
@@ -529,7 +538,7 @@ public class MainActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (token) {
+                switch (session.getToken()) {
                     case "":
                         Intent intent = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intent);

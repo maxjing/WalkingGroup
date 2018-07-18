@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -35,15 +36,16 @@ public class LoginActivity extends AppCompatActivity {
     private String userToken;
     private long userId = 0;
     private WGServerProxy proxy;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        GetPref();
-        user = User.getInstance();
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), userToken);
-
+        //GetPref();
+        session = Session.getInstance();
+        user = new User();
+        proxy = session.getProxy();
         setLoginBtn();
         setRegisterBtn();
 
@@ -73,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
                 userEmail = emailInput.getText().toString();
                 userPassword = passwordInput.getText().toString();
 
-                user = User.getInstance();
                 user.setEmail(userEmail);
                 user.setPassword(userPassword);
 
@@ -91,9 +92,11 @@ public class LoginActivity extends AppCompatActivity {
     private void onReceiveToken(String token) {
         // Replace the current proxy with one that uses the token!
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
+
+        session.setToken(token);
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userToken = token;
-        savePref();
+       // userToken = token;
+        //savePref();
 
 
 
@@ -111,8 +114,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void response(User user) {
-        userId = user.getId();
-        savePref();
+        session.setUser(user);
+       // savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
@@ -121,23 +124,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    public void savePref(){
-        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
-        SharedPreferences.Editor PrefEditor = dataToSave.edit();
-        PrefEditor.putString("userToken",userToken);
-        PrefEditor.putString("userEmail",userEmail);
-        PrefEditor.putLong("userId",userId);
-
-        PrefEditor.apply();
-
-    }
-    public void GetPref(){
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        if (dataToGet==null)return;
-        userToken = dataToGet.getString("userToken","");
-
-
-    }
+//    public void savePref(){
+//        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+//        SharedPreferences.Editor PrefEditor = dataToSave.edit();
+//        PrefEditor.putString("userToken",userToken);
+//        PrefEditor.putString("userEmail",userEmail);
+//        PrefEditor.putLong("userId",userId);
+//
+//        PrefEditor.apply();
+//
+//    }
+//    public void GetPref(){
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        if (dataToGet==null)return;
+//        userToken = dataToGet.getString("userToken","");
+//
+//
+//    }
 
 
 

@@ -28,17 +28,17 @@ public class MessagesDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_detail);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        Intent intent = getIntent();
-        msgId = intent.getLongExtra("msgId",0);
-
-        Call<Message> caller = proxy.getOneMessage(msgId);
-        ProxyBuilder.callProxy(MessagesDetailActivity.this, caller, returnedMsg -> response(returnedMsg));
-
-        setBackBtn();
-        setDeleteBtn();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        Intent intent = getIntent();
+//        msgId = intent.getLongExtra("msgId",0);
+//
+//        Call<Message> caller = proxy.getOneMessage(msgId);
+//        ProxyBuilder.callProxy(MessagesDetailActivity.this, caller, returnedMsg -> response(returnedMsg));
+//
+//        setBackBtn();
+//        setDeleteBtn();
 
     }
 

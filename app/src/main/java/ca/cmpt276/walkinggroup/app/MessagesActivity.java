@@ -42,17 +42,17 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
-
-        user = User.getInstance();
-        populate();
-        setMsgBtn();
-        setDeleteAllBtn();
-        setCancel();
-        handler.postDelayed(update, 1000*5);
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        userId = dataToGet.getLong("userId", 0);
+//
+//        user = User.getInstance();
+//        populate();
+//        setMsgBtn();
+//        setDeleteAllBtn();
+//        setCancel();
+//        handler.postDelayed(update, 1000*5);
 
     }
 

@@ -42,24 +42,24 @@ public class MonitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-
-        userId = dataToGet.getLong("userId", 0);
-
-        Intent intent = getIntent();
-        memberId = intent.getLongExtra(MEMBER_ID,0);
-        if(memberId != 0){
-            userId = memberId;
-
-            Button btn = (Button) findViewById(R.id.btnAdd_ed);
-            btn.setVisibility(View.GONE);
-        }
-        populateListView();
-        registerClickCallback();
-        setAddBtn();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        user = User.getInstance();
+//
+//        userId = dataToGet.getLong("userId", 0);
+//
+//        Intent intent = getIntent();
+//        memberId = intent.getLongExtra(MEMBER_ID,0);
+//        if(memberId != 0){
+//            userId = memberId;
+//
+//            Button btn = (Button) findViewById(R.id.btnAdd_ed);
+//            btn.setVisibility(View.GONE);
+//        }
+//        populateListView();
+//        registerClickCallback();
+//        setAddBtn();
     }
 
     private void setAddBtn() {
@@ -135,19 +135,19 @@ public class MonitorActivity extends AppCompatActivity {
         return intent;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_Monitored:
-                if (resultCode == Activity.RESULT_OK) {
-                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-                    token = dataToGet.getString("userToken","");
-                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-                    user = User.getInstance();
-                    userId = dataToGet.getLong("userId", 0);
-                    Call<User> caller = proxy.getUserById(userId);
-                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
-                }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (requestCode) {
+//            case REQUEST_CODE_Monitored:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//                    token = dataToGet.getString("userToken","");
+//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//                    user = User.getInstance();
+//                    userId = dataToGet.getLong("userId", 0);
+//                    Call<User> caller = proxy.getUserById(userId);
+//                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
+//                }
+//        }
+//    }
 }

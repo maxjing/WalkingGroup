@@ -44,15 +44,15 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        userId = dataToGet.getLong("userId", 0);
-
-        extractDataFromIntent();
-        setOKBtn();
-        setCancelBtn();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+//        token = dataToGet.getString("userToken", "");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        user = User.getInstance();
+//        userId = dataToGet.getLong("userId", 0);
+//
+//        extractDataFromIntent();
+//        setOKBtn();
+//        setCancelBtn();
 
     }
 
