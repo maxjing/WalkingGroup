@@ -92,7 +92,7 @@
 
             <TextView
                 android:id="@+id/txtYear"
-                android:layout_width="200dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
@@ -116,7 +116,7 @@
 
             <TextView
                 android:id="@+id/txtMonth"
-                android:layout_width="220dp"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
@@ -140,7 +140,7 @@
 
             <TextView
                 android:id="@+id/txtAddress"
-                android:layout_width="180dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
@@ -164,12 +164,12 @@
 
             <TextView
                 android:id="@+id/txtcellPhone"
-                android:layout_width="200dp"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="#FFF"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -188,12 +188,12 @@
 
             <TextView
                 android:id="@+id/txthomePhone"
-                android:layout_width="220dp"
+                android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="#FFF"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -212,12 +212,12 @@
 
             <TextView
                 android:id="@+id/txtGrade"
-                android:layout_width="160dp"
+                android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="#FFF"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -236,12 +236,12 @@
 
             <TextView
                 android:id="@+id/txtTeacher"
-                android:layout_width="220dp"
+                android:layout_width="235dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text=""
                 android:textColor="#FFF"
-                android:textSize="18dp"/>
+                android:textSize="18dp" />
         </LinearLayout>
 
         <LinearLayout
