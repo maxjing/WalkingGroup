@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ParentActivity extends AppCompatActivity {
 
@@ -16,6 +17,9 @@ public class ParentActivity extends AppCompatActivity {
 
         setMapBtn();
         setMessageBtn();
+
+        TextView NoUnread = (TextView)findViewById(R.id.txtNoUnread);
+        NoUnread.setText("33");
     }
 
     private void setMapBtn() {
