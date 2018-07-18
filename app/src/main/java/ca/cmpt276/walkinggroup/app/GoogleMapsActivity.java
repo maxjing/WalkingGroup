@@ -478,12 +478,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     Runnable updateChild = new Runnable() {
         @Override
         public void run() {
-
             Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
             ProxyBuilder.callProxy(GoogleMapsActivity.this, callerChild, returnedList -> UpdateChildMarker(returnedList));
             handler.postDelayed(this, 5000);
         }
     };
+
 
     private void UpdateChildMarker(List<User> returnedList) {
         Toast.makeText(GoogleMapsActivity.this, "Child Update Called", Toast.LENGTH_SHORT).show();

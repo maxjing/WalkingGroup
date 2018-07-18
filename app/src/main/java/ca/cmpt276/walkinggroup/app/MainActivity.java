@@ -480,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                stopService(new Intent(getApplicationContext(), GpsLocation.class));
+                stopService(new Intent(getApplicationContext(), LocationService.class));
                 handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
 
