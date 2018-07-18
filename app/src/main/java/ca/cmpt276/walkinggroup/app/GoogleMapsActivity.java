@@ -186,7 +186,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         getLocationPermission();
         setUpClearButton();
 
-        handler.postDelayed(updateChild,5000);
+        handler.postDelayed(updateChild, 5000);
     }
 
     private void response(List<Group> groups) {   // get group info from lists
@@ -237,7 +237,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
 
         Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
-        ProxyBuilder.callProxy(GoogleMapsActivity.this,callerChild,returnedList -> responseForChild(returnedList));
+        ProxyBuilder.callProxy(GoogleMapsActivity.this, callerChild, returnedList -> responseForChild(returnedList));
 
         Log.d(TAG, "init: initializing");
 
@@ -299,7 +299,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         });
 
         mShowWalkingGroups.setOnClickListener(new View.OnClickListener() {
-            @Override                                   // show or hide walking groups, the blue marker
+            @Override
+            // show or hide walking groups, the blue marker
             public void onClick(View view) {
                 boolean flag = false;
                 if (mMarkerList != null) {
@@ -339,7 +340,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override                                           // setting the click marker activity
             public boolean onMarkerClick(Marker marker) {
-                for (int i = 0; i < mMeetGroupMarkerList.size(); i++){ // hide all meeting place marker
+                for (int i = 0; i < mMeetGroupMarkerList.size(); i++) { // hide all meeting place marker
                     mMeetGroupMarkerList.get(i).setVisible(false);
                 }
                 if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE) && !marker.getTitle().equals(CHILD)) {
@@ -363,12 +364,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     if (mSearchMarkerDetail != null) {
                         if (mMeetPlaceDetail == null) {
                             Toast.makeText(GoogleMapsActivity.this, R.string.select_meet_place, Toast.LENGTH_SHORT).show();
-                        }
-                        else if(mSearchMarkerDetail == mMeetPlaceDetail) {
+                        } else if (mSearchMarkerDetail == mMeetPlaceDetail) {
                             Toast.makeText(GoogleMapsActivity.this, R.string.different_place, Toast.LENGTH_SHORT).show();
-                        }
-
-                        else {
+                        } else {
                             Toast.makeText(GoogleMapsActivity.this, R.string.clear_selected_place, Toast.LENGTH_SHORT).show();
                             Bundle args = new Bundle();
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
@@ -399,7 +397,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         Toast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
-                    if (marker.getTitle().equals(MEETING_PLACE) && position != null ){
+                    if (marker.getTitle().equals(MEETING_PLACE) && position != null) {
                         marker.setVisible(true);
                         Bundle args = new Bundle();
                         final long selectedID = markerID;
@@ -410,8 +408,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         FragmentManager manager = getSupportFragmentManager();
                         JoinGroupFragment dialog = new JoinGroupFragment();
                         dialog.setArguments(args);
-                        dialog.show(manager, getString(R.string.message_dialog));;
-                    }else {
+                        dialog.show(manager, getString(R.string.message_dialog));
+                        ;
+                    } else {
                         for (int i = 0; i < mMarkerList.size(); i++) {
                             try {
                                 if (marker.equals(mMarkerList.get(i))) {
@@ -457,12 +456,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             }
 
             ChildMonitoring(ChildLatitudes, ChildLongtitudes, ChildDes, ChildTimeStamp, ChildDes, ChildID);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
     }
 
     private void ChildMonitoring(Double[] childLatitudes, Double[] childLongtitudes, String[] childDes, Date[] childTimeStamp, String[] childDes1, Long[] childID) {
-        for (int i = 0; i < childID.length; i++)
-        {
+        for (int i = 0; i < childID.length; i++) {
             String snippet = "" + ChildDes + " , " + childTimeStamp;
             MarkerOptions options = new MarkerOptions()
                     .position(new LatLng(childLatitudes[i], childLongtitudes[i]))
@@ -481,34 +480,34 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         public void run() {
 
             Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
-            ProxyBuilder.callProxy(GoogleMapsActivity.this,callerChild,returnedList -> UpdateChildMarker(returnedList));
+            ProxyBuilder.callProxy(GoogleMapsActivity.this, callerChild, returnedList -> UpdateChildMarker(returnedList));
             handler.postDelayed(this, 5000);
         }
     };
 
     private void UpdateChildMarker(List<User> returnedList) {
-        Toast.makeText(GoogleMapsActivity.this,"Child Update Called", Toast.LENGTH_SHORT).show();
-
-        for (int i = 0; i < mChildMarkerList.size(); i++){
-            for (int j =0; j < returnedList.size(); j++){
-                if (returnedList.get(j).getId().equals(mChildID.get(i))){
-                    String snippet = "" + returnedList.get(j).getName() + " , " + returnedList.get(j).getLastGpsLocation().getTimestamp();
-                    mChildMarkerList.get(i).remove();
-                    mChildMarkerList.remove(i);
-                    mChildID.remove(i);
-
-                    MarkerOptions options = new MarkerOptions()
-                            .position(new LatLng(returnedList.get(i).getLastGpsLocation().getLat(),
-                                    returnedList.get(i).getLastGpsLocation().getLng()))
-                            .title(CHILD)
-                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-                    Marker tempMarker = mMap.addMarker(options);
-                    tempMarker.setVisible(true);
-                    tempMarker.setSnippet(snippet);
-                    mChildMarkerList.add(tempMarker);
-                    mChildID.add(returnedList.get(i).getId());
-                }
+        Toast.makeText(GoogleMapsActivity.this, "Child Update Called", Toast.LENGTH_SHORT).show();
+        try {
+            for (int i = 0; i < mChildMarkerList.size(); i++) {
+                mChildMarkerList.get(i).remove();
+                mChildMarkerList.remove(i);
+                mChildID.remove(i);
             }
+
+            for (int i = 0; i < returnedList.size(); i++) {
+                String snippet = "" + returnedList.get(i).getName() + " , " + returnedList.get(i).getLastGpsLocation().getTimestamp();
+                MarkerOptions options = new MarkerOptions()
+                        .position(new LatLng(returnedList.get(i).getLastGpsLocation().getLat(),
+                                returnedList.get(i).getLastGpsLocation().getLng()))
+                        .title(CHILD)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                Marker tempMarker = mMap.addMarker(options);
+                tempMarker.setVisible(true);
+                tempMarker.setSnippet(snippet);
+                mChildMarkerList.add(tempMarker);
+                mChildID.add(returnedList.get(i).getId());
+            }
+        }catch (Exception e){
         }
     }
 
