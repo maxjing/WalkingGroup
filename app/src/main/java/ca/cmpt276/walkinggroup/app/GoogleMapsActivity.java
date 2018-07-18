@@ -189,6 +189,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         handler.postDelayed(updateChild, 5000);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        handler.removeCallbacks(updateChild);
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void response(List<Group> groups) {   // get group info from lists
         groupList = groups;
         latitudes = new Double[groupList.size()];
