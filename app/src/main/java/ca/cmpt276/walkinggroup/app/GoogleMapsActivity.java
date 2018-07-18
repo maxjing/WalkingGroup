@@ -8,9 +8,8 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -41,7 +40,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -53,9 +51,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.app.Adapter.CustomInfoWindowAdapter;
 import ca.cmpt276.walkinggroup.app.Adapter.PlaceAutocompleteAdapter;
@@ -64,6 +61,7 @@ import ca.cmpt276.walkinggroup.app.DialogFragment.MessageFragment;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.PlaceInfo;
+import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
@@ -80,7 +78,7 @@ import retrofit2.Call;
 
 public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCallback {
     private static final String TAG = "GoogleMapActivity";
-
+    private static final Handler handler = new Handler();
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -88,6 +86,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private static final int PLACE_PICKER_REQUEST = 1;
     public static final String WALKING_GROUP = "Walking Group";
     public static final String MEETING_PLACE = "Meeting Place";
+    public static final String CHILD = "CHILD";
     private PlaceInfo mPlaceDetailsText;
     private PlaceInfo mSearchMarkerDetail = null;
     private PlaceInfo mMeetPlaceDetail = null;
@@ -116,6 +115,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private List<GroupInfo> mGroupInfoList = new ArrayList<>();
     private List<GroupInfo> mMeetingGroupInfoList = new ArrayList<>();
     private List<Marker> mMeetGroupMarkerList = new ArrayList<>();
+    private List<Marker> mChildMarkerList = new ArrayList<>();
+    private List<Long> mChildID = new ArrayList<>();
+    private List<User> monitorsUsers = new ArrayList<>();
 
     //widgets
     private AutoCompleteTextView mSearchText, mSearchMeetingPlace;
@@ -144,6 +146,13 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private String[] groupDes;
     private Long[] groupId;
     private String[] meetPlace;
+
+    private List<User> childList;
+    private Double[] ChildLatitudes;
+    private Double[] ChildLongtitudes;
+    private String[] ChildDes;
+    private Long[] ChildID;
+    private Date[] ChildTimeStamp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,6 +186,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         getLocationPermission();
         setUpClearButton();
 
+        handler.postDelayed(updateChild,5000);
     }
 
     private void response(List<Group> groups) {   // get group info from lists
@@ -225,6 +235,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private void init() {
         Call<List<Group>> caller = proxy.getGroups();
         ProxyBuilder.callProxy(GoogleMapsActivity.this, caller, returnedGroup -> response(returnedGroup));
+
+        Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
+        ProxyBuilder.callProxy(GoogleMapsActivity.this,callerChild,returnedList -> responseForChild(returnedList));
 
         Log.d(TAG, "init: initializing");
 
@@ -329,7 +342,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 for (int i = 0; i < mMeetGroupMarkerList.size(); i++){ // hide all meeting place marker
                     mMeetGroupMarkerList.get(i).setVisible(false);
                 }
-                if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE)) {
+                if (!marker.getTitle().equals(WALKING_GROUP) && !marker.getTitle().equals(MEETING_PLACE) && !marker.getTitle().equals(CHILD)) {
                     markerID = 0;
                     if (mPlaceDetailsTextList != null) {
                         for (int i = 0; i < mPlaceDetailsTextList.size(); i++) {
@@ -424,6 +437,79 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         });
 
         hideSoftKeyboard();
+    }
+
+    private void responseForChild(List<User> returnedList) {
+        try {
+            monitorsUsers = returnedList;
+            ChildLatitudes = new Double[monitorsUsers.size()];
+            ChildLongtitudes = new Double[monitorsUsers.size()];
+            ChildDes = new String[monitorsUsers.size()];
+            ChildID = new Long[monitorsUsers.size()];
+            ChildTimeStamp = new Date[monitorsUsers.size()];
+
+            for (int i = 0; i < monitorsUsers.size(); i++) {
+                ChildLatitudes[i] = monitorsUsers.get(i).getLastGpsLocation().getLat();
+                ChildLongtitudes[i] = monitorsUsers.get(i).getLastGpsLocation().getLng();
+                ChildTimeStamp[i] = monitorsUsers.get(i).getLastGpsLocation().getTimestamp();
+                ChildDes[i] = "" + monitorsUsers.get(i).getName();
+                ChildID[i] = monitorsUsers.get(i).getId();
+            }
+
+            ChildMonitoring(ChildLatitudes, ChildLongtitudes, ChildDes, ChildTimeStamp, ChildDes, ChildID);
+        }catch(Exception e){}
+    }
+
+    private void ChildMonitoring(Double[] childLatitudes, Double[] childLongtitudes, String[] childDes, Date[] childTimeStamp, String[] childDes1, Long[] childID) {
+        for (int i = 0; i < childID.length; i++)
+        {
+            String snippet = "" + ChildDes + " , " + childTimeStamp;
+            MarkerOptions options = new MarkerOptions()
+                    .position(new LatLng(childLatitudes[i], childLongtitudes[i]))
+                    .title(CHILD)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            Marker tempMarker = mMap.addMarker(options);
+            tempMarker.setVisible(true);
+            tempMarker.setSnippet(snippet);
+            mChildMarkerList.add(tempMarker);
+            mChildID.add(childID[i]);
+        }
+    }
+
+    Runnable updateChild = new Runnable() {
+        @Override
+        public void run() {
+
+            Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
+            ProxyBuilder.callProxy(GoogleMapsActivity.this,callerChild,returnedList -> UpdateChildMarker(returnedList));
+            handler.postDelayed(this, 5000);
+        }
+    };
+
+    private void UpdateChildMarker(List<User> returnedList) {
+        Toast.makeText(GoogleMapsActivity.this,"Child Update Called", Toast.LENGTH_SHORT).show();
+
+        for (int i = 0; i < mChildMarkerList.size(); i++){
+            for (int j =0; j < returnedList.size(); j++){
+                if (returnedList.get(j).getId().equals(mChildID.get(i))){
+                    String snippet = "" + returnedList.get(j).getName() + " , " + returnedList.get(j).getLastGpsLocation().getTimestamp();
+                    mChildMarkerList.get(i).remove();
+                    mChildMarkerList.remove(i);
+                    mChildID.remove(i);
+
+                    MarkerOptions options = new MarkerOptions()
+                            .position(new LatLng(returnedList.get(i).getLastGpsLocation().getLat(),
+                                    returnedList.get(i).getLastGpsLocation().getLng()))
+                            .title(CHILD)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                    Marker tempMarker = mMap.addMarker(options);
+                    tempMarker.setVisible(true);
+                    tempMarker.setSnippet(snippet);
+                    mChildMarkerList.add(tempMarker);
+                    mChildID.add(returnedList.get(i).getId());
+                }
+            }
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
