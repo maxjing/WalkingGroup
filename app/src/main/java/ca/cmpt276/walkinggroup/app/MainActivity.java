@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             btnLogout.setVisibility(View.VISIBLE);
             populate();
-            showChildGPS();
+            //showChildGPS();
         }
 
         setGroupBtn();

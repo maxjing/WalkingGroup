@@ -159,6 +159,7 @@ public class MonitoringActivity extends AppCompatActivity {
                     token = dataToGet.getString("userToken","");
                     proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
                     user = User.getInstance();
+                    userId = dataToGet.getLong("userId", 0);
                     Call<User> caller = proxy.getUserById(userId);
                     ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
                 }
