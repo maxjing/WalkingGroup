@@ -189,6 +189,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         handler.postDelayed(updateChild, 5000);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        handler.removeCallbacks(updateChild);
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void response(List<Group> groups) {   // get group info from lists
         groupList = groups;
         latitudes = new Double[groupList.size()];
@@ -478,12 +484,12 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     Runnable updateChild = new Runnable() {
         @Override
         public void run() {
-
             Call<List<User>> callerChild = proxy.getMonitorsUsers(userId);
             ProxyBuilder.callProxy(GoogleMapsActivity.this, callerChild, returnedList -> UpdateChildMarker(returnedList));
             handler.postDelayed(this, 5000);
         }
     };
+
 
     private void UpdateChildMarker(List<User> returnedList) {
         Toast.makeText(GoogleMapsActivity.this, "Child Update Called", Toast.LENGTH_SHORT).show();
