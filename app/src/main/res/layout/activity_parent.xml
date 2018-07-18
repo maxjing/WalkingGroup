@@ -23,8 +23,8 @@
         android:id="@+id/btnMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="257dp"
-        android:layout_marginStart="161dp"
+        android:layout_marginBottom="216dp"
+        android:layout_marginStart="160dp"
         android:background="@drawable/background_button"
         android:text="@string/messages"
         android:textColor="#FFF"
@@ -35,11 +35,10 @@
         android:id="@+id/txtNoUnread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="272dp"
+        android:layout_marginEnd="76dp"
         android:text="@string/no_unread"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/btnMessage"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/btnMessage"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>
