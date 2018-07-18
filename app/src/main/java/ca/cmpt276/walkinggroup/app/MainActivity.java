@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             btnLogout.setVisibility(View.VISIBLE);
             populate();
-            //showChildGPS();
+            showChildGPS();
         }
 
         setGroupBtn();
@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
 
         populate();
-//        showChildGPS();
+        showChildGPS();
     }
 
     Runnable toastRunnable = new Runnable() {
@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
+                        finish();
                         break;
                     default:
                         Intent intentInfo = UserInfoActivity.makeIntent(MainActivity.this);
@@ -379,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
+                        finish();
                         break;
                     default:
                         Intent intentMonitor = MonitorActivity.makeIntent(MainActivity.this);
@@ -399,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
+                        finish();
                         break;
                     default:
                         Intent intentMonitoring = MonitoringActivity.makeIntent(MainActivity.this, 0);
@@ -441,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
+                        finish();
                         break;
                     default:
                         startActivity(new Intent(MainActivity.this, GoogleMapsActivity.class));
@@ -464,6 +468,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intentToLogin);
+                        finish();
                         break;
                     default:
                         Intent intent = GroupActivity.makeIntent(MainActivity.this);
@@ -507,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intent = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intent);
+                        finish();
                         break;
                     default:
                         Intent intenttomsg = MessagesActivity.makeIntent(MainActivity.this);
@@ -527,6 +533,7 @@ public class MainActivity extends AppCompatActivity {
                     case "":
                         Intent intent = LoginActivity.makeIntent(MainActivity.this);
                         startActivity(intent);
+                        finish();
                         break;
                     default:
                         Intent intenttoEmsg = MessagesEmergencyActivity.makeIntent(MainActivity.this);
