@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         session = Session.getInstance();
         proxy = session.getProxy();
-        user = new User();
+        //user = new User();
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
 
@@ -100,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
             btnLogout.setVisibility(View.GONE);
         } else {
             btnLogout.setVisibility(View.VISIBLE);
+            user = session.getUser();
+            userId = user.getId();
             populate();
             showChildGPS();
+
+          //  Toast.makeText(this,""+user.getId(),Toast.LENGTH_LONG).show();
         }
 
         setGroupBtn();
@@ -125,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
             btnUpdate.setVisibility(View.VISIBLE);
             btnStop.setVisibility(View.VISIBLE);
             locationInfo.setVisibility(View.VISIBLE);
-            user = session.getUser();
         }
         if (!runtime_permissions()) {
             setLocationUpdate();
@@ -143,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void showChildGPS() {
-        Call<List<User>> caller = proxy.getMonitorsUsers(user.getId());
+        Call<List<User>> caller = proxy.getMonitorsUsers(userId);
         ProxyBuilder.callProxy(MainActivity.this,caller,returnedList -> responseForGPS(returnedList));
     }
 
@@ -160,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void populate() {
-        Call<User> caller = proxy.getUserById(user.getId());
+        Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
+        Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
 
@@ -232,10 +236,10 @@ public class MainActivity extends AppCompatActivity {
         // get Intent from LocationService
         registerReceiver(mBroadcastReceiver, new IntentFilter("UpdateLocation"));
 
-        if(session.getToken() != ""){
-            populate();
-            showChildGPS();
-        }
+//        if(session.getToken() != ""){
+//            populate();
+//            showChildGPS();
+//        }
 
     }
 
@@ -498,11 +502,12 @@ public class MainActivity extends AppCompatActivity {
                 handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
 
-                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
-                SharedPreferences.Editor PrefEditor = dataToSave.edit();
-                PrefEditor.putString("userToken", "");
-
-                PrefEditor.apply();
+//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+//                PrefEditor.putString("userToken", "");
+//
+//                PrefEditor.apply();
+                session.setToken("");
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                 startActivity(intentToLogin);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -38,22 +40,28 @@ public class MonitoringActivity extends AppCompatActivity {
     private String token;
     private long userId;
     private long groupId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoring);
 
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        token = session.getToken();
+        user = session.getUser();
+        userId = user.getId();
 //        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
 //        token = dataToGet.getString("userToken", "");
 //        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //        user = User.getInstance();
-//
-//        setAddBtn();
-//        registerClickCallback();
+
+        setAddBtn();
+        registerClickCallback();
 //        userId = dataToGet.getLong("userId", 0);
-//
-//        populateListView();
+
+        populateListView();
     }
 
     private void setAddBtn() {
@@ -150,21 +158,32 @@ public class MonitoringActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_Monitoring:
-//                if (resultCode == Activity.RESULT_OK) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_Monitoring:
+                if (resultCode == Activity.RESULT_OK) {
 //                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
 //                    token = dataToGet.getString("userToken","");
 //                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //                    user = User.getInstance();
 //                    userId = dataToGet.getLong("userId", 0);
-//                    Call<User> caller = proxy.getUserById(userId);
-//                    ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
-//                }
-//        }
-//    }
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+                    userId = user.getId();
+                    //Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
+                    Log.i("LOG",""+userId);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Call<User> caller = proxy.getUserById(userId);
+                    ProxyBuilder.callProxy(MonitoringActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
+    }
 
     @Override
     protected void onResume() {

@@ -27,6 +27,9 @@ public class Session {
         return instance;
     }
 
+    public void setProxy(String token){
+        proxy = ProxyBuilder.getProxy(API_KEY,token);
+    }
     public WGServerProxy getProxy() {
         return this.proxy;
     }

@@ -94,7 +94,8 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
 
         session.setToken(token);
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        session.setProxy(token);
+        proxy = session.getProxy();
        // userToken = token;
         //savePref();
 
