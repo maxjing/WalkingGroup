@@ -9,12 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -94,9 +89,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
 
         session.setToken(token);
-//        session.setProxy(token);
         session.setProxy(proxy);
-//        proxy = session.getProxy();
 
         userToken = token;
         savePref();
@@ -120,7 +113,6 @@ public class LoginActivity extends AppCompatActivity {
     private void response(User user) {
         session.setUser(user);
         userId = user.getId();
-        Toast.makeText(this, "from login "+userId, Toast.LENGTH_SHORT).show();
         savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);

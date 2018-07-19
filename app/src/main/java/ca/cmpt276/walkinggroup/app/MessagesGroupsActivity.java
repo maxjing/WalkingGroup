@@ -18,6 +18,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -35,6 +36,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
     private String msg;
     private Message message;
     private String TAG = "MessagesGroupsActivity";
+    private Session session;
 
 
     @Override
@@ -43,9 +45,12 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_messages_groups);
 
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesGroupsActivity.this, caller_user, returnedUser -> response(returnedUser));
         msg = dataToGet.getString("pMessage","");

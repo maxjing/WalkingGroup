@@ -91,9 +91,6 @@ public class MainActivity extends AppCompatActivity {
         proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
         session.setProxy(proxy);
 
-        Toast.makeText(this, "from main "+userId+" "+token, Toast.LENGTH_SHORT).show();
-
-
 
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
         //set up location update
@@ -101,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         btnStop = findViewById(R.id.stop_location_update);
         locationInfo = findViewById(R.id.location_Information);
 
-        Toast.makeText(this, "from main "+userId, Toast.LENGTH_SHORT).show();
         if (token == "") {
             btnLogout.setVisibility(View.GONE);
             btnUpdate.setVisibility(View.GONE);
@@ -167,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void populate() {
-        Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }

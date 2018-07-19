@@ -28,7 +28,6 @@ import retrofit2.Call;
 public class MessagesActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
     private String TAG = "MessagesActivity";
-    private String token;
     private WGServerProxy proxy;
     private Long userId;
     private User user;
@@ -49,29 +48,34 @@ public class MessagesActivity extends AppCompatActivity {
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
-        Toast.makeText(this, "from msg "+session.getToken(), Toast.LENGTH_SHORT).show();
 
         populate();
         setMsgBtn();
         setDeleteAllBtn();
         setCancel();
-//        handler.postDelayed(update, 1000*5);
+        handler.postDelayed(update, 1000*5);
+
 
     }
 
 
-//    Runnable update = new Runnable() {
-//        @Override
-//        public void run() {
-//            populate();
-//            handler.postDelayed(this, 5000);
-//        }
-//    };
+    Runnable update = new Runnable() {
+        @Override
+        public void run() {
+            populate();
+            handler.postDelayed(this, 5000);
+        }
+    };
 
 
     private void populate(){
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+        Call<List<Message>> caller_read = proxy.getReadMessages(userId,true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
+        Call<List<Message>> caller_unread = proxy.getUnreadMessages(userId,true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseEMUnRead(returnedMsg));
+
+
+
     }
     private void setMsgBtn(){
         Button btnGroup = (Button)findViewById(R.id.btnSend);
@@ -140,18 +144,12 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void response(Message message){
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+        populate();
     }
 
 
     private void response(User returnedUser) {
-        user = returnedUser;
 
-        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),true);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
-        Call<List<Message>> caller_unread = proxy.getUnreadMessages(user.getId(),true);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseEMUnRead(returnedMsg));
 
 
     }
