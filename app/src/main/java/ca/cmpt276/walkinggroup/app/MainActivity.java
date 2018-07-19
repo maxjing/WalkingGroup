@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver mBroadcastReceiver;
     private Button btnUpdate;
     private Button btnStop;
-    private TextView locationInfo;
+    //private TextView locationInfo;
     private Boolean mStopSignal = false;
     private LatLng tempUserLocation;
     private List<Group> upGroups = new ArrayList<>();
@@ -117,15 +117,15 @@ public class MainActivity extends AppCompatActivity {
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
         btnStop = findViewById(R.id.stop_location_update);
-        locationInfo = findViewById(R.id.location_Information);
+        //locationInfo = findViewById(R.id.location_Information);
         if (session.getToken() == "") {
             btnUpdate.setVisibility(View.GONE);
             btnStop.setVisibility(View.GONE);
-            locationInfo.setVisibility(View.GONE);
+        //    locationInfo.setVisibility(View.GONE);
         }else {
             btnUpdate.setVisibility(View.VISIBLE);
             btnStop.setVisibility(View.VISIBLE);
-            locationInfo.setVisibility(View.VISIBLE);
+        //    locationInfo.setVisibility(View.VISIBLE);
         }
         if (!runtime_permissions()) {
             setLocationUpdate();
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                     double tempLat = intent.getDoubleExtra("UpdateLat", 0);
                     double tempLng = intent.getDoubleExtra("UpdateLng", 0);
                     tempUserLocation = new LatLng(tempLat, tempLng);
-                    locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
+             //       locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
 
                     GpsLocation gpsLocation = new GpsLocation();
                     gpsLocation.setLat(tempLat);
@@ -323,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
                 handler.postDelayed(checkChangeRunnable, 10000);
 
@@ -333,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
@@ -495,6 +497,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
