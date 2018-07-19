@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.R;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -41,6 +42,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private long userId;
     private long childId;
     private long parentId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +54,33 @@ public class UserInfoActivity extends AppCompatActivity {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //        user = User.getInstance();
 //        userId = dataToGet.getLong("userId", 0);
-//
-////        Button btn = (Button) findViewById(R.id.btnEdit);
-////        btn.setVisibility(View.GONE);
-//
-//        Intent intent = getIntent();
-//        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
-//        if(childId != 0){
-//            userId = childId;
-////            btn.setVisibility(View.VISIBLE);
-//        }
-//
-//        parentId = intent.getLongExtra(PARENT_ID,0);
-//        if(parentId != 0){
-//            userId =  parentId;
-//            Button btn = (Button) findViewById(R.id.btnEdit);
-//            btn.setVisibility(View.GONE);
-//        }
-//
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
-//
-//        setEditBtn();
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
+//        Button btn = (Button) findViewById(R.id.btnEdit);
+//        btn.setVisibility(View.GONE);
+
+        Intent intent = getIntent();
+        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
+        if(childId != 0){
+            userId = childId;
+//            btn.setVisibility(View.VISIBLE);
+        }
+
+        parentId = intent.getLongExtra(PARENT_ID,0);
+        if(parentId != 0){
+            userId =  parentId;
+            Button btn = (Button) findViewById(R.id.btnEdit);
+            btn.setVisibility(View.GONE);
+        }
+
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
+
+        setEditBtn();
     }
 
     private void setEditBtn() {
@@ -152,22 +159,32 @@ public class UserInfoActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch(requestCode){
-//            case REQUEST_CODE_EDIT:
-//                if(resultCode == Activity.RESULT_OK) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case REQUEST_CODE_EDIT:
+                if(resultCode == Activity.RESULT_OK) {
 //                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
 //                    token = dataToGet.getString("userToken","");
 //                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //                    user = User.getInstance();
-//
-//                    Call<User> caller = proxy.editUserById(userId,user);
-//                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
-//                }
-//        }
-//
-//    }
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Call<User> caller = proxy.editUserById(userId,user);
+                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
+                }
+        }
+
+    }
 
     private void responseForEdit(User returnedUser) {
         Call<User> caller = proxy.getUserById(returnedUser.getId());

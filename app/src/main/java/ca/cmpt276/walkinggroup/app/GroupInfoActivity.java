@@ -16,6 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -38,15 +39,20 @@ public class GroupInfoActivity extends AppCompatActivity {
     private long groupId;
     private List<User> members;
     private long childId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+//        token = dataToGet.getString("userToken", "");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        userId = session.getUser().getId();
 
         Intent intent = getIntent();
         groupId = intent.getLongExtra(INFO_GROUPID,0);
