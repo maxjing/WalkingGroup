@@ -43,6 +43,7 @@ public class UserInfoActivity extends AppCompatActivity {
     private long childId;
     private long parentId;
     private Session session;
+    private String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,8 +188,44 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void responseForEdit(User returnedUser) {
+
+        ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+        // Make call
+
+
+        Call<Void> caller_login = proxy.login(returnedUser);
+        ProxyBuilder.callProxy(UserInfoActivity.this, caller_login, returnedNothing -> response(returnedNothing));
+
+
         Call<User> caller = proxy.getUserById(returnedUser.getId());
         ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
+    }
+
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+        SharedPreferences.Editor PrefEditor = dataToSave.edit();
+
+        userToken = token;
+        PrefEditor.putString("userToken",userToken);
+
+
+        PrefEditor.apply();
+
+        session.setToken(token);
+        session.setProxy(token);
+        proxy = session.getProxy();
+
+
+
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    private void response(Void returnedNothing) {
+
+
+
     }
 
     public static Intent makeChildIntent(Context context, long childId) {
