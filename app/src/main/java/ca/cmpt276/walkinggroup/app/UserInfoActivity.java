@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -153,6 +154,29 @@ public class UserInfoActivity extends AppCompatActivity {
         tvEmergency.setText(returned.getEmergencyContactInfo());
        // emergencyContactInfo = returned.getEmergencyContactInfo();
         //user.setEmergencyContactInfo(returned.getEmergencyContactInfo());
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        String userEmail = dataToGet.getString("userEmail","");
+        if(childId == 0 && parentId == 0 && !userEmail.equals(session.getUser().getEmail())){
+//            Intent intent = LoginActivity.makeIntent(this);
+//            startActivity(intent);
+//            finish();
+
+//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+//                PrefEditor.putString("userToken", "");
+//
+//                PrefEditor.apply();
+            session.setToken("");
+            proxy = session.getProxy();
+
+            Toast.makeText(UserInfoActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
+            Intent intentToLogin = LoginActivity.makeIntent(UserInfoActivity.this);
+            startActivity(intentToLogin);
+            setResult(RESULT_OK,null);
+            finish();
+            finishActivityFromChild(this,99);
+        }
+
     }
 
     public static Intent makeIntent(Context context) {
