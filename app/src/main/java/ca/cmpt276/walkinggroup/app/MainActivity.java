@@ -499,11 +499,11 @@ public class MainActivity extends AppCompatActivity {
                 handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
 
-//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
-//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
-//                PrefEditor.putString("userToken", "");
-//
-//                PrefEditor.apply();
+                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+                PrefEditor.putString("userToken", "");
+
+                PrefEditor.apply();
                 session.setToken("");
                 proxy = session.getProxy();
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
