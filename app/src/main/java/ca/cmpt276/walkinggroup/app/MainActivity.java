@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    Runnable toastRunnable = new Runnable() {
+   /* Runnable toastRunnable = new Runnable() {
         @Override
         public void run() {
 
@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity {
             handler.postDelayed(this, 5000);
         }
     };
-
+*/
 
     Runnable checkChangeRunnable = new Runnable() {
         @Override
@@ -258,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
                     List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
                     List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
                     LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
-                    Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
                     float results[] = new float[2];
                     Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
 
@@ -274,10 +274,10 @@ public class MainActivity extends AppCompatActivity {
             if (mStopSignal) {
                 Toast.makeText(MainActivity.this, "Arrive Target Place!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
-                handler.removeCallbacks(toastRunnable);
+                //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }else {
-                handler.postDelayed(this, 10000);
+                handler.postDelayed(this, 30000);
             }
         }
     };
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.postDelayed(toastRunnable, 5000);
+                //handler.postDelayed(toastRunnable, 5000);
                 handler.postDelayed(checkChangeRunnable, 10000);
 
                 startService(new Intent(getApplicationContext(), LocationService.class));
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 stopService(new Intent(getApplicationContext(), LocationService.class));
-                handler.removeCallbacks(toastRunnable);
+                //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }
         });
@@ -496,7 +496,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 stopService(new Intent(getApplicationContext(), LocationService.class));
-                handler.removeCallbacks(toastRunnable);
+                //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
 
                 SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
