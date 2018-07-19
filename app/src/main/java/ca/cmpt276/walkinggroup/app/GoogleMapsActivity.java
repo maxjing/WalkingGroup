@@ -61,6 +61,7 @@ import ca.cmpt276.walkinggroup.app.DialogFragment.MessageFragment;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.PlaceInfo;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -153,6 +154,8 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     private String[] ChildDes;
     private Long[] ChildID;
     private Date[] ChildTimeStamp;
+    private Session session;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,10 +181,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
 
 
         //get latlnt data
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
 
         getLocationPermission();
         setUpClearButton();
