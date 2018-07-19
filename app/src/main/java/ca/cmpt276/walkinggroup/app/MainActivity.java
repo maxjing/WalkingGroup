@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     default:
                         Intent intentInfo = UserInfoActivity.makeIntent(MainActivity.this);
-                        startActivity(intentInfo);
+                        startActivityForResult(intentInfo,99);
 
                 }
 
@@ -555,5 +555,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 99) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+            }
+        }
     }
 }

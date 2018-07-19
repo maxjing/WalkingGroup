@@ -122,4 +122,5 @@
     <string name="help">Help!!!!!</string>
     <string name="send">Send</string>
     <string name="send_directly_with_the_hint">SEND DIRECTLY WITH THE HINT</string>
+    <string name="editing_email_will_cause_log_in_again">Editing email will cause logging in again.</string>
 </resources>

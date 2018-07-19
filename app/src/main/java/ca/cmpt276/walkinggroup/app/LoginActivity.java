@@ -131,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences.Editor PrefEditor = dataToSave.edit();
         PrefEditor.putString("userToken",userToken);
         PrefEditor.putLong("userId",userId);
+        PrefEditor.putString("userEmail",userEmail);
 
         PrefEditor.apply();
 
