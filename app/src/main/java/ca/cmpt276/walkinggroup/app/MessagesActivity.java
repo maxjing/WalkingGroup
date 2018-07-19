@@ -69,7 +69,7 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void populate(){
-        proxy.getGroups();
+
         Call<List<Message>> caller_read = proxy.getReadMessages(userId,true);
         ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
         Call<List<Message>> caller_unread = proxy.getUnreadMessages(userId,true);

@@ -55,19 +55,27 @@ public class MessagesNewActivity extends AppCompatActivity {
 
                 EditText editMsg = (EditText)findViewById(R.id.editTextMsg);
                 String msg = editMsg.getText().toString();
-                message.setText(msg);
-                Call<List<Message>> caller = proxy.newMessageToParentsOf(userId,message);
-                ProxyBuilder.callProxy(MessagesNewActivity.this, caller, returnedMsg -> response(returnedMsg));
-                groupsMember = user.getMemberOfGroups();
 
-                try {
-                    for(int i = 0; i < groupsMember.size(); i++){
-                        Call<List<Message>> caller_groupLeader = proxy.newMessageToParentsOf(groupsMember.get(i).getLeader().getId(),message);
-                        ProxyBuilder.callProxy(MessagesNewActivity.this, caller_groupLeader, returnedMsg -> response(returnedMsg));
+
+                if(msg.matches("")) {
+
+                    Toast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
+
+                }else{
+                    message.setText(msg);
+                    Call<List<Message>> caller = proxy.newMessageToParentsOf(userId, message);
+                    ProxyBuilder.callProxy(MessagesNewActivity.this, caller, returnedMsg -> response(returnedMsg));
+                    groupsMember = user.getMemberOfGroups();
+
+                    try {
+                        for (int i = 0; i < groupsMember.size(); i++) {
+                            Call<List<Message>> caller_groupLeader = proxy.newMessageToParentsOf(groupsMember.get(i).getLeader().getId(), message);
+                            ProxyBuilder.callProxy(MessagesNewActivity.this, caller_groupLeader, returnedMsg -> response(returnedMsg));
+                        }
+
+                    } catch (Exception e) {
+
                     }
-
-                } catch (Exception e) {
-
                 }
 
 
@@ -86,10 +94,12 @@ public class MessagesNewActivity extends AppCompatActivity {
                 PrefEditor.putString("pMessage",msg);
 
                 PrefEditor.apply();
-
+                if(msg.matches("")){
+                    Toast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
+                }else{
                 Intent intent = MessagesGroupsActivity.makeIntent(MessagesNewActivity.this);
-                startActivity(intent);
-                finish();
+                startActivity(intent);}
+
 
             }
         });

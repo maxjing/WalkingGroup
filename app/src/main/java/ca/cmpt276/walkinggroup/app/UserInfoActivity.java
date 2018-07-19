@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.R;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -41,6 +43,8 @@ public class UserInfoActivity extends AppCompatActivity {
     private long userId;
     private long childId;
     private long parentId;
+    private Session session;
+    private String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +56,33 @@ public class UserInfoActivity extends AppCompatActivity {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //        user = User.getInstance();
 //        userId = dataToGet.getLong("userId", 0);
-//
-////        Button btn = (Button) findViewById(R.id.btnEdit);
-////        btn.setVisibility(View.GONE);
-//
-//        Intent intent = getIntent();
-//        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
-//        if(childId != 0){
-//            userId = childId;
-////            btn.setVisibility(View.VISIBLE);
-//        }
-//
-//        parentId = intent.getLongExtra(PARENT_ID,0);
-//        if(parentId != 0){
-//            userId =  parentId;
-//            Button btn = (Button) findViewById(R.id.btnEdit);
-//            btn.setVisibility(View.GONE);
-//        }
-//
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
-//
-//        setEditBtn();
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
+//        Button btn = (Button) findViewById(R.id.btnEdit);
+//        btn.setVisibility(View.GONE);
+
+        Intent intent = getIntent();
+        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
+        if(childId != 0){
+            userId = childId;
+//            btn.setVisibility(View.VISIBLE);
+        }
+
+        parentId = intent.getLongExtra(PARENT_ID,0);
+        if(parentId != 0){
+            userId =  parentId;
+            Button btn = (Button) findViewById(R.id.btnEdit);
+            btn.setVisibility(View.GONE);
+        }
+
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
+
+        setEditBtn();
     }
 
     private void setEditBtn() {
@@ -145,6 +154,29 @@ public class UserInfoActivity extends AppCompatActivity {
         tvEmergency.setText(returned.getEmergencyContactInfo());
        // emergencyContactInfo = returned.getEmergencyContactInfo();
         //user.setEmergencyContactInfo(returned.getEmergencyContactInfo());
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        String userEmail = dataToGet.getString("userEmail","");
+        if(childId == 0 && parentId == 0 && !userEmail.equals(session.getUser().getEmail())){
+//            Intent intent = LoginActivity.makeIntent(this);
+//            startActivity(intent);
+//            finish();
+
+//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+//                PrefEditor.putString("userToken", "");
+//
+//                PrefEditor.apply();
+            session.setToken("");
+            proxy = session.getProxy();
+
+            Toast.makeText(UserInfoActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
+            Intent intentToLogin = LoginActivity.makeIntent(UserInfoActivity.this);
+            startActivity(intentToLogin);
+            setResult(RESULT_OK,null);
+            finish();
+            finishActivityFromChild(this,99);
+        }
+
     }
 
     public static Intent makeIntent(Context context) {
@@ -152,26 +184,72 @@ public class UserInfoActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch(requestCode){
-//            case REQUEST_CODE_EDIT:
-//                if(resultCode == Activity.RESULT_OK) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode){
+            case REQUEST_CODE_EDIT:
+                if(resultCode == Activity.RESULT_OK) {
 //                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
 //                    token = dataToGet.getString("userToken","");
 //                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //                    user = User.getInstance();
-//
-//                    Call<User> caller = proxy.editUserById(userId,user);
-//                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
-//                }
-//        }
-//
-//    }
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    Call<User> caller = proxy.editUserById(userId,user);
+                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
+                }
+        }
+
+    }
 
     private void responseForEdit(User returnedUser) {
+
+        ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+        // Make call
+
+
+        Call<Void> caller_login = proxy.login(returnedUser);
+        ProxyBuilder.callProxy(UserInfoActivity.this, caller_login, returnedNothing -> response(returnedNothing));
+
+
         Call<User> caller = proxy.getUserById(returnedUser.getId());
         ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
+    }
+
+    private void onReceiveToken(String token) {
+        // Replace the current proxy with one that uses the token!
+        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+        SharedPreferences.Editor PrefEditor = dataToSave.edit();
+
+        userToken = token;
+        PrefEditor.putString("userToken",userToken);
+
+
+        PrefEditor.apply();
+
+        session.setToken(token);
+        session.setProxy(token);
+        proxy = session.getProxy();
+
+
+
+    }
+
+    // Login actually completes by calling this; nothing to do as it was all done
+    // when we got the token.
+    private void response(Void returnedNothing) {
+
+
+
     }
 
     public static Intent makeChildIntent(Context context, long childId) {

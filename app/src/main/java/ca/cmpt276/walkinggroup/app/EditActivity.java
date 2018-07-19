@@ -46,7 +46,7 @@ public class EditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         session = Session.getInstance();
-        user = new User();
+        user = session.getUser();
         proxy = session.getProxy();
 //
         extractDataFromIntent();

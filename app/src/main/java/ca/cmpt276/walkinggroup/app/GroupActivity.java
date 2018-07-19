@@ -17,6 +17,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -48,6 +49,7 @@ public class GroupActivity extends AppCompatActivity {
     private Long userId;
     private Long childId;
     private boolean isSendMsg;
+    private Session session;
 
     public static final String CHILD_ID = "ca.cmpt276.walkinggroup.app - GroupActivity.class";
 
@@ -60,19 +62,23 @@ public class GroupActivity extends AppCompatActivity {
 //        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //        userId = dataToGet.getLong("userId",0);
 //
-//        Intent intent = getIntent();
-//        childId = intent.getLongExtra(CHILD_ID,0);
-//
-//        if(childId != 0){
-//            userId = childId;
-//        }
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
-//        Call<User> caller_m = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
-//
-//        registerClickCallback_Leader();
-//        registerClickCallback_Member();
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+        Intent intent = getIntent();
+        childId = intent.getLongExtra(CHILD_ID,0);
+
+        if(childId != 0){
+            userId = childId;
+        }
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
+        Call<User> caller_m = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
+
+        registerClickCallback_Leader();
+        registerClickCallback_Member();
 
     }
 
@@ -194,19 +200,23 @@ public class GroupActivity extends AppCompatActivity {
         return intent;
     }
 
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_DELETE:
-//                if (resultCode == Activity.RESULT_OK) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_DELETE:
+                if (resultCode == Activity.RESULT_OK) {
 //                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
 //                    token = dataToGet.getString("userToken","");
 //                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //                    user = User.getInstance();
 //                    userId = dataToGet.getLong("userId", 0);
-//                    Call<User> caller = proxy.getUserById(userId);
-//                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
-//                }
-//        }
-//    }
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+                    userId = user.getId();
+                    Call<User> caller = proxy.getUserById(userId);
+                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
+                }
+        }
+    }
 
 }

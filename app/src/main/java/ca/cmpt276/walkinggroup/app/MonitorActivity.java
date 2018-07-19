@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -36,6 +37,7 @@ public class MonitorActivity extends AppCompatActivity {
     private String token;
     private long userId;
     private long memberId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,18 +50,22 @@ public class MonitorActivity extends AppCompatActivity {
 //        user = User.getInstance();
 //
 //        userId = dataToGet.getLong("userId", 0);
-//
-//        Intent intent = getIntent();
-//        memberId = intent.getLongExtra(MEMBER_ID,0);
-//        if(memberId != 0){
-//            userId = memberId;
-//
-//            Button btn = (Button) findViewById(R.id.btnAdd_ed);
-//            btn.setVisibility(View.GONE);
-//        }
-//        populateListView();
-//        registerClickCallback();
-//        setAddBtn();
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
+        Intent intent = getIntent();
+        memberId = intent.getLongExtra(MEMBER_ID,0);
+        if(memberId != 0){
+            userId = memberId;
+
+            Button btn = (Button) findViewById(R.id.btnAdd_ed);
+            btn.setVisibility(View.GONE);
+        }
+        populateListView();
+        registerClickCallback();
+        setAddBtn();
     }
 
     private void setAddBtn() {
@@ -135,19 +141,28 @@ public class MonitorActivity extends AppCompatActivity {
         return intent;
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case REQUEST_CODE_Monitored:
-//                if (resultCode == Activity.RESULT_OK) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case REQUEST_CODE_Monitored:
+                if (resultCode == Activity.RESULT_OK) {
 //                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
 //                    token = dataToGet.getString("userToken","");
 //                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
 //                    user = User.getInstance();
 //                    userId = dataToGet.getLong("userId", 0);
-//                    Call<User> caller = proxy.getUserById(userId);
-//                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
-//                }
-//        }
-//    }
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+                    userId = user.getId();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Call<User> caller = proxy.getUserById(userId);
+                    ProxyBuilder.callProxy(MonitorActivity.this, caller, returnedUser -> response(returnedUser));
+                }
+        }
+    }
 }

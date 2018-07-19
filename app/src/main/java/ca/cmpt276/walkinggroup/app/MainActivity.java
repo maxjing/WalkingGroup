@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private WGServerProxy proxy;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private User user;
-    private User currentUser;
-    private String userEmail;
+
     private Long userId;
 
     private List<Group> groups = new ArrayList<>();
@@ -82,40 +81,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        userId = dataToGet.getLong("userId", 0);
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        token = dataToGet.getString("userToken", "");
+        userId = dataToGet.getLong("userId",0);
+
         session = Session.getInstance();
         session.setToken(token);
-
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        session.setProxy(proxy);
-
-
+        session.setProxy(token);
+        proxy = session.getProxy();
+        //user = new User();
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
-        //set up location update
-        btnUpdate = findViewById(R.id.start_update_location);
-        btnStop = findViewById(R.id.stop_location_update);
-        locationInfo = findViewById(R.id.location_Information);
 
-        if (token == "") {
+
+        if (session.getToken() == "") {
             btnLogout.setVisibility(View.GONE);
-            btnUpdate.setVisibility(View.GONE);
-            btnStop.setVisibility(View.GONE);
-            locationInfo.setVisibility(View.GONE);
+            proxy = session.getProxy();
         } else {
-            btnUpdate.setVisibility(View.VISIBLE);
-            btnStop.setVisibility(View.VISIBLE);
-            locationInfo.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.VISIBLE);
+
+
             populate();
             showChildGPS();
-            Call<User> caller_user = proxy.getUserById(userId);
-            ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
 
         }
-
-
 
         setGroupBtn();
         setLogoutBtn();
@@ -126,8 +114,19 @@ public class MainActivity extends AppCompatActivity {
         setPanicBtn();
         setParentBtn();
 
-
-
+        //set up location update
+        btnUpdate = findViewById(R.id.start_update_location);
+        btnStop = findViewById(R.id.stop_location_update);
+        locationInfo = findViewById(R.id.location_Information);
+        if (session.getToken() == "") {
+            btnUpdate.setVisibility(View.GONE);
+            btnStop.setVisibility(View.GONE);
+            locationInfo.setVisibility(View.GONE);
+        }else {
+            btnUpdate.setVisibility(View.VISIBLE);
+            btnStop.setVisibility(View.VISIBLE);
+            locationInfo.setVisibility(View.VISIBLE);
+        }
         if (!runtime_permissions()) {
             setLocationUpdate();
         }
@@ -141,9 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void response(User returnedUser) {
-        session.setUser(returnedUser);
-    }
+
 
     private void showChildGPS() {
         Call<List<User>> caller = proxy.getMonitorsUsers(userId);
@@ -163,15 +160,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void populate() {
+        Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
 
     private void responseForMain(User user) {
+        session.setUser(user);
         groups.clear();
         groups.addAll(user.getLeadsGroups());
         groups.addAll(user.getMemberOfGroups());
-        currentUser = user;
         try {
             groupsDestination.clear();
             groupID.clear();
@@ -374,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     default:
                         Intent intentInfo = UserInfoActivity.makeIntent(MainActivity.this);
-                        startActivity(intentInfo);
+                        startActivityForResult(intentInfo,99);
 
                 }
 
@@ -507,6 +505,7 @@ public class MainActivity extends AppCompatActivity {
 
                 PrefEditor.apply();
                 session.setToken("");
+                proxy = session.getProxy();
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                 startActivity(intentToLogin);
@@ -556,5 +555,14 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 99) {
+            if (resultCode == RESULT_OK) {
+                this.finish();
+            }
+        }
     }
 }

@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
     private void response(User user) {
-        notifyUserViaLogAndToast(getString(R.string.replied)+" " + user.toString());
+
         userId = user.getId();
         userEmail = user.getEmail();
         user.setId(user.getId());
@@ -99,10 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
 
 
     }
-    private void notifyUserViaLogAndToast(String message) {
-        Log.w(TAG, message);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-    }
+
     public static Intent makeIntent(Context context){
         return new Intent(context, RegisterActivity.class);
     }
