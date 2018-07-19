@@ -82,31 +82,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-//        token = dataToGet.getString("userToken", "");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        userId = dataToGet.getLong("userId", 0);
-//
-//        user = User.getInstance();
-
-
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+        token = dataToGet.getString("userToken","");
+        userId = dataToGet.getLong("userId", 0);
         session = Session.getInstance();
-        proxy = session.getProxy();
-        //user = new User();
+        session.setToken(token);
+
+        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+        session.setProxy(proxy);
+
+        Toast.makeText(this, "from main "+userId+" "+token, Toast.LENGTH_SHORT).show();
+
+
+
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
+        //set up location update
+        btnUpdate = findViewById(R.id.start_update_location);
+        btnStop = findViewById(R.id.stop_location_update);
+        locationInfo = findViewById(R.id.location_Information);
 
-
-        if (session.getToken() == "") {
+        Toast.makeText(this, "from main "+userId, Toast.LENGTH_SHORT).show();
+        if (token == "") {
             btnLogout.setVisibility(View.GONE);
+            btnUpdate.setVisibility(View.GONE);
+            btnStop.setVisibility(View.GONE);
+            locationInfo.setVisibility(View.GONE);
         } else {
+            btnUpdate.setVisibility(View.VISIBLE);
+            btnStop.setVisibility(View.VISIBLE);
+            locationInfo.setVisibility(View.VISIBLE);
             btnLogout.setVisibility(View.VISIBLE);
-            user = session.getUser();
-            userId = user.getId();
             populate();
             showChildGPS();
+            Call<User> caller_user = proxy.getUserById(userId);
+            ProxyBuilder.callProxy(MainActivity.this, caller_user, returnedUser -> response(returnedUser));
 
-          //  Toast.makeText(this,""+user.getId(),Toast.LENGTH_LONG).show();
         }
+
+
 
         setGroupBtn();
         setLogoutBtn();
@@ -117,19 +130,8 @@ public class MainActivity extends AppCompatActivity {
         setPanicBtn();
         setParentBtn();
 
-        //set up location update
-        btnUpdate = findViewById(R.id.start_update_location);
-        btnStop = findViewById(R.id.stop_location_update);
-        locationInfo = findViewById(R.id.location_Information);
-        if (session.getToken() == "") {
-            btnUpdate.setVisibility(View.GONE);
-            btnStop.setVisibility(View.GONE);
-            locationInfo.setVisibility(View.GONE);
-        }else {
-            btnUpdate.setVisibility(View.VISIBLE);
-            btnStop.setVisibility(View.VISIBLE);
-            locationInfo.setVisibility(View.VISIBLE);
-        }
+
+
         if (!runtime_permissions()) {
             setLocationUpdate();
         }
@@ -143,7 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    private void response(User returnedUser) {
+        session.setUser(returnedUser);
+    }
 
     private void showChildGPS() {
         Call<List<User>> caller = proxy.getMonitorsUsers(userId);
@@ -502,11 +506,11 @@ public class MainActivity extends AppCompatActivity {
                 handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
 
-//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
-//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
-//                PrefEditor.putString("userToken", "");
-//
-//                PrefEditor.apply();
+                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+                SharedPreferences.Editor PrefEditor = dataToSave.edit();
+                PrefEditor.putString("userToken", "");
+
+                PrefEditor.apply();
                 session.setToken("");
                 Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);

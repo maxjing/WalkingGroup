@@ -19,6 +19,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -35,6 +36,7 @@ public class MessagesActivity extends AppCompatActivity {
     private List<String> unreadMsgList;
     private List<Long> readId;
     private List<Long> unreadId;
+    private Session session;
 
 
     @Override
@@ -42,28 +44,29 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        token = dataToGet.getString("userToken","");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        userId = dataToGet.getLong("userId", 0);
-//
-//        user = User.getInstance();
-//        populate();
-//        setMsgBtn();
-//        setDeleteAllBtn();
-//        setCancel();
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+        Toast.makeText(this, "from msg "+session.getToken(), Toast.LENGTH_SHORT).show();
+
+        populate();
+        setMsgBtn();
+        setDeleteAllBtn();
+        setCancel();
 //        handler.postDelayed(update, 1000*5);
 
     }
 
 
-    Runnable update = new Runnable() {
-        @Override
-        public void run() {
-            populate();
-            handler.postDelayed(this, 5000);
-        }
-    };
+//    Runnable update = new Runnable() {
+//        @Override
+//        public void run() {
+//            populate();
+//            handler.postDelayed(this, 5000);
+//        }
+//    };
 
 
     private void populate(){

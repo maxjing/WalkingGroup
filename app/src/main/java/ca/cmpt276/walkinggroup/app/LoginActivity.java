@@ -94,10 +94,12 @@ public class LoginActivity extends AppCompatActivity {
         Log.w(TAG, "   --> NOW HAVE TOKEN: " + token);
 
         session.setToken(token);
-        session.setProxy(token);
-        proxy = session.getProxy();
-       // userToken = token;
-        //savePref();
+//        session.setProxy(token);
+        session.setProxy(proxy);
+//        proxy = session.getProxy();
+
+        userToken = token;
+        savePref();
 
 
 
@@ -106,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
     // Login actually completes by calling this; nothing to do as it was all done
     // when we got the token.
     private void response(Void returnedNothing) {
+
 
         Call<User> caller = proxy.getUserByEmail(userEmail);
         ProxyBuilder.callProxy(LoginActivity.this, caller, returnedUser -> response(returnedUser));
@@ -116,7 +119,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void response(User user) {
         session.setUser(user);
-       // savePref();
+        userId = user.getId();
+        Toast.makeText(this, "from login "+userId, Toast.LENGTH_SHORT).show();
+        savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
@@ -125,23 +130,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-//    public void savePref(){
-//        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
-//        SharedPreferences.Editor PrefEditor = dataToSave.edit();
-//        PrefEditor.putString("userToken",userToken);
-//        PrefEditor.putString("userEmail",userEmail);
-//        PrefEditor.putLong("userId",userId);
-//
-//        PrefEditor.apply();
-//
-//    }
-//    public void GetPref(){
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        if (dataToGet==null)return;
-//        userToken = dataToGet.getString("userToken","");
-//
-//
-//    }
+    public void savePref(){
+        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
+        SharedPreferences.Editor PrefEditor = dataToSave.edit();
+        PrefEditor.putString("userToken",userToken);
+        PrefEditor.putLong("userId",userId);
+        PrefEditor.apply();
+
+    }
+
 
 
 
