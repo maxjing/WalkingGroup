@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -58,61 +59,60 @@ public class GroupCreateActivity extends AppCompatActivity {
     private String meetingPlace;
     private double meetLat;
     private double meetLng;
-
+    private Session session;
+    private  Long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_create);
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        token = dataToGet.getString("userToken","");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//
-//        Intent intent =getIntent();
-//
-//        latitude    = intent.getDoubleExtra(LATITUDE,0);
-//        longtitude  = intent.getDoubleExtra(LONGTITUDE,0);
-//        placeName   = intent.getStringExtra(PLACENAME);
-//
-//        meetingPlace = intent.getStringExtra(MEETINGPLACE);
-//        meetLat      = intent.getDoubleExtra(MEETLAT,0);
-//        meetLng      = intent.getDoubleExtra(MEETLNG,0);
-//
-//
-//        TextView editDest = (TextView) findViewById(R.id.editDestination);
-//        editDest.setText(placeName);
-//        TextView editMeet= (TextView) findViewById(R.id.editMeetPlace);
-//        editMeet.setText(meetingPlace);
-//
-//
-//        setOKBtn();
-//        setCancelBtn();
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
+        Intent intent =getIntent();
+
+        latitude    = intent.getDoubleExtra(LATITUDE,0);
+        longtitude  = intent.getDoubleExtra(LONGTITUDE,0);
+        placeName   = intent.getStringExtra(PLACENAME);
+
+        meetingPlace = intent.getStringExtra(MEETINGPLACE);
+        meetLat      = intent.getDoubleExtra(MEETLAT,0);
+        meetLng      = intent.getDoubleExtra(MEETLNG,0);
+
+
+        TextView editDest = (TextView) findViewById(R.id.editDestination);
+        editDest.setText(placeName);
+        TextView editMeet= (TextView) findViewById(R.id.editMeetPlace);
+        editMeet.setText(meetingPlace);
+
+
+        setOKBtn();
+        setCancelBtn();
     }
 
     private void setOKBtn() {
 
-//        Button btn = (Button) findViewById(R.id.btnOK);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //Extract data from UI
-//
-//                EditText editDesc= (EditText) findViewById(R.id.editDescription);
-//                editDescription = editDesc.getText().toString();
-//
-//                routeLatArray = new ArrayList<>();
-//                routeLngArray = new ArrayList<>();
-//
-//
-//
-//
-//                user = User.getInstance();
-//                Call<User> caller = proxy.getUserByEmail(user.getEmail());
-//                ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
-//
-//                finish();
-//            }
-//        });
+        Button btn = (Button) findViewById(R.id.btnOK);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Extract data from UI
+
+                EditText editDesc= (EditText) findViewById(R.id.editDescription);
+                editDescription = editDesc.getText().toString();
+
+                routeLatArray = new ArrayList<>();
+                routeLngArray = new ArrayList<>();
+
+
+                Call<User> caller = proxy.getUserById(userId);
+                ProxyBuilder.callProxy(GroupCreateActivity.this, caller, returnedUser -> response(returnedUser));
+
+                finish();
+            }
+        });
     }
 
     private void setCancelBtn() {

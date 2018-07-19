@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -26,6 +27,8 @@ public class JoinGroupActivity extends AppCompatActivity {
     private WGServerProxy proxy;
     private String token;
     private long userId;
+    private User user;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +38,10 @@ public class JoinGroupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         groupId = intent.getLongExtra(GROUPID,0);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
 
         setMyselfBtn();
         setMyChildBtn();
