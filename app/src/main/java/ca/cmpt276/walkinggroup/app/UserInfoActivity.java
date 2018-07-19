@@ -47,33 +47,33 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        userId = dataToGet.getLong("userId", 0);
-
-//        Button btn = (Button) findViewById(R.id.btnEdit);
-//        btn.setVisibility(View.GONE);
-
-        Intent intent = getIntent();
-        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
-        if(childId != 0){
-            userId = childId;
-//            btn.setVisibility(View.VISIBLE);
-        }
-
-        parentId = intent.getLongExtra(PARENT_ID,0);
-        if(parentId != 0){
-            userId =  parentId;
-            Button btn = (Button) findViewById(R.id.btnEdit);
-            btn.setVisibility(View.GONE);
-        }
-
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
-
-        setEditBtn();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+//        token = dataToGet.getString("userToken", "");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        user = User.getInstance();
+//        userId = dataToGet.getLong("userId", 0);
+//
+////        Button btn = (Button) findViewById(R.id.btnEdit);
+////        btn.setVisibility(View.GONE);
+//
+//        Intent intent = getIntent();
+//        childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
+//        if(childId != 0){
+//            userId = childId;
+////            btn.setVisibility(View.VISIBLE);
+//        }
+//
+//        parentId = intent.getLongExtra(PARENT_ID,0);
+//        if(parentId != 0){
+//            userId =  parentId;
+//            Button btn = (Button) findViewById(R.id.btnEdit);
+//            btn.setVisibility(View.GONE);
+//        }
+//
+//        Call<User> caller = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
+//
+//        setEditBtn();
     }
 
     private void setEditBtn() {
@@ -152,22 +152,22 @@ public class UserInfoActivity extends AppCompatActivity {
         return intent;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(requestCode){
-            case REQUEST_CODE_EDIT:
-                if(resultCode == Activity.RESULT_OK) {
-                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-                    token = dataToGet.getString("userToken","");
-                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-                    user = User.getInstance();
-
-                    Call<User> caller = proxy.editUserById(userId,user);
-                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
-                }
-        }
-
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch(requestCode){
+//            case REQUEST_CODE_EDIT:
+//                if(resultCode == Activity.RESULT_OK) {
+//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//                    token = dataToGet.getString("userToken","");
+//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//                    user = User.getInstance();
+//
+//                    Call<User> caller = proxy.editUserById(userId,user);
+//                    ProxyBuilder.callProxy(UserInfoActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
+//                }
+//        }
+//
+//    }
 
     private void responseForEdit(User returnedUser) {
         Call<User> caller = proxy.getUserById(returnedUser.getId());

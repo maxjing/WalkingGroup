@@ -14,6 +14,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -26,25 +27,22 @@ public class MessagesNewActivity extends AppCompatActivity {
     private Message message;
     private List<Group> groupsMember;
     private User user;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_new);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesNewActivity.this, caller_user, returnedUser -> response(returnedUser));
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
         message = new Message();
         setSendToGroup();
         setSendToPLBtn();
         setCancel();
-    }
-    private void response(User returnedUser) {
-        user = returnedUser;
     }
 
 

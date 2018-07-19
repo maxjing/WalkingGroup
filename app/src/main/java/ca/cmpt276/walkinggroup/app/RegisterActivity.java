@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String userName;
 
     private WGServerProxy proxy;
+    private Session session;
 
 
 
@@ -40,7 +42,9 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
+        session = Session.getInstance();
+        user = new User();
+        proxy = session.getProxy();
 
         setRegisterBtn();
         setBackBtn();
@@ -63,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                user = User.getInstance();
+                user = new User();
 
                 EditText nameInput = (EditText)findViewById(R.id.editTextName);
                 EditText emailInput = (EditText)findViewById(R.id.editTextEmail);

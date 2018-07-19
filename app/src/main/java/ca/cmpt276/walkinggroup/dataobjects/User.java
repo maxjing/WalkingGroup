@@ -61,19 +61,6 @@ public class User extends IdItemBase {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - -
     private List<PermissionRequest> pendingPermissionRequests;
 
-
-    private static User instance;
-    private User(){
-
-    }
-    public static User getInstance(){
-        if(instance == null ){
-            instance = new User();
-        }
-        return instance;
-    }
-
-
     // ----------------------------------------------
     // Setters / Getters
     // ----------------------------------------------

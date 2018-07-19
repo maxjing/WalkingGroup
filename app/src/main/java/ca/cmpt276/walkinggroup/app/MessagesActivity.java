@@ -19,6 +19,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -27,7 +28,6 @@ import retrofit2.Call;
 public class MessagesActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
     private String TAG = "MessagesActivity";
-    private String token;
     private WGServerProxy proxy;
     private Long userId;
     private User user;
@@ -35,6 +35,7 @@ public class MessagesActivity extends AppCompatActivity {
     private List<String> unreadMsgList;
     private List<Long> readId;
     private List<Long> unreadId;
+    private Session session;
 
 
     @Override
@@ -42,17 +43,18 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
 
-        user = User.getInstance();
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+
         populate();
         setMsgBtn();
         setDeleteAllBtn();
         setCancel();
         handler.postDelayed(update, 1000*5);
+
 
     }
 
@@ -67,8 +69,13 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void populate(){
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+        Call<List<Message>> caller_read = proxy.getReadMessages(userId,true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
+        Call<List<Message>> caller_unread = proxy.getUnreadMessages(userId,true);
+        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseEMUnRead(returnedMsg));
+
+
+
     }
     private void setMsgBtn(){
         Button btnGroup = (Button)findViewById(R.id.btnSend);
@@ -137,18 +144,12 @@ public class MessagesActivity extends AppCompatActivity {
 
 
     private void response(Message message){
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_user, returnedUser -> response(returnedUser));
+        populate();
     }
 
 
     private void response(User returnedUser) {
-        user = returnedUser;
 
-        Call<List<Message>> caller_read = proxy.getReadMessages(user.getId(),true);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_read, returnedMsg -> responseEMRead(returnedMsg));
-        Call<List<Message>> caller_unread = proxy.getUnreadMessages(user.getId(),true);
-        ProxyBuilder.callProxy(MessagesActivity.this, caller_unread, returnedMsg -> responseEMUnRead(returnedMsg));
 
 
     }

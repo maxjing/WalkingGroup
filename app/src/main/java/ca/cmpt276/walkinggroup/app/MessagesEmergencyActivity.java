@@ -14,6 +14,7 @@ import java.util.List;
 
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -27,21 +28,19 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
     private User user;
     private Message message;
     private List<Group> groupsMember;
-
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_emergency);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId", 0);
 
-
-        Call<User> caller_user = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesEmergencyActivity.this, caller_user, returnedUser -> response(returnedUser));
+        session = Session.getInstance();
+        proxy = session.getProxy();
+        user = session.getUser();
+        userId = user.getId();
+        
         message = new Message();
         setSendEmergencyBtn();
         setCancel();
@@ -95,9 +94,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
     }
 
 
-    private void response(User returnedUser) {
-        user = returnedUser;
-    }
+
 
     private void response(List<Message> returnedMsg) {
         Toast.makeText(MessagesEmergencyActivity.this, "Emergency Message Sent", Toast.LENGTH_SHORT).show();

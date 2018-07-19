@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -39,17 +40,15 @@ public class EditActivity extends AppCompatActivity {
     private WGServerProxy proxy;
     private String token;
     private long userId;
-
+    private Session session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-        token = dataToGet.getString("userToken", "");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        userId = dataToGet.getLong("userId", 0);
-
+        session = Session.getInstance();
+        user = new User();
+        proxy = session.getProxy();
+//
         extractDataFromIntent();
         setOKBtn();
         setCancelBtn();

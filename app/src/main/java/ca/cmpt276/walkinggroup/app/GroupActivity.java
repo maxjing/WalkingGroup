@@ -55,24 +55,24 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        userId = dataToGet.getLong("userId",0);
-
-        Intent intent = getIntent();
-        childId = intent.getLongExtra(CHILD_ID,0);
-
-        if(childId != 0){
-            userId = childId;
-        }
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
-        Call<User> caller_m = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
-
-        registerClickCallback_Leader();
-        registerClickCallback_Member();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        userId = dataToGet.getLong("userId",0);
+//
+//        Intent intent = getIntent();
+//        childId = intent.getLongExtra(CHILD_ID,0);
+//
+//        if(childId != 0){
+//            userId = childId;
+//        }
+//        Call<User> caller = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
+//        Call<User> caller_m = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(GroupActivity.this, caller_m, returnedUser -> responseM(returnedUser));
+//
+//        registerClickCallback_Leader();
+//        registerClickCallback_Member();
 
     }
 
@@ -194,19 +194,19 @@ public class GroupActivity extends AppCompatActivity {
         return intent;
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case REQUEST_CODE_DELETE:
-                if (resultCode == Activity.RESULT_OK) {
-                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-                    token = dataToGet.getString("userToken","");
-                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-                    user = User.getInstance();
-                    userId = dataToGet.getLong("userId", 0);
-                    Call<User> caller = proxy.getUserById(userId);
-                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
-                }
-        }
-    }
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (requestCode) {
+//            case REQUEST_CODE_DELETE:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//                    token = dataToGet.getString("userToken","");
+//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//                    user = User.getInstance();
+//                    userId = dataToGet.getLong("userId", 0);
+//                    Call<User> caller = proxy.getUserById(userId);
+//                    ProxyBuilder.callProxy(GroupActivity.this, caller, returnedUser -> responseL(returnedUser));
+//                }
+//        }
+//    }
 
 }

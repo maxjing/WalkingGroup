@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.util.PrimitiveIterator;
 
 import ca.cmpt276.walkinggroup.dataobjects.Message;
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -23,14 +24,17 @@ public class MessagesDetailActivity extends AppCompatActivity {
     private Long userId;
     private String token;
     private Long msgId;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages_detail);
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+
+        session = Session.getInstance();
+        proxy = session.getProxy();
+
+
         Intent intent = getIntent();
         msgId = intent.getLongExtra("msgId",0);
 
@@ -45,7 +49,6 @@ public class MessagesDetailActivity extends AppCompatActivity {
     private void response(Message message){
 
         TextView txtContent = (TextView)findViewById(R.id.msgDetail);
-        Toast.makeText(this, ""+message.getText(), Toast.LENGTH_SHORT).show();
 
         Call<User> caller_user = proxy.getUserById(message.getFromUser().getId());
         ProxyBuilder.callProxy(MessagesDetailActivity.this, caller_user, returnedUser -> response(returnedUser));

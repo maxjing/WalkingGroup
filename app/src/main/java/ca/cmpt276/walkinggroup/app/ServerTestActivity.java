@@ -44,16 +44,16 @@ public class ServerTestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_test);
 
-        // Build the server proxy
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
-
-        // Setup UI buttons to test it.
-        setupNewUserButton();
-        setupLoginButton();
-        setupListUsers();
-        setupGetUserByEmail();
-        setupGetUserById();
-        setbtntoLogin();
+//        // Build the server proxy
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), null);
+//
+//        // Setup UI buttons to test it.
+//        setupNewUserButton();
+//        setupLoginButton();
+//        setupListUsers();
+//        setupGetUserByEmail();
+//        setupGetUserById();
+//        setbtntoLogin();
     }
 
     // Switch to 2nd activity to help show simple interaction (getting API key)
@@ -64,27 +64,27 @@ public class ServerTestActivity extends AppCompatActivity {
 
     // Create a new user on the server
     // ------------------------------------------------------------------------------------------
-    private void setupNewUserButton() {
-        Button btn = findViewById(R.id.btnNewUser);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Build new user (with random email to avoid conflicts)
-                user = User.getInstance();
-                int random = (int) (Math.random() * 100000);
-                user.setEmail("testuser"+random+"@test.com");
-                user.setName("I. B. Rocking");
-                user.setPassword(userPassword);
-                user.setCurrentPoints(100);
-                user.setTotalPointsEarned(2500);
-                user.setRewards(new EarnedRewards());
-
-                // Make call
-                Call<User> caller = proxy.createUser(user);
-                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
-            }
-        });
-    }
+//    private void setupNewUserButton() {
+//        Button btn = findViewById(R.id.btnNewUser);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Build new user (with random email to avoid conflicts)
+//                user = User.getInstance();
+//                int random = (int) (Math.random() * 100000);
+//                user.setEmail("testuser"+random+"@test.com");
+//                user.setName("I. B. Rocking");
+//                user.setPassword(userPassword);
+//                user.setCurrentPoints(100);
+//                user.setTotalPointsEarned(2500);
+//                user.setRewards(new EarnedRewards());
+//
+//                // Make call
+//                Call<User> caller = proxy.createUser(user);
+//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedUser -> response(returnedUser));
+//            }
+//        });
+//    }
     private void response(User user) {
         notifyUserViaLogAndToast(getString(R.string.replied)+" "+ user.toString());
         userId = user.getId();
@@ -96,24 +96,24 @@ public class ServerTestActivity extends AppCompatActivity {
     // ------------------------------------------------------------------------------------------
     // When server sends us a token, have the proxy store it for future use.
     // The token identifies us as a logged in user without having to revalidate passwords all the time.
-    private void setupLoginButton() {
-        Button btn = findViewById(R.id.btnLogin);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Build new user
-                user = User.getInstance();
-                user.setEmail(userEmail);
-                user.setPassword(userPassword);
-                // Register for token received:
-                ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-
-                // Make call
-                Call<Void> caller = proxy.login(user);
-                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedNothing -> response(returnedNothing));
-            }
-        });
-    }
+//    private void setupLoginButton() {
+//        Button btn = findViewById(R.id.btnLogin);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                // Build new user
+//                user = User.getInstance();
+//                user.setEmail(userEmail);
+//                user.setPassword(userPassword);
+//                // Register for token received:
+//                ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
+//
+//                // Make call
+//                Call<Void> caller = proxy.login(user);
+//                ProxyBuilder.callProxy(ServerTestActivity.this, caller, returnedNothing -> response(returnedNothing));
+//            }
+//        });
+//    }
 
     // Handle the token by generating a new Proxy which is encoded with it.
     private void onReceiveToken(String token) {

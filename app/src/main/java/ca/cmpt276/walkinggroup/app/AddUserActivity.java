@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import java.util.List;
+
+import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -27,18 +29,25 @@ public class AddUserActivity extends AppCompatActivity {
     private WGServerProxy proxy;
     private long userId;
     private String token;
+    private Session session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_user);
 
-        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-        token = dataToGet.getString("userToken","");
+        session = Session.getInstance();
+        user = session.getUser();
+        proxy = session.getProxy();
+        token = session.getToken();
 
-        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-        user = User.getInstance();
-        userId = dataToGet.getLong("userId", 0);
+        userId = user.getId();
+//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
+//        token = dataToGet.getString("userToken","");
+//
+//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
+//        user = User.getInstance();
+//        userId = dataToGet.getLong("userId", 0);
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
 
