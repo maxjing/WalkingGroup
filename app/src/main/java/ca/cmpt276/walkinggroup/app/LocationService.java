@@ -21,7 +21,7 @@ public class LocationService extends Service {
     private String TAG = "LocationListener";
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
-    private static final int LOCATION_TIME = 3000;
+    private static final int LOCATION_TIME = 30000;
 
     double tempLat;
     double tempLng;
