@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }else {
-                handler.postDelayed(this, 30000);
+                handler.postDelayed(this, 600000);
             }
         }
     };
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
-                handler.postDelayed(checkChangeRunnable, 10000);
+                handler.postDelayed(checkChangeRunnable, 600000);
 
                 startService(new Intent(getApplicationContext(), LocationService.class));
             }
