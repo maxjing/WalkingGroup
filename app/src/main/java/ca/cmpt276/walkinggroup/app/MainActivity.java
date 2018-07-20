@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < monitorsUsers.size(); i++) {
             items[i] = monitorsUsers.get(i).getName() + " - " + monitorsUsers.get(i).getEmail() + " " + monitorsUsers.get(i).getLastGpsLocation();
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.child_gps, items);
-        ListView list = (ListView) findViewById(R.id.list_child_gps);
-        list.setAdapter(adapter);
+     //   ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.child_gps, items);
+     //   ListView list = (ListView) findViewById(R.id.list_child_gps);
+     //   list.setAdapter(adapter);
     }
 
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup(returnedGroup));
                 }
             } else {
-                populateGroup();
+            //    populateGroup();
             }
         } catch (Exception e) {
 
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         groupsDestination.add(getString(R.string.Group_) + " " + returnedGroup.getGroupDescription() + " [" + returnedGroup.getRouteLatArray().get(0) + " , " + returnedGroup.getRouteLngArray().get(0) + "]");
         upGroups.add(returnedGroup);
         if (groupID.size() == groups.size()) {
-            populateGroup();
+         //   populateGroup();
         }
     }
 
