@@ -20,6 +20,10 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * able to send a new message to a group or parents and leaders
+ */
+
 public class MessagesNewActivity extends AppCompatActivity {
     private String token;
     private WGServerProxy proxy;

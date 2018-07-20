@@ -164,23 +164,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnMsg" />
 
-    <ListView
-        android:id="@+id/list_group_destination"
-        android:layout_width="395dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="11dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPanic" />
+    <!--<ListView-->
+        <!--android:id="@+id/list_group_destination"-->
+        <!--android:layout_width="395dp"-->
+        <!--android:layout_height="59dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="11dp"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/btnPanic" />-->
 
-    <ListView
-        android:id="@+id/list_child_gps"
-        android:layout_width="395dp"
-        android:layout_height="105dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_group_destination" />
+    <!--<ListView-->
+        <!--android:id="@+id/list_child_gps"-->
+        <!--android:layout_width="395dp"-->
+        <!--android:layout_height="105dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/list_group_destination" />-->
 
     <Button
         android:id="@+id/btnParent"

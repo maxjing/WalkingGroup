@@ -24,6 +24,11 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * able to send to all the group or single group
+ * able to send to member's parents
+ */
+
 public class MessagesGroupsActivity extends AppCompatActivity {
 
     private WGServerProxy proxy;
