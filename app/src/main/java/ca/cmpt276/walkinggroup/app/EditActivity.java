@@ -1,10 +1,5 @@
 package ca.cmpt276.walkinggroup.app;
 
-/**
- * Edit user's information
- * If the email of the current user is edited, the user may log in again.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +19,10 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 
+/**
+ * Edit user's information
+ * If the email of the current user is edited, the user may log in again.
+ */
 
 public class EditActivity extends AppCompatActivity {
 

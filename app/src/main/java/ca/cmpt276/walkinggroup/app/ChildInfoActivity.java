@@ -1,15 +1,15 @@
 package ca.cmpt276.walkinggroup.app;
 
-/**
- * Ask the current user what information he/she wants
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+/**
+ * Ask the current user what information he/she wants
+ */
 
 public class ChildInfoActivity extends AppCompatActivity {
 

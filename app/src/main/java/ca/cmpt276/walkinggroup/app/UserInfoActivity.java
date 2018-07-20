@@ -1,9 +1,5 @@
 package ca.cmpt276.walkinggroup.app;
 
-/**
- * Show information about the specific user
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +17,10 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
+
+/**
+ * Show information about the specific user
+ */
 
 public class UserInfoActivity extends AppCompatActivity {
 

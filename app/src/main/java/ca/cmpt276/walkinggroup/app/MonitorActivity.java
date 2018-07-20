@@ -80,8 +80,6 @@ public class MonitorActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback() {
-//        Intent intent = getIntent();
-//        memberId = intent.getLongExtra(MEMBER_ID,0);
         TextView tv = (TextView) findViewById(R.id.Inst_monitored);
         if(memberId == 0){
            tv.setText(R.string.click_to_stop_being_monitored);
@@ -89,7 +87,6 @@ public class MonitorActivity extends AppCompatActivity {
             tv.setText(R.string.click_to_view_monitors_personal_information);
         }
         ListView list = (ListView) findViewById(R.id.listView_Monitored);
-       // ListView list = (ListView) findViewById(R.id.listView_Monitored);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -146,11 +143,6 @@ public class MonitorActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_Monitored:
                 if (resultCode == Activity.RESULT_OK) {
-//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//                    token = dataToGet.getString("userToken","");
-//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//                    user = User.getInstance();
-//                    userId = dataToGet.getLong("userId", 0);
                     session = Session.getInstance();
                     proxy = session.getProxy();
                     user = session.getUser();

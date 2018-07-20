@@ -52,14 +52,9 @@ public class MonitoringActivity extends AppCompatActivity {
         token = session.getToken();
         user = session.getUser();
         userId = user.getId();
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-//        token = dataToGet.getString("userToken", "");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        user = User.getInstance();
 
         setAddBtn();
         registerClickCallback();
-//        userId = dataToGet.getLong("userId", 0);
 
         populateListView();
     }
@@ -163,16 +158,10 @@ public class MonitoringActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_Monitoring:
                 if (resultCode == Activity.RESULT_OK) {
-//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//                    token = dataToGet.getString("userToken","");
-//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//                    user = User.getInstance();
-//                    userId = dataToGet.getLong("userId", 0);
                     session = Session.getInstance();
                     proxy = session.getProxy();
                     user = session.getUser();
                     userId = user.getId();
-                    //Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
                     Log.i("LOG",""+userId);
                     try {
                         Thread.sleep(1000);

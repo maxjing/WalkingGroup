@@ -1,9 +1,5 @@
 package ca.cmpt276.walkinggroup.app;
 
-/**
- * Parent Dashboard to jump to map activity and message activity
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +17,10 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
+
+/**
+ * Parent Dashboard to jump to map activity and message activity
+ */
 
 public class ParentActivity extends AppCompatActivity {
     private Session session;
