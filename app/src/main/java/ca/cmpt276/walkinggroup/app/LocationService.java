@@ -21,7 +21,7 @@ public class LocationService extends Service {
     private String TAG = "LocationListener";
     private LocationManager mLocationManager;
     private LocationListener mLocationListener;
-    private static final int LOCATION_TIME = 5000;
+    private static final int LOCATION_TIME = 10000;
 
     double tempLat;
     double tempLng;
@@ -72,7 +72,7 @@ public class LocationService extends Service {
         mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         if (mLocationManager != null) {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_TIME, 100f, mLocationListener);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_TIME, 0f, mLocationListener);
         }
     }
 
