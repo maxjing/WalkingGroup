@@ -42,12 +42,7 @@ public class AddUserActivity extends AppCompatActivity {
         token = session.getToken();
 
         userId = user.getId();
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        token = dataToGet.getString("userToken","");
-//
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        user = User.getInstance();
-//        userId = dataToGet.getLong("userId", 0);
+
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
 

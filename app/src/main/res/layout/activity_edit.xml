@@ -304,12 +304,12 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/inst_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
-        android:text="@string/editing_email_will_cause_log_in_again"
+        android:text="@string/editing_user_s_own_email_causes_logging_in_again"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

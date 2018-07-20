@@ -1,5 +1,9 @@
 package ca.cmpt276.walkinggroup.app;
 
+/**
+ * Parent Dashboard to jump to map activity and message activity
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

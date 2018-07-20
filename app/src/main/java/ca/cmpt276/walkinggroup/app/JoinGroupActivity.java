@@ -65,7 +65,6 @@ public class JoinGroupActivity extends AppCompatActivity {
     }
 
     private void responseForJoining(List<User> returnedList) {
-       // finish();
     }
 
     private void setMyChildBtn() {

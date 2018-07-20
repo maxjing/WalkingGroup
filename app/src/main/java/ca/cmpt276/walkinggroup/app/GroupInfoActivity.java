@@ -46,10 +46,6 @@ public class GroupInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_info);
 
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-//        token = dataToGet.getString("userToken", "");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-
         session = Session.getInstance();
         proxy = session.getProxy();
         userId = session.getUser().getId();
@@ -89,9 +85,6 @@ public class GroupInfoActivity extends AppCompatActivity {
         if(childId == 0){
             TextView tv = (TextView) findViewById(R.id.txtInstruction);
             tv.setText(R.string.click_member_infoActivity);
-//            TextView tv_long = (TextView) findViewById(R.id.txt_Long_Inst);
-//            tv_long.setText(R.string.long_click_to_view_users_parents);
-            //ListView list = (ListView) findViewById(R.id.list_group_member);
             list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -99,15 +92,6 @@ public class GroupInfoActivity extends AppCompatActivity {
                     ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returned -> responseForRemove());
                 }
             });
-
-//            list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//                @Override
-//                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Call<User> caller = proxy.getUserById(members.get(position).getId());
-//                    ProxyBuilder.callProxy(GroupInfoActivity.this,caller,returnedUser -> responseForMonitor(returnedUser));
-//                    return true;
-//                }
-//            });
         }
         TextView tv_long = (TextView) findViewById(R.id.txt_Long_Inst);
         tv_long.setText(R.string.long_click_to_view_users_parents);

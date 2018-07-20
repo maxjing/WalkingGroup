@@ -1,5 +1,9 @@
 package ca.cmpt276.walkinggroup.app;
 
+/**
+ * Ask the current user what information he/she wants
+ */
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

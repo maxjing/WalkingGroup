@@ -1,5 +1,10 @@
 package ca.cmpt276.walkinggroup.app;
 
+/**
+ * Edit user's information
+ * If the email of the current user is edited, the user may log in again.
+ */
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -32,8 +37,6 @@ public class EditActivity extends AppCompatActivity {
     public static final String EXTRA_GRADE = "ca.cmpt276.walkinggroup.app.Edit - grade";
     public static final String EXTRA_TEACHER_NAME = "ca.cmpt276.walkinggroup.app.Edit - teacherName";
     public static final String EXTRA_EMERGENCY = "ca.cmpt276.walkinggroup.app.Edit - emergencyContactInfo";
-    public static final String YEAR_INT = "YEAR_INT";
-    public static final String MONTH_INT = "MONTH_INT";
 
     private User user;
     private List<User> monitorsUsers;
@@ -48,7 +51,7 @@ public class EditActivity extends AppCompatActivity {
         session = Session.getInstance();
         user = session.getUser();
         proxy = session.getProxy();
-//
+
         extractDataFromIntent();
         setOKBtn();
         setCancelBtn();
@@ -122,14 +125,6 @@ public class EditActivity extends AppCompatActivity {
                 String etteacherName = editTN.getText().toString();
                 EditText etECI = (EditText) findViewById(R.id.etEmergency);
                 String etEmergency = etECI.getText().toString();
-//                try {
-//                    int year = Integer.parseInt(etYear);
-//                    user.setBirthYear(year);
-//                }catch(NumberFormatException e) {
-//                    user.setBirthYear(null);
-//                }catch(IllegalArgumentException e) {
-//                    Toast.makeText(EditActivity.this,"The birth year should between 1900 and 2018.",Toast.LENGTH_LONG).show();
-//                }
 
                 int year = 0;
                 int month = 0;
@@ -137,14 +132,13 @@ public class EditActivity extends AppCompatActivity {
                 try {
                     year = Integer.parseInt(etYear);
                     month = Integer.parseInt(etMonth);
-//                    Toast.makeText(EditActivity.this,"month: "+month,Toast.LENGTH_LONG).show();
                     if (year < 1900 || year > 2018) {
                         Toast.makeText(EditActivity.this, "The birth year should between 1900 and 2018.", Toast.LENGTH_LONG).show();
                     }
                     if (month < 1 || month > 12) {
                         Toast.makeText(EditActivity.this, "The month you entered does not exist.", Toast.LENGTH_LONG).show();
                     }
-                    if(year >= 1900 && year <= 2018 && month >= 1 && month <=12) {
+                    if (year >= 1900 && year <= 2018 && month >= 1 && month <= 12) {
                         user.setName(editName);
                         user.setEmail(etEmail);
                         user.setBirthYear(year);
@@ -159,7 +153,7 @@ public class EditActivity extends AppCompatActivity {
                         finish();
                     }
 
-                    } catch (NumberFormatException e) {
+                } catch (NumberFormatException e) {
                     if (etYear.equals("") && etMonth.equals("")) {
                         user.setBirthYear(null);
                         user.setBirthMonth(null);
@@ -176,10 +170,9 @@ public class EditActivity extends AppCompatActivity {
                     }
                     if (etYear.equals("") && !etMonth.equals("")) {
                         month = Integer.parseInt(etMonth);
-                        Toast.makeText(EditActivity.this,"month: "+month,Toast.LENGTH_LONG).show();
-                        if(month < 1 || month > 12){
+                        if (month < 1 || month > 12) {
                             Toast.makeText(EditActivity.this, "The month you entered does not exist.", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             user.setBirthYear(null);
                             user.setBirthMonth(month);
                             user.setName(editName);
@@ -199,7 +192,7 @@ public class EditActivity extends AppCompatActivity {
                         year = Integer.parseInt(etYear);
                         if (year < 1900 || year > 2018) {
                             Toast.makeText(EditActivity.this, "The birth year should between 1900 and 2018.", Toast.LENGTH_LONG).show();
-                        }else{
+                        } else {
                             user.setBirthYear(year);
                             user.setBirthMonth(null);
                             user.setName(editName);
@@ -217,55 +210,8 @@ public class EditActivity extends AppCompatActivity {
                     }
 
                 }
-// catch (IllegalArgumentException e) {
-//                                           if (year < 1900 || year > 2018) {
-//                                               Toast.makeText(EditActivity.this, "The birth year should between 1900 and 2018.", Toast.LENGTH_LONG).show();
-//                                           }
-//                                           if (month < 1 || month > 12) {
-//                                               Toast.makeText(EditActivity.this, "The month you entered does not exist.", Toast.LENGTH_LONG).show();
-//                                           }
-//                                       }
             }
         });
-//                    Intent intent = new Intent();
-//                    intent.putExtra(EXTRA_NAME, editName);
-//                    intent.putExtra(EXTRA_EMAIL, etEmail);
-//                    intent.putExtra(YEAR_INT, year);
-//                    intent.putExtra(MONTH_INT, month);
-//                    intent.putExtra(EXTRA_ADDRESS, etAddress);
-//                    intent.putExtra(EXTRA_CELL_PHONE, etcellPhone);
-//                    intent.putExtra(EXTRA_HOME_PHONE, ethomePhone);
-//                    intent.putExtra(EXTRA_GRADE, etGrade);
-//                    intent.putExtra(EXTRA_TEACHER_NAME, etteacherName);
-//                    intent.putExtra(EXTRA_EMERGENCY, etEmergency);
-//                    setResult(Activity.RESULT_OK);
-//
-//                    finish();
-//                }catch(NumberFormatException e) {
-//                    if(etYear.equals("")){
-//
-//                }
-//
-//
-//                    if(year < 1900 || year > 2018){
-//                        Toast.makeText(EditActivity.this,"The birth year should between 1900 and 2018.",Toast.LENGTH_LONG).show();
-//                    }
-//                }catch(NumberFormatException e){
-//                    year = 0;
-//                }
-//                try{
-//
-//                    if(month < 1 || month > 12){
-//                        Toast.makeText(EditActivity.this,"The month you entered does not exist.",Toast.LENGTH_LONG).show();
-//                    }
-//                }catch(NumberFormatException e){
-//                    month = 0;
-//                }
-//
-//
-//
-//            }
-//        });
     }
 
     private void setCancelBtn() {

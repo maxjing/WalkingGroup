@@ -57,11 +57,7 @@ public class GroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        token = dataToGet.getString("userToken","");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        userId = dataToGet.getLong("userId",0);
-//
+
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
@@ -164,9 +160,6 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
-//                ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
-//                Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
                 Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,memberID.get(position),userId);
                 startActivity(intent);
             }
@@ -175,8 +168,6 @@ public class GroupActivity extends AppCompatActivity {
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = GroupInfoActivity.makeIntent(GroupActivity.this,memberID.get(position),userId);
-//                startActivity(intent);
                 Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
                 Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
@@ -204,11 +195,6 @@ public class GroupActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQUEST_CODE_DELETE:
                 if (resultCode == Activity.RESULT_OK) {
-//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//                    token = dataToGet.getString("userToken","");
-//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//                    user = User.getInstance();
-//                    userId = dataToGet.getLong("userId", 0);
                     session = Session.getInstance();
                     proxy = session.getProxy();
                     user = session.getUser();

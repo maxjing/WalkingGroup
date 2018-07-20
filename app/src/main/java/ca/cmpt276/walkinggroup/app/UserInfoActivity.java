@@ -1,18 +1,19 @@
 package ca.cmpt276.walkinggroup.app;
 
+/**
+ * Show information about the specific user
+ */
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.R;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -21,17 +22,6 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_ADDRESS;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_CELL_PHONE;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_EMAIL;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_EMERGENCY;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_GRADE;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_HOME_PHONE;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_NAME;
-import static ca.cmpt276.walkinggroup.app.EditActivity.EXTRA_TEACHER_NAME;
-import static ca.cmpt276.walkinggroup.app.EditActivity.MONTH_INT;
-import static ca.cmpt276.walkinggroup.app.EditActivity.YEAR_INT;
-
 public class UserInfoActivity extends AppCompatActivity {
 
     public static final int REQUEST_CODE_EDIT = 10;
@@ -39,37 +29,25 @@ public class UserInfoActivity extends AppCompatActivity {
     public static final String PARENT_ID = "Parent_Id";
     private User user;
     private WGServerProxy proxy;
-    private String token;
     private long userId;
     private long childId;
     private long parentId;
     private Session session;
-    private String userToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
-//        token = dataToGet.getString("userToken", "");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        user = User.getInstance();
-//        userId = dataToGet.getLong("userId", 0);
-
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
 
-//        Button btn = (Button) findViewById(R.id.btnEdit);
-//        btn.setVisibility(View.GONE);
-
         Intent intent = getIntent();
         childId = intent.getLongExtra(CHILD_ID_USER_INFO,0);
         if(childId != 0){
             userId = childId;
-//            btn.setVisibility(View.VISIBLE);
         }
 
         parentId = intent.getLongExtra(PARENT_ID,0);
@@ -97,84 +75,62 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void response(User returned) {
-//        TextView tv = (TextView) findViewById(R.id.txtName);
-//        tv.setText(returned.getName());
-//        tv = (TextView) findViewById(R.id.txtEmail);
-//        tv.setText(returned.getEmail());
         user = returned;
         TextView tvName = (TextView) findViewById(R.id.txtName);
         tvName.setText(returned.getName());
-        //user.setName(returned.getName());
-       // name = returned.getName();
+
         TextView tvEmail = (TextView) findViewById(R.id.txtEmail);
         tvEmail.setText(returned.getEmail());
-        //user.setEmail(returned.getEmail());
-        //email = returned.getEmail();
+
         TextView tvYear = (TextView) findViewById(R.id.txtYear);
         if(returned.getBirthYear() == null){
             tvYear.setText("");
-          //  user.setBirthYear(0);
-      //      birthYear = 0;
         }else{
             tvYear.setText(""+returned.getBirthYear());
-     //       birthYear = returned.getBirthYear();
-            //user.setBirthYear(returned.getBirthYear());
         }
         TextView tvMonth = (TextView) findViewById(R.id.txtMonth);
         if(returned.getBirthMonth() == null){
             tvMonth.setText("");
- //           birthMonth = 0;
-            //user.setBirthMonth(0);
         }else{
             tvMonth.setText(""+returned.getBirthMonth());
-//            birthMonth = returned.getBirthMonth();
-            //user.setBirthMonth(returned.getBirthMonth());
         }
         TextView tvAddress = (TextView) findViewById(R.id.txtAddress);
         tvAddress.setText(returned.getAddress());
-//        address = returned.getAddress();
-        //user.setAddress(returned.getAddress());
+
         TextView tvCell = (TextView) findViewById(R.id.txtcellPhone);
         tvCell.setText(returned.getCellPhone());
-        //cellPhone = returned.getCellPhone();
-        //user.setCellPhone(returned.getCellPhone());
+
         TextView tvHome = (TextView) findViewById(R.id.txthomePhone);
         tvHome.setText(returned.getHomePhone());
-        //homePhone = returned.getHomePhone();
-        //user.setHomePhone(returned.getHomePhone());
+
         TextView tvGrade = (TextView) findViewById(R.id.txtGrade);
         tvGrade.setText(returned.getGrade());
-       // grade = returned.getGrade();
-        //user.setGrade(returned.getGrade());
+
         TextView tvTeacher = (TextView) findViewById(R.id.txtTeacher);
         tvTeacher.setText(returned.getTeacherName());
-       // teacherName = returned.getTeacherName();
-        //user.setTeacherName(returned.getTeacherName());
+
         TextView tvEmergency = (TextView) findViewById(R.id.txtEmergency);
         tvEmergency.setText(returned.getEmergencyContactInfo());
-       // emergencyContactInfo = returned.getEmergencyContactInfo();
-        //user.setEmergencyContactInfo(returned.getEmergencyContactInfo());
+
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         String userEmail = dataToGet.getString("userEmail","");
         if(childId == 0 && parentId == 0 && !userEmail.equals(session.getUser().getEmail())){
-//            Intent intent = LoginActivity.makeIntent(this);
-//            startActivity(intent);
-//            finish();
+            setResult(RESULT_OK,null);
+            finishActivityFromChild(this,99);
 
-//                SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
-//                SharedPreferences.Editor PrefEditor = dataToSave.edit();
-//                PrefEditor.putString("userToken", "");
-//
-//                PrefEditor.apply();
+            SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+            SharedPreferences.Editor PrefEditor = dataToSave.edit();
+            PrefEditor.putString("userToken", "");
+
+            PrefEditor.apply();
             session.setToken("");
+            session.setProxy("");
             proxy = session.getProxy();
-
             Toast.makeText(UserInfoActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
             Intent intentToLogin = LoginActivity.makeIntent(UserInfoActivity.this);
             startActivity(intentToLogin);
-            setResult(RESULT_OK,null);
             finish();
-            finishActivityFromChild(this,99);
+
         }
 
     }
@@ -189,10 +145,6 @@ public class UserInfoActivity extends AppCompatActivity {
         switch(requestCode){
             case REQUEST_CODE_EDIT:
                 if(resultCode == Activity.RESULT_OK) {
-//                    SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//                    token = dataToGet.getString("userToken","");
-//                    proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//                    user = User.getInstance();
                     session = Session.getInstance();
                     proxy = session.getProxy();
                     user = session.getUser();
@@ -212,44 +164,8 @@ public class UserInfoActivity extends AppCompatActivity {
     }
 
     private void responseForEdit(User returnedUser) {
-
-        ProxyBuilder.setOnTokenReceiveCallback( token -> onReceiveToken(token));
-        // Make call
-
-
-        Call<Void> caller_login = proxy.login(returnedUser);
-        ProxyBuilder.callProxy(UserInfoActivity.this, caller_login, returnedNothing -> response(returnedNothing));
-
-
         Call<User> caller = proxy.getUserById(returnedUser.getId());
         ProxyBuilder.callProxy(UserInfoActivity.this,caller,returned -> response(returned));
-    }
-
-    private void onReceiveToken(String token) {
-        // Replace the current proxy with one that uses the token!
-        SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref",0);
-        SharedPreferences.Editor PrefEditor = dataToSave.edit();
-
-        userToken = token;
-        PrefEditor.putString("userToken",userToken);
-
-
-        PrefEditor.apply();
-
-        session.setToken(token);
-        session.setProxy(token);
-        proxy = session.getProxy();
-
-
-
-    }
-
-    // Login actually completes by calling this; nothing to do as it was all done
-    // when we got the token.
-    private void response(Void returnedNothing) {
-
-
-
     }
 
     public static Intent makeChildIntent(Context context, long childId) {
