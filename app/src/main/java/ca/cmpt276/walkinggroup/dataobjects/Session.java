@@ -7,6 +7,11 @@ import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
 
+/**
+ * Handle user and proxy together
+ * Singleton way to better to conduct
+ */
+
 public class Session {
     private WGServerProxy proxy;
     private static Session instance;

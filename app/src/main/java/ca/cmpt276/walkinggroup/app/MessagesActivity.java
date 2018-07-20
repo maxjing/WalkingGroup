@@ -25,6 +25,15 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+
+/**
+ * Handle message list, with a new message button, able to show emergency first
+ * sperate into two list , read and unread
+ */
+
+
+
+
 public class MessagesActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
     private String TAG = "MessagesActivity";

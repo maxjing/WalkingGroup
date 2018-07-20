@@ -19,6 +19,10 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
+/**
+ * Handle emergency message, be able to send without typing
+ * able to type and then send
+ */
 
 public class MessagesEmergencyActivity extends AppCompatActivity {
     private String TAG = "MessagesEmergencyActivity";

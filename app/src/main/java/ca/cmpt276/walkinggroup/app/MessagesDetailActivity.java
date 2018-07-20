@@ -18,6 +18,11 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
+/**
+ * Handle message detail, with whom send and its detail content,
+ * able to delete this msg
+ */
+
 
 public class MessagesDetailActivity extends AppCompatActivity {
     private WGServerProxy proxy;
