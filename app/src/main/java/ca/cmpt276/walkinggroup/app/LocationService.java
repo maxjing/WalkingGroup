@@ -14,8 +14,10 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-// get the example from https://github.com/codepath/android_guides/issues/220
-
+/**
+ * Update the GPS Location Information every 10 seconds.
+ * get the example from https://github.com/codepath/android_guides/issues/220
+ */
 
 public class LocationService extends Service {
     private String TAG = "LocationListener";

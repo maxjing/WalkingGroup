@@ -74,6 +74,7 @@ import retrofit2.Call;
  * creating walking group by select target place and meet place, join group
  * to create a group, first search and click the target place, then search and click a meeting place, the dialog would come out
  * to join a group, first click the blue marker, it would show the meeting place using yellow marker, click the yellow marker to join a group
+ * show the child position and update the position every 30 seconds
  */
 
 

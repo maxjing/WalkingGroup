@@ -46,6 +46,7 @@ import retrofit2.Call;
  * Based button access to different activities
  * Check if user login at first beginning
  * logout button show after login only
+ * the onResume receive the Loaction Service, get the GPS information every 10 seconds
  */
 
 
