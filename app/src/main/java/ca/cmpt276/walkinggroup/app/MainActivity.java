@@ -121,11 +121,11 @@ public class MainActivity extends AppCompatActivity {
         if (session.getToken() == "") {
             btnUpdate.setVisibility(View.GONE);
             btnStop.setVisibility(View.GONE);
-        //    locationInfo.setVisibility(View.GONE);
+            //    locationInfo.setVisibility(View.GONE);
         }else {
             btnUpdate.setVisibility(View.VISIBLE);
             btnStop.setVisibility(View.VISIBLE);
-        //    locationInfo.setVisibility(View.VISIBLE);
+            //    locationInfo.setVisibility(View.VISIBLE);
         }
         if (!runtime_permissions()) {
             setLocationUpdate();
@@ -153,14 +153,13 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < monitorsUsers.size(); i++) {
             items[i] = monitorsUsers.get(i).getName() + " - " + monitorsUsers.get(i).getEmail() + " " + monitorsUsers.get(i).getLastGpsLocation();
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.child_gps, items);
-        ListView list = (ListView) findViewById(R.id.list_child_gps);
-        list.setAdapter(adapter);
+        //   ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.child_gps, items);
+        //   ListView list = (ListView) findViewById(R.id.list_child_gps);
+        //   list.setAdapter(adapter);
     }
 
 
     private void populate() {
-        Toast.makeText(this,""+userId,Toast.LENGTH_LONG).show();
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForMain(returnedUser));
     }
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     ProxyBuilder.callProxy(MainActivity.this, caller, returnedGroup -> responseGroup(returnedGroup));
                 }
             } else {
-                populateGroup();
+                //    populateGroup();
             }
         } catch (Exception e) {
 
@@ -193,16 +192,16 @@ public class MainActivity extends AppCompatActivity {
         groupsDestination.add(getString(R.string.Group_) + " " + returnedGroup.getGroupDescription() + " [" + returnedGroup.getRouteLatArray().get(0) + " , " + returnedGroup.getRouteLngArray().get(0) + "]");
         upGroups.add(returnedGroup);
         if (groupID.size() == groups.size()) {
-            populateGroup();
+            //   populateGroup();
         }
     }
 
 
-    private void populateGroup() {
-        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination, groupsDestination);
-        ListView listLeader = (ListView) findViewById(R.id.list_group_destination);
-        listLeader.setAdapter(adapterLeader);
-    }
+//    private void populateGroup() {
+//        ArrayAdapter<String> adapterLeader = new ArrayAdapter<>(this, R.layout.group_destination, groupsDestination);
+//        ListView listLeader = (ListView) findViewById(R.id.list_group_destination);
+//        listLeader.setAdapter(adapterLeader);
+//    }
 
     @Override
     protected void onResume() {
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     double tempLat = intent.getDoubleExtra("UpdateLat", 0);
                     double tempLng = intent.getDoubleExtra("UpdateLng", 0);
                     tempUserLocation = new LatLng(tempLat, tempLng);
-             //       locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
+                    //       locationInfo.setText("LatLLng: " + tempLat + ", " + tempLng + " " + mStopSignal);
 
                     GpsLocation gpsLocation = new GpsLocation();
                     gpsLocation.setLat(tempLat);

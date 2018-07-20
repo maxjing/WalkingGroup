@@ -51,7 +51,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         populate();
         setMsgBtn();
-        setDeleteAllBtn();
+//        setDeleteAllBtn();
         setCancel();
         handler.postDelayed(update, 1000*5);
 
@@ -217,19 +217,19 @@ public class MessagesActivity extends AppCompatActivity {
         return new Intent(context, MessagesActivity.class);
     }
 
-    private void setDeleteAllBtn(){
-        Button btnGroup = (Button)findViewById(R.id.btnDeleteAll);
-        btnGroup.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-
-                Call<List<Message>> caller = proxy.getMessages();
-                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> responseDeleteAll(returnedMsg));
-
-
-            }
-        });
-    }
+//    private void setDeleteAllBtn(){
+//        Button btnGroup = (Button)findViewById(R.id.btnDeleteAll);
+//        btnGroup.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//
+//                Call<List<Message>> caller = proxy.getMessages();
+//                ProxyBuilder.callProxy(MessagesActivity.this, caller, returnedMsg -> responseDeleteAll(returnedMsg));
+//
+//
+//            }
+//        });
+//    }
 
     private void responseDeleteAll(List<Message> messages){
         for(int i = 0;i<messages.size();i++){
