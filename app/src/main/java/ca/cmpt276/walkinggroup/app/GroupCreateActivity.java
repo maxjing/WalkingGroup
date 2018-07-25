@@ -138,7 +138,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     private void response(User user) {
 
         group = new Group();
-        group.setLeader(user);
+//        group.setLeader(user);
 
         routeLatArray.add(latitude);
         routeLatArray.add(meetLat);

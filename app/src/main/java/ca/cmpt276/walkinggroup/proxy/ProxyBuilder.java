@@ -165,6 +165,7 @@ public class ProxyBuilder {
         private String apiKey;
         private String token;
 
+
         public AddHeaderInterceptor(String apiKey, String token) {
             this.apiKey = apiKey;
             this.token = token;
@@ -175,6 +176,7 @@ public class ProxyBuilder {
             Request originalRequest = chain.request();
 
             Request.Builder builder = originalRequest.newBuilder();
+            builder.header("permissions-enabled", "true");
             // Add API header
             if (apiKey != null) {
                 builder.header("apiKey", apiKey);
@@ -183,6 +185,9 @@ public class ProxyBuilder {
             if (token != null) {
                 builder.header("Authorization", token);
             }
+
+
+
             Request modifiedRequest = builder.build();
 
             return chain.proceed(modifiedRequest);

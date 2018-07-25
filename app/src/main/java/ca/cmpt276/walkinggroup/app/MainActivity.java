@@ -99,8 +99,6 @@ public class MainActivity extends AppCompatActivity {
             proxy = session.getProxy();
         } else {
             btnLogout.setVisibility(View.VISIBLE);
-
-
             populate();
             showChildGPS();
 
@@ -114,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         setMsgBtn();
         setPanicBtn();
         setParentBtn();
+        setPermissionBtn();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -559,6 +558,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setPermissionBtn() {
+        Button btnMonitor = (Button) findViewById(R.id.btnPermission);
+        btnMonitor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (session.getToken()) {
+                    case "":
+                        Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLogin);
+                        finish();
+                        break;
+                    default:
+                        Intent intentMonitor = PermissionActivity.makeIntent(MainActivity.this);
+                        startActivity(intentMonitor);
+
+                }
+
+            }
+        });
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

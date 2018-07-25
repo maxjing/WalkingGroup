@@ -165,22 +165,22 @@
         app:layout_constraintTop_toBottomOf="@+id/btnMsg" />
 
     <!--<ListView-->
-        <!--android:id="@+id/list_group_destination"-->
-        <!--android:layout_width="395dp"-->
-        <!--android:layout_height="59dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="11dp"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/btnPanic" />-->
+    <!--android:id="@+id/list_group_destination"-->
+    <!--android:layout_width="395dp"-->
+    <!--android:layout_height="59dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="11dp"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/btnPanic" />-->
 
     <!--<ListView-->
-        <!--android:id="@+id/list_child_gps"-->
-        <!--android:layout_width="395dp"-->
-        <!--android:layout_height="105dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/list_group_destination" />-->
+    <!--android:id="@+id/list_child_gps"-->
+    <!--android:layout_width="395dp"-->
+    <!--android:layout_height="105dp"-->
+    <!--android:layout_marginStart="8dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/list_group_destination" />-->
 
     <Button
         android:id="@+id/btnParent"
@@ -193,6 +193,17 @@
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnPermission"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Permission"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPanic" />
 
 
 </android.support.constraint.ConstraintLayout>
