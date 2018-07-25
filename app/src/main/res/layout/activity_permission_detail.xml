@@ -27,7 +27,7 @@
         android:layout_marginTop="56dp"
         android:text="@string/from"
         android:textColor="#FFF"
-        android:textSize="24sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,10 +57,10 @@
 
     <TextView
         android:id="@+id/requestDetail"
-        android:layout_width="wrap_content"
+        android:layout_width="21dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="96dp"
         android:textColor="#FFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,10 +75,10 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/btnBacktoPermission"
         app:layout_constraintEnd_toStartOf="@+id/btnDeny"
-        app:layout_constraintHorizontal_bias="0.464"
+        app:layout_constraintHorizontal_bias="0.319"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Requests"
-        app:layout_constraintVertical_bias="0.704" />
+        app:layout_constraintVertical_bias="0.721" />
 
     <Button
         android:id="@+id/btnDeny"
@@ -89,9 +89,51 @@
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.777"
+        app:layout_constraintHorizontal_bias="0.792"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.549" />
+        app:layout_constraintVertical_bias="0.561" />
+
+    <TextView
+        android:id="@+id/txtStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status:"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.194" />
+
+    <TextView
+        android:id="@+id/txtContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Content:"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtFromUser"
+        app:layout_constraintVertical_bias="0.348" />
+
+    <TextView
+        android:id="@+id/requestStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="textview"
+        android:textColor="size"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnApprove"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.321"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/requestDetail"
+        app:layout_constraintVertical_bias="0.034" />
 
 </android.support.constraint.ConstraintLayout>
