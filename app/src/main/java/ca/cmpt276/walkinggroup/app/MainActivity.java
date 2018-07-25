@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         session.setToken(token);
         session.setProxy(token);
         proxy = session.getProxy();
+        user = session.getUser();
         //user = new User();
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
@@ -257,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
                     List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
                     List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
                     LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
-                    //Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation, Toast.LENGTH_SHORT).show();
                     float results[] = new float[2];
                     Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
 
@@ -270,13 +270,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+
             if (mStopSignal) {
-                Toast.makeText(MainActivity.this, "Arrive Target Place!", Toast.LENGTH_SHORT).show();
+                if (user.getTotalPointsEarned() == null){
+                    user.setTotalPointsEarned(0);
+                }
+                if (user.getCurrentPoints() == null){
+                    user.setCurrentPoints(0);
+                }
+                user.setCurrentPoints(user.getCurrentPoints() + 1);
+                user.setTotalPointsEarned(user.getTotalPointsEarned() + 1);
+
+                Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + user.getCurrentPoints() + ", " + user.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
+
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }else {
-                handler.postDelayed(this, 600000);
+                handler.postDelayed(this, 6000);
             }
         }
     };
@@ -324,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
-                handler.postDelayed(checkChangeRunnable, 600000);
+                handler.postDelayed(checkChangeRunnable, 6000);
 
                 startService(new Intent(getApplicationContext(), LocationService.class));
             }
@@ -335,6 +347,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
+
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }
