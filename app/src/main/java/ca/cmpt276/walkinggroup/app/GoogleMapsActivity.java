@@ -89,6 +89,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
     public static final String WALKING_GROUP = "Walking Group";
     public static final String MEETING_PLACE = "Meeting Place";
     public static final String CHILD = "CHILD";
+    public static final String SELECTED_PLACE = "selected place";
     private PlaceInfo mPlaceDetailsText;
     private PlaceInfo mSearchMarkerDetail = null;
     private PlaceInfo mMeetPlaceDetail = null;
@@ -192,6 +193,32 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         setUpClearButton();
 
         handler.postDelayed(updateChild, 5000);
+    }
+
+    private void setOnMapClick() {
+        // Setting a click event handler for the map
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+            @Override
+            public void onMapClick(LatLng latLng) {
+
+                // Creating a marker
+                MarkerOptions markerOptions = new MarkerOptions();
+
+                // Setting the position for the marker
+                markerOptions.position(latLng)
+                        .snippet(SELECTED_PLACE)
+                        .title(latLng.latitude + " : " + latLng.longitude);
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+                // Placing a marker on the touched position
+                Marker tempMarker = mMap.addMarker(markerOptions);
+                PlaceInfo tempPlace = new PlaceInfo(tempMarker.getTitle(), tempMarker.getTitle(), null, null, null, latLng, 0, null);
+
+                mSearchMarker.add(tempMarker);
+                mPlaceDetailsTextList.add(tempPlace);
+            }
+        });
     }
 
     @Override
@@ -404,7 +431,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             Log.i(TAG, "show the dialog");
                         }
 
-                    } else {
+                    }else {
                         Toast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
@@ -445,6 +472,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                 return false;
             }
         });
+
 
         hideSoftKeyboard();
     }
@@ -747,6 +775,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
             //mMap.getUiSettings().setCompassEnabled(true);
             mMap.getUiSettings().setZoomControlsEnabled(true);
+
+            setOnMapClick();
+
 
 
             init();
