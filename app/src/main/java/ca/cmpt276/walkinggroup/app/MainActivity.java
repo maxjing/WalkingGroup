@@ -18,21 +18,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.TimerTask;
 
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
@@ -273,14 +268,19 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
             if (mStopSignal) {
+                Call<User> caller = proxy.getUserById(session.getUser().getId());
+                ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForUser(returnedUser));
                 if (user.getTotalPointsEarned() == null){
                     user.setTotalPointsEarned(0);
                 }
                 if (user.getCurrentPoints() == null){
                     user.setCurrentPoints(0);
                 }
-                user.setCurrentPoints(user.getCurrentPoints() + 1);
-                user.setTotalPointsEarned(user.getTotalPointsEarned() + 1);
+                user = session.getUser();
+                user.setCurrentPoints(session.getUser().getCurrentPoints() + 1);
+                user.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + 1);
+                Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), user);
+                ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
                 Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + user.getCurrentPoints() + ", " + user.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
@@ -292,6 +292,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void responseForUser(User returnedUser) {
+        user = returnedUser;
+    }
+
+    private void responseUserUpdate(User returnedUser) {
+    }
 
     private void response(GpsLocation location) {
 
