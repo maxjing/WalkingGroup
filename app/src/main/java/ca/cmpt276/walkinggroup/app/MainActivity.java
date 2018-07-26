@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         setPanicBtn();
         setParentBtn();
         setPermissionBtn();
+        setRewardBtn();
 
         //set up location update
         btnUpdate = findViewById(R.id.start_update_location);
@@ -134,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
 
 
     private void showChildGPS() {
@@ -346,6 +346,42 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (tempUserLocation != null && upGroups != null) {
+                    for (int i = 0; i < upGroups.size(); i++) {
+                        List<Double> tempLatArray = upGroups.get(i).getRouteLatArray();
+                        List<Double> tempLngArray = upGroups.get(i).getRouteLngArray();
+                        LatLng tempPosition = new LatLng(tempLatArray.get(0), tempLngArray.get(0));
+                        float results[] = new float[2];
+                        Location.distanceBetween(tempPosition.latitude, tempPosition.longitude, tempUserLocation.latitude, tempUserLocation.longitude, results);
+
+                        if (results[0] <= 200f) {
+                            mStopSignal = true;
+                            break;
+                        }
+
+                        mStopSignal = false;
+                    }
+                }
+
+                Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+
+                if (mStopSignal) {
+                    User tempUser = session.getUser();
+                    if (tempUser.getTotalPointsEarned() == null){
+                        tempUser.setTotalPointsEarned(0);
+                    }
+                    if (tempUser.getCurrentPoints() == null){
+                        tempUser.setCurrentPoints(0);
+                    }
+
+                    tempUser.setCurrentPoints(session.getUser().getCurrentPoints() + 1);
+                    tempUser.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + 1);
+                    Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
+                    ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
+
+                    Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                }
+
                 Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
@@ -594,6 +630,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setRewardBtn() {
+        Button btnReward = findViewById(R.id.btnReward);
+        btnReward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentToReward = RewardActivity.makeIntent(MainActivity.this);
+                startActivity(intentToReward);
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

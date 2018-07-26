@@ -77,7 +77,8 @@
         <activity android:name=".MessagesEmergencyActivity" />
         <activity android:name=".ParentActivity" />
         <activity android:name=".PermissionActivity" />
-        <activity android:name=".PermissionDetailActivity"></activity>
+        <activity android:name=".PermissionDetailActivity" />
+        <activity android:name=".RewardActivity"></activity>
     </application>
 
 </manifest>
