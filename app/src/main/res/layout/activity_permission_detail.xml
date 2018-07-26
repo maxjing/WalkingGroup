@@ -1,97 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context="ca.cmpt276.walkinggroup.app.PermissionDetailActivity">
+    tools:context="ca.cmpt276.walkinggroup.app.PermissionDetailActivity"
+    android:fillViewport="true">
+
+    <TableLayout
+        android:id="@+id/back_btn"
+        android:layout_width="368dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:id="@+id/TableRow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/txtFromUser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="From:"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/fromUser"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+        </TableRow>
+
+
+    </TableLayout>
 
     <TextView
-        android:id="@+id/Requests"
+        android:id="@+id/txtStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Requests"
-        android:textColor="#FFF"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/back_btn"
+        android:layout_marginTop="146dp"
+        android:text="Status:"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/txtFromUser"
+        android:id="@+id/txtRequestContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
-        android:text="@string/from"
-        android:textColor="#FFF"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/requestfromUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="60dp"
-        android:textColor="#FFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/back_btn"
+        android:layout_marginTop="28dp"
+        android:text="Content:"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnBacktoPermission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="105dp"
-        android:layout_marginStart="52dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/back_btn"
+        android:layout_marginBottom="34dp"
         android:background="@drawable/background_button"
-        android:text="@string/back"
+        android:text="BACK"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <TextView
-        android:id="@+id/requestDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="108dp"
-        android:textColor="#FFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+     />
 
     <Button
         android:id="@+id/btnApprove"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/back_btn"
+        android:layout_marginBottom="201dp"
         android:background="@drawable/background_button"
-        android:text="Approve"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btnBacktoPermission"
-        app:layout_constraintEnd_toStartOf="@+id/btnDeny"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Requests"
-        app:layout_constraintVertical_bias="0.704" />
+        android:text="APPROVE"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btnDeny"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/back_btn"
+        android:layout_alignTop="@+id/btnApprove"
         android:background="@drawable/background_button"
-        android:text="Deny"
+        android:text="DENY"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.777"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.549" />
+ />
 
-</android.support.constraint.ConstraintLayout>
+    <ListView
+        android:id="@+id/listview_rstatus"
+        android:layout_width="match_parent"
+        android:layout_height="528dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:paddingBottom="250dp"
+        android:paddingLeft="80dp"
+        android:paddingTop="6dp" />
+
+    <TextView
+        android:id="@+id/requestContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/txtRequestContent"
+        android:layout_marginStart="98dp"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>
