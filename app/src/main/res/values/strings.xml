@@ -123,6 +123,7 @@
     <string name="send">Send</string>
     <string name="send_directly_with_the_hint">SEND DIRECTLY WITH THE HINT</string>
     <string name="editing_user_s_own_email_causes_logging_in_again">Editing user\'s own email causes logging in again.</string>
+    <string name="leader_board">Leader Board</string>
     <string name="reward">Reward</string>
     <string name="use_my_points">USE MY POINTS:</string>
     <string name="total_points">TOTAL POINTS:</string>

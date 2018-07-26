@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         setPanicBtn();
         setParentBtn();
         setPermissionBtn();
+        setLeaderBoardBtn();
         setRewardBtn();
 
         //set up location update
@@ -605,6 +606,26 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
+            }
+        });
+    }
+
+    private void setLeaderBoardBtn() {
+        Button btnLB = (Button) findViewById(R.id.btnLB);
+        btnLB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (session.getToken()) {
+                    case "":
+                        Intent intent = LoginActivity.makeIntent(MainActivity.this);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    default:
+                        Intent intentToLB = LeaderBoardActivity.makeIntent(MainActivity.this);
+                        startActivity(intentToLB);
+
+                }
             }
         });
     }

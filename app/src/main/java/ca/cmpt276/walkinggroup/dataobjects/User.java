@@ -1,6 +1,7 @@
 package ca.cmpt276.walkinggroup.dataobjects;
 
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +16,7 @@ import java.util.List;
  * (Incomplete: Needs support for monitoring and groups).
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User extends IdItemBase {
+public class User extends IdItemBase implements Comparable<User>{
     // ---------------------------------------
     //    Fields
     // ---------------------------------------
@@ -294,5 +295,11 @@ public class User extends IdItemBase {
                 ", hasFullData=" + hasFullData +
                 ", href='" + href + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull User o) {
+        int compare = totalPointsEarned.compareTo(o.totalPointsEarned);
+        return compare;
     }
 }
