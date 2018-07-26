@@ -85,7 +85,6 @@ public class MainActivity extends AppCompatActivity {
         session.setToken(token);
         session.setProxy(token);
         proxy = session.getProxy();
-        user = session.getUser();
         //user = new User();
         Button btnLogout = (Button) findViewById(R.id.btnLogout);
 
@@ -268,21 +267,20 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
             if (mStopSignal) {
-                Call<User> caller = proxy.getUserById(session.getUser().getId());
-                ProxyBuilder.callProxy(MainActivity.this, caller, returnedUser -> responseForUser(returnedUser));
-                if (user.getTotalPointsEarned() == null){
-                    user.setTotalPointsEarned(0);
+                User tempUser = session.getUser();
+                if (tempUser.getTotalPointsEarned() == null){
+                    tempUser.setTotalPointsEarned(0);
                 }
-                if (user.getCurrentPoints() == null){
-                    user.setCurrentPoints(0);
+                if (tempUser.getCurrentPoints() == null){
+                    tempUser.setCurrentPoints(0);
                 }
-                user = session.getUser();
-                user.setCurrentPoints(session.getUser().getCurrentPoints() + 1);
-                user.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + 1);
-                Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), user);
+
+                tempUser.setCurrentPoints(session.getUser().getCurrentPoints() + 1);
+                tempUser.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + 1);
+                Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                 ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
-                Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + user.getCurrentPoints() + ", " + user.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
                 //handler.removeCallbacks(toastRunnable);
@@ -292,10 +290,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
-    private void responseForUser(User returnedUser) {
-        user = returnedUser;
-    }
 
     private void responseUserUpdate(User returnedUser) {
     }
