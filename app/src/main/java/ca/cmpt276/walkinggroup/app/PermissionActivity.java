@@ -2,6 +2,7 @@ package ca.cmpt276.walkinggroup.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -37,6 +38,7 @@ public class PermissionActivity extends AppCompatActivity {
     private List<Long> pendingId;
     private List<Long> approvedId;
     private List<Long> deniedId;
+    private static final Handler handler = new Handler();
 
 
 
@@ -52,7 +54,19 @@ public class PermissionActivity extends AppCompatActivity {
 
         populate();
         setBackBtn();
+        handler.postDelayed(update, 1000*2);
+
+
     }
+
+
+    Runnable update = new Runnable() {
+        @Override
+        public void run() {
+            populate();
+            handler.postDelayed(this, 2000);
+        }
+    };
 
     private void setBackBtn(){
         Button btnGroup = (Button)findViewById(R.id.btnPermissionBack);
@@ -106,6 +120,7 @@ public class PermissionActivity extends AppCompatActivity {
 
                 Intent intent = PermissionDetailActivity.makeIntent(PermissionActivity.this);
                 intent.putExtra("permissionId",pendingId.get(position));
+                populate();
                 startActivity(intent);
             }
         });
@@ -141,6 +156,7 @@ public class PermissionActivity extends AppCompatActivity {
 
                 Intent intent = PermissionDetailActivity.makeIntent(PermissionActivity.this);
                 intent.putExtra("permissionId",approvedId.get(position));
+                populate();
                 startActivity(intent);
             }
         });
@@ -175,7 +191,7 @@ public class PermissionActivity extends AppCompatActivity {
 
                 Intent intent = PermissionDetailActivity.makeIntent(PermissionActivity.this);
                 intent.putExtra("permissionId",deniedId.get(position));
-
+                populate();
                 startActivity(intent);
             }
         });

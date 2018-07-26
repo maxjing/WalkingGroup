@@ -10,6 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import ca.cmpt276.walkinggroup.dataobjects.PermissionRequest;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -19,6 +23,7 @@ import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 
 public class PermissionDetailActivity extends AppCompatActivity {
+    private Set<PermissionRequest.Authorizor> authorizors;
     private Session session;
     private Long requestUserId;
     private WGServerProxy proxy;
@@ -26,6 +31,9 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private String TAG = "PermissionDetailActivity";
     private Long permissionId;
     private boolean sendByUser = false;
+    private List<String> status;
+    private List<Long>permissionsUsersId;
+//    private Set<PermissionRequest.Authorizor> authorizors;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +49,9 @@ public class PermissionDetailActivity extends AppCompatActivity {
         btnDeny.setVisibility(View.GONE);
         btnApproved.setVisibility(View.GONE);
         populate();
-
+        setApproveBtn();
+        setDenyBtn();
         setBackBtn();
-
-
 
     }
 
@@ -62,7 +69,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
         Call<User> caller = proxy.getUserById(requestUserId);
         ProxyBuilder.callProxy(PermissionDetailActivity.this,caller,returnedUser -> responseRequestUser(returnedUser));
 
-        TextView requestDetail = (TextView)findViewById(R.id.requestDetail);
+        TextView requestDetail = (TextView)findViewById(R.id.requestContent);
         requestDetail.setText(permission.getMessage());
 
         Button btnApproved = (Button)findViewById(R.id.btnApprove);
@@ -70,18 +77,16 @@ public class PermissionDetailActivity extends AppCompatActivity {
         if (!sendByUser) {
             btnDeny.setVisibility(View.VISIBLE);
             btnApproved.setVisibility(View.VISIBLE);
-
         } else {
 
         }
 
 
 
-
     }
 
     private void responseRequestUser(User user){
-        TextView fromUser = (TextView)findViewById(R.id.requestfromUser);
+        TextView fromUser = (TextView)findViewById(R.id.fromUser);
         fromUser.setText(user.getName());
     }
     private void setBackBtn(){
@@ -97,6 +102,39 @@ public class PermissionDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void setApproveBtn(){
+        Button btnGroup = (Button)findViewById(R.id.btnApprove);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(permissionId, WGServerProxy.PermissionStatus.APPROVED);
+                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedPermission -> responseApprove(returnedPermission));
+
+            }
+        });
+    }
+    private void responseApprove(PermissionRequest pr){
+        Toast.makeText(this, "Approved Success", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setDenyBtn(){
+        Button btnGroup = (Button)findViewById(R.id.btnDeny);
+        btnGroup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(permissionId, WGServerProxy.PermissionStatus.DENIED);
+                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedPermission -> responseDenied(returnedPermission));
+
+            }
+        });
+    }
+    private void responseDenied(PermissionRequest pr){
+        Toast.makeText(this, "Denied Success", Toast.LENGTH_SHORT).show();
+    }
+
+
+
 
     private boolean isSendByUser(Long id){
         if (id == userId){
