@@ -3,12 +3,18 @@ package ca.cmpt276.walkinggroup.app;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -35,6 +41,17 @@ public class RewardActivity extends AppCompatActivity {
         
         setTextViews();
         setConfirmBtn();
+
+        Gson gson = new Gson();
+        EarnedRewards rewards = new EarnedRewards("Dragon slayer",new ArrayList<>(),1, Color.BLUE);
+        String json = gson.toJson(rewards);
+        TextView txt = (TextView) findViewById(R.id.txt_rewards);
+        txt.setText(json);
+
+        EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+        TextView txt_ = (TextView) findViewById(R.id.textView12);
+        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
+
     }
 
     private void setConfirmBtn() {
