@@ -39,8 +39,10 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private Long permissionId;
     private boolean sendByUser = false;
     private List<Long> statusUserId;
-    private List<String> status;
-    private List<Long> permissionsUsersId;
+    private String status;
+    private String statusTemp;
+    private List<String> currentStatus;
+
 
     //    private Set<PermissionRequest.Authorizor> authorizors;
     @Override
@@ -89,39 +91,60 @@ public class PermissionDetailActivity extends AppCompatActivity {
         } else {
 
         }
+       statusTemp = permission.getStatus().toString();
 
-        Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
-        statusUserId = new ArrayList<>();
-        status = new ArrayList<>();
-        while(it.hasNext()){
-           Iterator<User> authUsers = it.next().getUsers().iterator();
-           while(authUsers.hasNext()){
-               statusUserId.add(authUsers.next().getId());
-           }
-        }
+        if(statusTemp == "PENDING"){
+            TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
+            requestStatus.setText(statusTemp);
+        }else{
+            statusUserId = new ArrayList<>();
+            Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
+            while(it.hasNext()){
+                statusUserId.add(it.next().getWhoApprovedOrDenied().getId());
+                }
 
-        if(statusUserId.size() !=0) {
-            for (int i = 0; i < statusUserId.size(); i++) {
-                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
-                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
+            for(int i = 0 ;i<statusUserId.size();i++){
+                if(statusUserId.get(i) != userId){
+                    Call<User> adUser = proxy.getUserById(statusUserId.get(i));
+                    ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
+                }
             }
 
+            }
+
+
+
         }
 
 
 
-    }
 
-    private void responseUsers(User user){
-        status.add(user.getName());
-        for(int i = 0;i<status.size();i++){
-            Toast.makeText(this, ""+status.get(i), Toast.LENGTH_SHORT).show();
-        }
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, R.layout.permission_status, status);
-        ListView listStatus = (ListView) findViewById(R.id.listview_rstatus);
-        listStatus.setAdapter(adapterStatus);
 
+//        if(statusUserId.size() !=0) {
+//            for (int i = 0; i < statusUserId.size(); i++) {
+//                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
+//                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
+//            }
+//
+//        }
+
+
+
+
+
+    private void setStatus(User user){
+        status = statusTemp +" By "+user.getName();
+        TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
+        requestStatus.setText(status);
     }
+//
+//    private void responseUsers(User user){
+//        status.add(user.getName());
+//        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, R.layout.permission_status, status);
+//        ListView listStatus = (ListView) findViewById(R.id.listview_rstatus);
+//        listStatus.setAdapter(adapterStatus);
+//
+//    }
 
 
     private void responseRequestUser(User user) {

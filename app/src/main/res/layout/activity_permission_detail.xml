@@ -68,17 +68,10 @@
         android:id="@+id/fromUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/requestContent"
-        android:layout_alignStart="@+id/requestContent"
+        android:layout_alignTop="@+id/txtfromuser"
+        android:layout_toEndOf="@+id/btnBacktoPermission"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
-
-    <ListView
-        android:id="@+id/listview_rstatus"
-        android:layout_width="300dp"
-        android:layout_height="242dp"
-        android:layout_alignTop="@+id/txtStatus"
-        android:layout_toEndOf="@+id/txtContent" />
 
     <TextView
         android:id="@+id/txtContent"
@@ -99,5 +92,14 @@
         android:layout_toEndOf="@+id/btnBacktoPermission"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/requestStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtStatus"
+        android:layout_toEndOf="@+id/btnBacktoPermission"
+        android:textColor="@android:color/white"
+        android:textSize="20dp" />
 
 </RelativeLayout>
