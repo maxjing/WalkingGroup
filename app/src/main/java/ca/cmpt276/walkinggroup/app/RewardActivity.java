@@ -1,8 +1,10 @@
 package ca.cmpt276.walkinggroup.app;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +31,9 @@ public class RewardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme1);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_reward);
 
         session = Session.getInstance();
@@ -51,14 +55,15 @@ public class RewardActivity extends AppCompatActivity {
         EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
         TextView txt_ = (TextView) findViewById(R.id.textView12);
         txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
-
-    }
+        }
 
     private void setConfirmBtn() {
         Button OKbtn = findViewById(R.id.reward_ok_btn);
         OKbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setTheme(R.style.AppTheme1);
+                setContentView(R.layout.activity_main);
                 finish();
             }
         });

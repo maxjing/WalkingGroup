@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     tools:context="ca.cmpt276.walkinggroup.app.RewardActivity">
 
     <Button
@@ -45,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
         android:text="@string/use_my_points"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -59,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
         android:text="@string/total_points"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -73,6 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="190dp"
+        android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,6 +86,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="60dp"
+        android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"

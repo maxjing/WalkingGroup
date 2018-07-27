@@ -29,6 +29,7 @@
             android:layout_height="35dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="10dp"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_search"
             tools:ignore="ContentDescription" />
 
@@ -36,8 +37,9 @@
             android:id="@+id/clear_button"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
             android:src="@drawable/ic_clear"
             tools:ignore="ContentDescription" />
 
@@ -58,36 +60,39 @@
     </RelativeLayout>
 
     <ImageView
+        android:id="@+id/ic_gps"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_below="@id/search_bar"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/search_bar"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        android:id="@+id/ic_gps"
         android:src="@drawable/ic_gps"
         tools:ignore="ContentDescription" />
 
     <ImageView
+        android:id="@+id/place_picker"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:id="@+id/place_picker"
+        android:layout_below="@id/search_bar"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        android:layout_below="@id/search_bar"
         android:src="@drawable/ic_map"
         tools:ignore="ContentDescription" />
 
     <ImageView
+        android:id="@+id/place_info"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@id/place_picker"
         android:layout_marginStart="10dp"
         android:layout_marginTop="15dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
-        android:id="@+id/place_info"
         android:src="@drawable/ic_info"
         tools:ignore="ContentDescription" />
 
@@ -95,10 +100,11 @@
         android:id="@+id/create_group"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_below="@id/ic_gps"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/ic_gps"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="30dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_create"
         tools:ignore="ContentDescription" />
@@ -107,10 +113,11 @@
         android:id="@+id/search_group"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_below="@id/create_group"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/create_group"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="30dp"
+        android:background="@android:color/transparent"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_search_group"
         tools:ignore="ContentDescription" />
