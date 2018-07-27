@@ -90,19 +90,22 @@ public class PermissionDetailActivity extends AppCompatActivity {
 
         }
 
-
         Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
         statusUserId = new ArrayList<>();
         status = new ArrayList<>();
         while(it.hasNext()){
-            statusUserId.add(it.next().getWhoApprovedOrDenied().getId());
-//            Toast.makeText(this, ""+it.next().getStatus(), Toast.LENGTH_SHORT).show();
-        }
-        for(int i = 0; i<statusUserId.size();i++){
-            Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
-            ProxyBuilder.callProxy(PermissionDetailActivity.this,caller_users,returnedUsers -> responseUsers(returnedUsers));
+           Iterator<User> authUsers = it.next().getUsers().iterator();
+           while(authUsers.hasNext()){
+               statusUserId.add(authUsers.next().getId());
+           }
         }
 
+//        if(statusUserId.size() !=0) {
+//            for (int i = 0; i < statusUserId.size(); i++) {
+//                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
+//                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
+//            }
+//        }
 
 
 
@@ -181,29 +184,6 @@ public class PermissionDetailActivity extends AppCompatActivity {
         return new Intent(context, PermissionDetailActivity.class);
     }
 
-    public class NonScrollListView extends ListView {
 
-        public NonScrollListView(Context context) {
-            super(context);
-        }
-
-        public NonScrollListView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public NonScrollListView(Context context, AttributeSet attrs, int defStyle) {
-            super(context, attrs, defStyle);
-        }
-
-        @Override
-        public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int heightMeasureSpec_custom = MeasureSpec.makeMeasureSpec(
-                    Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec_custom);
-            ViewGroup.LayoutParams params = getLayoutParams();
-            params.height = getMeasuredHeight();
-        }
-
-    }
 
 }
