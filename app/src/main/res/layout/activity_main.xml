@@ -232,13 +232,13 @@
         android:id="@+id/btnLB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="240dp"
         android:background="@drawable/background_button"
         android:text="@string/leader_board"
         android:textColor="#FFF"
-        app:layout_constraintBottom_toTopOf="@+id/start_update_location"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/google_map" />
 
 
 </android.support.constraint.ConstraintLayout>

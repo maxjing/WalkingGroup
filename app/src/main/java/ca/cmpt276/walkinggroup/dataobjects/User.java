@@ -299,7 +299,13 @@ public class User extends IdItemBase implements Comparable<User>{
 
     @Override
     public int compareTo(@NonNull User o) {
-        int compare = totalPointsEarned.compareTo(o.totalPointsEarned);
+        if(totalPointsEarned == null){
+            totalPointsEarned = 0;
+        }
+        if(o.totalPointsEarned == null){
+            o.totalPointsEarned = 0;
+        }
+        int compare = Integer.compare(totalPointsEarned,o.totalPointsEarned);
         return compare;
     }
 }

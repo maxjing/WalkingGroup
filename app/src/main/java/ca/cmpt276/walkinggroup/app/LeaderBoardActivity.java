@@ -22,7 +22,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
     private Session session;
     private User user;
     private WGServerProxy proxy;
-    private List<String> allUsers = new ArrayList<>();
+    private List<User> allUsers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +42,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
     }
 
     private void response(List<User> returnedList) {
-//        String[] items = new String[returnedList.size()];
-        for(int i = 0; i < returnedList.size(); i++){
-            String name = returnedList.get(i).getName();
+        String[] items = new String[returnedList.size()];
+        allUsers = returnedList;
+        Collections.sort(allUsers);
+        int i = 0;
+        int j =  allUsers.size() - 1;
+        while(i < allUsers.size() && j >= 0){
+            String name = allUsers.get(j).getName();
             String lastName = "";
             String firstName= "";
             if(name.split("\\w+").length>1){
@@ -54,10 +58,15 @@ public class LeaderBoardActivity extends AppCompatActivity {
             else{
                 firstName = name;
             }
-            allUsers.add(returnedList.get(i).getTotalPointsEarned() + " " + firstName + " " + lastName);
+            if(allUsers.get(j).getTotalPointsEarned() == null){
+                items[i] = "0" + " -  " + firstName + " " + lastName;
+            }else{
+                items[i] = allUsers.get(j).getTotalPointsEarned() + " -  " + firstName + " " + lastName;
+            }
+            i++;
+            j--;
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_board, allUsers);
-        Collections.sort(allUsers);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.list_board, items);
         ListView list = (ListView) findViewById(R.id.list_board);
         list.setAdapter(adapter);
     }
