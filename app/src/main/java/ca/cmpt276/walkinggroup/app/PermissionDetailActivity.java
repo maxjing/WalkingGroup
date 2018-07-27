@@ -85,18 +85,22 @@ public class PermissionDetailActivity extends AppCompatActivity {
 
         Button btnApproved = (Button) findViewById(R.id.btnApprove);
         Button btnDeny = (Button) findViewById(R.id.btnDeny);
+        statusTemp = permission.getStatus().toString();
+
         if (!sendByUser) {
             btnDeny.setVisibility(View.VISIBLE);
             btnApproved.setVisibility(View.VISIBLE);
         } else {
 
         }
-       statusTemp = permission.getStatus().toString();
+
 
         if(statusTemp == "PENDING"){
             TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
             requestStatus.setText(statusTemp);
         }else{
+            btnDeny.setVisibility(View.GONE);
+            btnApproved.setVisibility(View.GONE);
             statusUserId = new ArrayList<>();
             Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
             while(it.hasNext()){
