@@ -62,6 +62,7 @@ public class GroupInfoActivity extends AppCompatActivity {
 
         registerClickCallback();
         setDeleteBtn();
+        setTransferBtn();
     }
 
     private void setDeleteBtn() {
@@ -137,10 +138,27 @@ public class GroupInfoActivity extends AppCompatActivity {
         }
     }
 
+    private void setTransferBtn() {
+        Button btn = (Button)findViewById(R.id.btntransfer);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = GroupMemmbersActivity.makeIntent(GroupInfoActivity.this);
+                intent.putExtra(INFO_GROUPID,groupId);
+                startActivity(intent);
+            }
+        });
+    }
+
+
     public static Intent makeIntent(Context context, long groupId,long childId) {
         Intent intent = new Intent(context, GroupInfoActivity.class);
         intent.putExtra(INFO_GROUPID,groupId);
         intent.putExtra(CHILD_GROUP,childId);
+        return intent;
+    }
+    public static Intent makeIntent2(Context context) {
+        Intent intent = new Intent(context, GroupInfoActivity.class);
         return intent;
     }
 }

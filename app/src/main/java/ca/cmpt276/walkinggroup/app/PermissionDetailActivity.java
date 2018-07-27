@@ -41,10 +41,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private List<Long> statusUserId;
     private String status;
     private String statusTemp;
-    private List<String> currentStatus;
 
-
-    //    private Set<PermissionRequest.Authorizor> authorizors;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +73,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private void response(PermissionRequest permission) {
 
         requestUserId = permission.getRequestingUser().getId();
+
         sendByUser = isSendByUser(requestUserId);
         Call<User> caller = proxy.getUserById(requestUserId);
         ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedUser -> responseRequestUser(returnedUser));
@@ -86,53 +84,44 @@ public class PermissionDetailActivity extends AppCompatActivity {
         Button btnApproved = (Button) findViewById(R.id.btnApprove);
         Button btnDeny = (Button) findViewById(R.id.btnDeny);
         statusTemp = permission.getStatus().toString();
+        TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
 
-        if (!sendByUser) {
-            btnDeny.setVisibility(View.VISIBLE);
-            btnApproved.setVisibility(View.VISIBLE);
-        } else {
-
-        }
-
-
-        if(statusTemp == "PENDING"){
-            TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
-            requestStatus.setText(statusTemp);
-        }else{
-            btnDeny.setVisibility(View.GONE);
-            btnApproved.setVisibility(View.GONE);
-            statusUserId = new ArrayList<>();
-            Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
-            while(it.hasNext()){
-                statusUserId.add(it.next().getWhoApprovedOrDenied().getId());
-                }
-
-            for(int i = 0 ;i<statusUserId.size();i++){
-                if(statusUserId.get(i) != userId){
-                    Call<User> adUser = proxy.getUserById(statusUserId.get(i));
+        if(sendByUser){
+            if(statusTemp == "PENDING"){
+                requestStatus.setText("PENDING");
+            }else{
+                Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
+                if(statusTemp == "APPROVED"){
+                    statusUserId = new ArrayList<>();
+                    while(it.hasNext()){
+                        statusUserId.add(it.next().getWhoApprovedOrDenied().getId());
+                        for(int i = 0 ;i<statusUserId.size();i++) {
+                            if(statusUserId.get(i) != userId){
+                                Call<User> adUser = proxy.getUserById(statusUserId.get(i));
+                                ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
+                            }
+                        }
+                    }
+                }else{
+                    Call<User> adUser = proxy.getUserById(it.next().getWhoApprovedOrDenied().getId());
                     ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
                 }
             }
+        }else{
+            Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
+            if(statusTemp == "PENDING"){
+                btnDeny.setVisibility(View.VISIBLE);
+                btnApproved.setVisibility(View.VISIBLE);
+                requestStatus.setText("PENDING");
 
+            }else {
+
+                Call<User> adUser = proxy.getUserById(it.next().getWhoApprovedOrDenied().getId());
+                ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
             }
 
-
-
         }
-
-
-
-
-
-//        if(statusUserId.size() !=0) {
-//            for (int i = 0; i < statusUserId.size(); i++) {
-//                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
-//                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
-//            }
-//
-//        }
-
-
+    }
 
 
 
@@ -141,14 +130,6 @@ public class PermissionDetailActivity extends AppCompatActivity {
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
         requestStatus.setText(status);
     }
-//
-//    private void responseUsers(User user){
-//        status.add(user.getName());
-//        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, R.layout.permission_status, status);
-//        ListView listStatus = (ListView) findViewById(R.id.listview_rstatus);
-//        listStatus.setAdapter(adapterStatus);
-//
-//    }
 
 
     private void responseRequestUser(User user) {
