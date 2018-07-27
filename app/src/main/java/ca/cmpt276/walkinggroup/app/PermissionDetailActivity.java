@@ -100,14 +100,15 @@ public class PermissionDetailActivity extends AppCompatActivity {
            }
         }
 
-//        if(statusUserId.size() !=0) {
-//            for (int i = 0; i < statusUserId.size(); i++) {
-//                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
-//                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
-//            }
-//        }
-
-
+        if(statusUserId.size() !=0) {
+            for (int i = 0; i < statusUserId.size(); i++) {
+                Call<User> caller_users = proxy.getUserById(statusUserId.get(i));
+                ProxyBuilder.callProxy(PermissionDetailActivity.this, caller_users, returnedUsers -> responseUsers(returnedUsers));
+            }
+            ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, R.layout.permission_status, status);
+            ListView listStatus = (ListView) findViewById(R.id.listview_rstatus);
+            listStatus.setAdapter(adapterStatus);
+        }
 
 
 
@@ -115,11 +116,12 @@ public class PermissionDetailActivity extends AppCompatActivity {
 
     private void responseUsers(User user){
         status.add(user.getName());
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(this, R.layout.permission_status, status);
-        ListView listStatus = (ListView) findViewById(R.id.listview_rstatus);
-        listStatus.setAdapter(adapterStatus);
+        for(int i = 0;i<status.size();i++){
+            Toast.makeText(this, ""+status.get(i), Toast.LENGTH_SHORT).show();
+        }
 
     }
+
 
     private void responseRequestUser(User user) {
         TextView fromUser = (TextView) findViewById(R.id.fromUser);
