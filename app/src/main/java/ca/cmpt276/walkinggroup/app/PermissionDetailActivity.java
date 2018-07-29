@@ -73,7 +73,6 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private void response(PermissionRequest permission) {
 
         requestUserId = permission.getRequestingUser().getId();
-
         sendByUser = isSendByUser(requestUserId);
         Call<User> caller = proxy.getUserById(requestUserId);
         ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedUser -> responseRequestUser(returnedUser));

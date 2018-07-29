@@ -24,7 +24,7 @@
         android:id="@+id/listView_pending"
         android:layout_width="395dp"
         android:layout_height="150dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtPending" />
 
@@ -45,7 +45,7 @@
         android:id="@+id/listView_approved"
         android:layout_width="395dp"
         android:layout_height="150dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtApproved" />
 
@@ -66,7 +66,7 @@
         android:id="@+id/listView_Denied"
         android:layout_width="395dp"
         android:layout_height="150dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtDenied" />
 
