@@ -72,8 +72,8 @@
         android:id="@+id/txt_rewards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="190dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="400dp"
         android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
@@ -84,11 +84,20 @@
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_rewards" />
+
+    <ListView
+        android:id="@+id/backgroundListView"
+        android:layout_width="344dp"
+        android:layout_height="384dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
 </android.support.constraint.ConstraintLayout>
