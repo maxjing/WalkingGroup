@@ -80,7 +80,7 @@
         <activity android:name=".PermissionActivity" />
         <activity android:name=".PermissionDetailActivity" />
         <activity android:name=".RewardActivity" />
-        <activity android:name=".GroupMemmbersActivity"></activity>
+        <activity android:name=".GroupMemmbersActivity" />
     </application>
 
 </manifest>

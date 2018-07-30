@@ -60,20 +60,17 @@ public class PermissionDetailActivity extends AppCompatActivity {
         setApproveBtn();
         setDenyBtn();
         setBackBtn();
-
     }
 
     private void populate() {
         Call<PermissionRequest> caller = proxy.getPermissionById(permissionId);
         ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returned -> response(returned));
 
-
     }
 
     private void response(PermissionRequest permission) {
-
-        requestUserId = permission.getRequestingUser().getId();
-        sendByUser = isSendByUser(requestUserId);
+        User requestingUser = permission.getRequestingUser();
+        requestUserId = requestingUser.getId();
         Call<User> caller = proxy.getUserById(requestUserId);
         ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedUser -> responseRequestUser(returnedUser));
 
@@ -85,47 +82,33 @@ public class PermissionDetailActivity extends AppCompatActivity {
         statusTemp = permission.getStatus().toString();
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
 
-        if(sendByUser){
-            if(statusTemp == "PENDING"){
-                requestStatus.setText("PENDING");
-            }else{
-                Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
-                if(statusTemp == "APPROVED"){
-                    statusUserId = new ArrayList<>();
-                    while(it.hasNext()){
-                        statusUserId.add(it.next().getWhoApprovedOrDenied().getId());
-                        for(int i = 0 ;i<statusUserId.size();i++) {
-                            if(statusUserId.get(i) != userId){
-                                Call<User> adUser = proxy.getUserById(statusUserId.get(i));
-                                ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
-                            }
-                        }
-                    }
-                }else{
-                    Call<User> adUser = proxy.getUserById(it.next().getWhoApprovedOrDenied().getId());
-                    ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
+
+        if(statusTemp == "PENDING"){
+            requestStatus.setText(statusTemp);
+            btnDeny.setVisibility(View.VISIBLE);
+            btnApproved.setVisibility(View.VISIBLE);
+        }
+        else {
+            List<PermissionRequest.Authorizor> authList = new ArrayList<>(permission.getAuthorizors());
+            User whoAorP = new User();
+
+            for(int i = 0;i<authList.size();i++){
+                User tempAuth = authList.get(i).getWhoApprovedOrDenied();
+                String status = authList.get(i).getStatus().toString();
+                if(status.equals(statusTemp) && !tempAuth.getId().equals(requestUserId)){
+                    whoAorP = tempAuth;
                 }
             }
-        }else{
-            Iterator<PermissionRequest.Authorizor> it = permission.getAuthorizors().iterator();
-            if(statusTemp == "PENDING"){
-                btnDeny.setVisibility(View.VISIBLE);
-                btnApproved.setVisibility(View.VISIBLE);
-                requestStatus.setText("PENDING");
 
-            }else {
 
-                Call<User> adUser = proxy.getUserById(it.next().getWhoApprovedOrDenied().getId());
-                ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
-            }
-
+            Call<User> adUser = proxy.getUserById(whoAorP.getId());
+            ProxyBuilder.callProxy(PermissionDetailActivity.this, adUser, returnedUser -> setStatus(returnedUser));
         }
+
     }
 
-
-
     private void setStatus(User user){
-        status = statusTemp +" By "+user.getName();
+        status = statusTemp +" BY "+user.getName();
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
         requestStatus.setText(status);
     }
@@ -182,13 +165,13 @@ public class PermissionDetailActivity extends AppCompatActivity {
         Toast.makeText(this, "Denied Success", Toast.LENGTH_SHORT).show();
     }
 
-
     private boolean isSendByUser(Long id) {
         if (id == userId) {
             return true;
         }
         return false;
     }
+
 
     public static Intent makeIntent(Context context) {
         return new Intent(context, PermissionDetailActivity.class);

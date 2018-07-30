@@ -41,7 +41,6 @@ public class PermissionActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,7 +201,6 @@ public class PermissionActivity extends AppCompatActivity {
 
 
     }
-
 
 
 
