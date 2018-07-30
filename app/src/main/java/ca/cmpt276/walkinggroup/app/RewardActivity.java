@@ -92,7 +92,12 @@ public class RewardActivity extends AppCompatActivity {
         Gson gson = new Gson();
         user = returned;
         json = returned.getCustomJson();
-        Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.drawable.amu_bubble_shadow);
+        TextView text = (TextView) view.findViewById(android.R.id.message);
+        /*here you can do anything with text*/
+        toast.show();
        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
         //TextView txt_ = (TextView) findViewById(R.id.textView12);
         if(!json.equals("null")) {
@@ -154,10 +159,20 @@ public class RewardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(current.getSelectedBackground() == position +1){
-                    Toast.makeText(RewardActivity.this,"The reward has already earned!",Toast.LENGTH_LONG).show();
+                    Toast toast = Toast.makeText(RewardActivity.this,"The reward has already earned!",Toast.LENGTH_LONG);
+                    View viewRewardEarned = toast.getView();
+                    viewRewardEarned.setBackgroundResource(R.drawable.amu_bubble_shadow);
+                    TextView text = (TextView) view.findViewById(android.R.id.message);
+                    /*here you can do anything with text*/
+                    toast.show();
                 }else{
                     if(CurrentPoints >= myBackground.get(position).getPoints()){
-                        Toast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
+                        Toast toast = Toast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT);
+                        View viewSelected = toast.getView();
+                        viewSelected.setBackgroundResource(R.drawable.amu_bubble_shadow);
+                        TextView text = (TextView) view.findViewById(android.R.id.message);
+                        /*here you can do anything with text*/
+                        toast.show();
                         Background clickedBackground = myBackground.get(position);
                         Gson gson = new Gson();
                         rewards = new EarnedRewards("null",new ArrayList<>(),position+1,null);
@@ -168,7 +183,12 @@ public class RewardActivity extends AppCompatActivity {
                         TextView CurrentPointsTextView = findViewById(R.id.current_points_textview);
                         CurrentPointsTextView.setText("USE MY POINTS: " + CurrentPoints);
                     }else{
-                        Toast.makeText(RewardActivity.this,"Not enough points!",Toast.LENGTH_LONG).show();
+                        Toast toast = Toast.makeText(RewardActivity.this,"Not enough points!",Toast.LENGTH_LONG);
+                        View viewNotEnough = toast.getView();
+                        view.setBackgroundResource(R.drawable.amu_bubble_shadow);
+                        TextView text = (TextView) view.findViewById(android.R.id.message);
+                        /*here you can do anything with text*/
+                        toast.show();
                     }
                 }
 
@@ -178,7 +198,12 @@ public class RewardActivity extends AppCompatActivity {
     }
 
     private void response(User returnedUser) {
-        Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT);
+        View view = toast.getView();
+        view.setBackgroundResource(R.drawable.amu_bubble_shadow);
+        TextView text = (TextView) view.findViewById(android.R.id.message);
+        /*here you can do anything with text*/
+        toast.show();
         user = returnedUser;
         user.setRewards(rewards);
         user.setCustomJson(json);

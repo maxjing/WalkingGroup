@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -266,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+            MyToast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
             if (mStopSignal) {
                 User tempUser = session.getUser();
@@ -282,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                 ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
-                Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
                 //handler.removeCallbacks(toastRunnable);
@@ -337,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
                 handler.postDelayed(checkChangeRunnable, 6000);
 
@@ -365,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                Toast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
                 if (mStopSignal) {
                     User tempUser = session.getUser();
@@ -381,10 +383,10 @@ public class MainActivity extends AppCompatActivity {
                     Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                     ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
-                    Toast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 }
 
-                Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
                 //handler.removeCallbacks(toastRunnable);
@@ -492,7 +494,7 @@ public class MainActivity extends AppCompatActivity {
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
-            Toast.makeText(this, R.string.cant_make_map, Toast.LENGTH_SHORT).show();
+            MyToast.makeText(this, R.string.cant_make_map, Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -548,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
@@ -560,7 +562,7 @@ public class MainActivity extends AppCompatActivity {
                 PrefEditor.apply();
                 session.setToken("");
                 proxy = session.getProxy();
-                Toast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
+                MyToast.makeText(MainActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
                 Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
                 startActivity(intentToLogin);
                 finish();
