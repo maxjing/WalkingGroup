@@ -24,12 +24,14 @@ public class EarnedRewards {
     private Integer titleColor = Color.BLUE;
 
     // Needed for JSON deserialization
+    public EarnedRewards() {
+    }
+
     public EarnedRewards(String title, List<File> possibleBackgroundFiles, Integer selectedBackground, Integer titleColor) {
         this.title = title;
         this.possibleBackgroundFiles = possibleBackgroundFiles;
         this.selectedBackground = selectedBackground;
         this.titleColor = titleColor;
-
     }
 
     public String getTitle() {

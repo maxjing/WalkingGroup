@@ -129,4 +129,6 @@
     <string name="total_points">TOTAL POINTS:</string>
     <string name="ranking">Ranking</string>
     <string name="points_shown">Points shown</string>
+    <string name="illustration">Illustration</string>
+    <string name="points">Points</string>
 </resources>

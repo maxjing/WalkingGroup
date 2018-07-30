@@ -12,11 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -27,7 +29,9 @@ import ca.cmpt276.walkinggroup.dataobjects.Background;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
+import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
+import retrofit2.Call;
 
 public class RewardActivity extends AppCompatActivity {
     private Session session;
@@ -37,6 +41,9 @@ public class RewardActivity extends AppCompatActivity {
     private Integer CurrentPoints;
     private Integer TotalPointsEarned;
     private List<Background> myBackground = new ArrayList<Background>();
+    private String json;
+    private EarnedRewards rewards;
+    private EarnedRewards current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,33 +56,65 @@ public class RewardActivity extends AppCompatActivity {
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
-        CurrentPoints = user.getCurrentPoints();
-        TotalPointsEarned = user.getTotalPointsEarned();
-        
+        if(user.getCurrentPoints() == null){
+            CurrentPoints = 0;
+        }else{
+            CurrentPoints = user.getCurrentPoints();
+        }
+        if(user.getTotalPointsEarned() == null){
+            TotalPointsEarned = 0;
+        }else{
+            TotalPointsEarned = user.getTotalPointsEarned();
+        }
+        //rewards = user.getRewards();
+
         setTextViews();
         setConfirmBtn();
 
         populateBackgroundList();
         populateListView();
+        registerClickCallback();
 
+        //Gson gson = new Gson();
+//        EarnedRewards rewards = new EarnedRewards("Dragon slayer",new ArrayList<>(),1, Color.BLUE);
+//        json = gson.toJson(rewards);
+//        TextView txt = (TextView) findViewById(R.id.txt_rewards);
+//        txt.setText(json);
+
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
+//        EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+//        TextView txt_ = (TextView) findViewById(R.id.textView12);
+//        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
+    }
+
+    private void responseForGet(User returned) {
         Gson gson = new Gson();
-        EarnedRewards rewards = new EarnedRewards("Dragon slayer",new ArrayList<>(),1, Color.BLUE);
-        String json = gson.toJson(rewards);
-        TextView txt = (TextView) findViewById(R.id.txt_rewards);
-        txt.setText(json);
-
-        EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+        user = returned;
+        json = returned.getCustomJson();
+        Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
+       // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+        //TextView txt_ = (TextView) findViewById(R.id.textView12);
+        if(!json.equals("null")) {
+            current = gson.fromJson(json, EarnedRewards.class);
+        }else{
+            current = new EarnedRewards("null",new ArrayList<>(),0,null);
+        }
         TextView txt_ = (TextView) findViewById(R.id.textView12);
-        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
+        txt_.setText(""+current.getSelectedBackground());
+//        }else{
+//            txt_.setText("null");
+//        }
+
     }
 
     private void populateBackgroundList() {
-        myBackground.add(new Background("10 points",R.drawable.background1_icon));
-        myBackground.add(new Background("20 points",R.drawable.background2_icon));
-        myBackground.add(new Background("30 points",R.drawable.background3_icon));
-        myBackground.add(new Background("40 points",R.drawable.background4_icon));
-        myBackground.add(new Background("50 points",R.drawable.background5_icon));
-        myBackground.add(new Background("60 points",R.drawable.background6_icon));
+        myBackground.add(new Background(10,R.drawable.background1_icon));
+        myBackground.add(new Background(20,R.drawable.background2_icon));
+        myBackground.add(new Background(30,R.drawable.background3_icon));
+        myBackground.add(new Background(40,R.drawable.background4_icon));
+        myBackground.add(new Background(50,R.drawable.background5_icon));
+        myBackground.add(new Background(60,R.drawable.background6_icon));
     }
 
     private void populateListView() {
@@ -103,10 +142,52 @@ public class RewardActivity extends AppCompatActivity {
             imageView.setImageResource(currentBackground.getIconID());
 
             TextView pointText = (TextView) itemView.findViewById(R.id.item_txt_points);
-            pointText.setText(currentBackground.getPoints());
+            pointText.setText("" + currentBackground.getPoints());
 
             return itemView;
         }
+    }
+
+    private void registerClickCallback() {
+        ListView list = (ListView) findViewById(R.id.backgroundListView);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(current.getSelectedBackground() == position +1){
+                    Toast.makeText(RewardActivity.this,"The reward has already earned!",Toast.LENGTH_LONG).show();
+                }else{
+                    if(CurrentPoints >= myBackground.get(position).getPoints()){
+                        Toast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
+                        Background clickedBackground = myBackground.get(position);
+                        Gson gson = new Gson();
+                        rewards = new EarnedRewards("null",new ArrayList<>(),position+1,null);
+                        json = gson.toJson(rewards);
+                        Call<User> caller = proxy.getUserById(userId);
+                        ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> response(returnedUser));
+                        CurrentPoints = CurrentPoints - myBackground.get(position).getPoints();
+                        TextView CurrentPointsTextView = findViewById(R.id.current_points_textview);
+                        CurrentPointsTextView.setText("USE MY POINTS: " + CurrentPoints);
+                    }else{
+                        Toast.makeText(RewardActivity.this,"Not enough points!",Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+            }
+        });
+    }
+
+    private void response(User returnedUser) {
+        Toast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
+        user = returnedUser;
+        user.setRewards(rewards);
+        user.setCustomJson(json);
+        user.setCurrentPoints(CurrentPoints);
+        Call<User> caller = proxy.editUserById(userId,user);
+        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForEdit(returned));
+    }
+
+    private void responseForEdit(User returned) {
     }
 
     private void setConfirmBtn() {
