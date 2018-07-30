@@ -72,23 +72,56 @@
         android:id="@+id/txt_rewards"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="190dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/backgroundListView" />
 
     <TextView
         android:id="@+id/textView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="3dp"
         android:background="@android:color/transparent"
         android:text="TextView"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_rewards" />
+        app:layout_constraintTop_toBottomOf="@+id/backgroundListView" />
+
+    <ListView
+        android:id="@+id/backgroundListView"
+        android:layout_width="344dp"
+        android:layout_height="382dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_illustration" />
+
+    <TextView
+        android:id="@+id/txt_illustration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/illustration"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
+
+    <TextView
+        android:id="@+id/txt_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/points"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/txt_illustration"
+        app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
 </android.support.constraint.ConstraintLayout>

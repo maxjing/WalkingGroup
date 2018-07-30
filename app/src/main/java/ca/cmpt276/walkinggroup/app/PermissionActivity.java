@@ -41,7 +41,6 @@ public class PermissionActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +97,8 @@ public class PermissionActivity extends AppCompatActivity {
         pendingList = new ArrayList(permissions.size());
         try{
             for(int i = 0;i<permissions.size();i++){
-                pendingList.add(permissions.get(i).getMessage());
+                int index = i+1;
+                pendingList.add(index+". "+permissions.get(i).getMessage());
                 pendingId.add(permissions.get(i).getId());
             }
 
@@ -134,7 +134,8 @@ public class PermissionActivity extends AppCompatActivity {
         approvedList = new ArrayList(permissions.size());
         try{
             for(int i = 0;i<permissions.size();i++){
-                approvedList.add(permissions.get(i).getMessage());
+                int index = i+1;
+                approvedList.add(index+". "+permissions.get(i).getMessage());
                 approvedId.add(permissions.get(i).getId());
             }
 
@@ -170,7 +171,8 @@ public class PermissionActivity extends AppCompatActivity {
         deniedList = new ArrayList(permissions.size());
         try{
             for(int i = 0;i<permissions.size();i++){
-                deniedList.add(permissions.get(i).getMessage());
+                int index = i+1;
+                deniedList.add(index+". "+permissions.get(i).getMessage());
                 deniedId.add(permissions.get(i).getId());
             }
 
@@ -199,7 +201,6 @@ public class PermissionActivity extends AppCompatActivity {
 
 
     }
-
 
 
 
