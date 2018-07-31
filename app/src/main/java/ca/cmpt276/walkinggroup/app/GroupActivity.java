@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -170,7 +171,7 @@ public class GroupActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Call<Void> caller = proxy.removeGroupMember(memberID.get(position), userId);
                 ProxyBuilder.callProxy(GroupActivity.this, caller, returned -> responseForRemove());
-                Toast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
+                MyToast.makeText(GroupActivity.this, R.string.leave_success, Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

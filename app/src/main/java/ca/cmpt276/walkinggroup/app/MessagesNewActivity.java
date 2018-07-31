@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -63,7 +64,7 @@ public class MessagesNewActivity extends AppCompatActivity {
 
                 if(msg.matches("")) {
 
-                    Toast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
 
                 }else{
                     message.setText(msg);
@@ -99,7 +100,7 @@ public class MessagesNewActivity extends AppCompatActivity {
 
                 PrefEditor.apply();
                 if(msg.matches("")){
-                    Toast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(MessagesNewActivity.this, "Message can not be empty", Toast.LENGTH_SHORT).show();
                 }else{
                 Intent intent = MessagesGroupsActivity.makeIntent(MessagesNewActivity.this);
                 startActivity(intent);}
@@ -122,7 +123,7 @@ public class MessagesNewActivity extends AppCompatActivity {
         });
     }
     private void response(List<Message> returnedMsg) {
-        Toast.makeText(MessagesNewActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(MessagesNewActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
 
     }
 

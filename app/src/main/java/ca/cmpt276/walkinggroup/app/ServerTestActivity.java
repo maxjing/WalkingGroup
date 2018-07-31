@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -188,7 +189,7 @@ public class ServerTestActivity extends AppCompatActivity {
     // -----------------------------------------------------------------------------------------
     private void notifyUserViaLogAndToast(String message) {
         Log.w(TAG, message);
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        MyToast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
     private void setbtntoLogin(){

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.app.R;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
@@ -127,7 +128,7 @@ public class UserInfoActivity extends AppCompatActivity {
             session.setToken("");
             session.setProxy("");
             proxy = session.getProxy();
-            Toast.makeText(UserInfoActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
+            MyToast.makeText(UserInfoActivity.this, R.string.log_out_success, Toast.LENGTH_LONG).show();
             Intent intentToLogin = LoginActivity.makeIntent(UserInfoActivity.this);
             startActivity(intentToLogin);
             finish();

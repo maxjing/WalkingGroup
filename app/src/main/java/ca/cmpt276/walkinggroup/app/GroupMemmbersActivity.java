@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -81,7 +82,7 @@ public class GroupMemmbersActivity extends AppCompatActivity {
     }
 
     private void responseNewLeader(Group group){
-        Toast.makeText(this, "Transfer Request Made", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, "Transfer Request Made", Toast.LENGTH_SHORT).show();
     }
 
     private void setBack(){

@@ -31,7 +31,6 @@ public class User extends IdItemBase implements Comparable<User>{
     private String teacherName;
     private String emergencyContactInfo;
     private String password;
-    private String customJson;
 
     // Monitoring
     // - - - - - - - - - - - - - - - - - - - - - - - - - -

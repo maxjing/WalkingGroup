@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -101,7 +102,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
 
 
     private void response(List<Message> returnedMsg) {
-        Toast.makeText(MessagesEmergencyActivity.this, "Emergency Message Sent", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(MessagesEmergencyActivity.this, "Emergency Message Sent", Toast.LENGTH_SHORT).show();
 
     }
 
