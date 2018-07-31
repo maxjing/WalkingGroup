@@ -1,13 +1,11 @@
 package ca.cmpt276.walkinggroup.app;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -48,10 +46,13 @@ public class RewardActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme1);
+        //setTheme(R.style.AppTheme1);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_reward);
+
+        ConstraintLayout layout = findViewById(R.id.reward_layout);
+        layout.setBackground(getResources().getDrawable(R.drawable.background6));
 
         session = Session.getInstance();
         proxy = session.getProxy();
@@ -138,14 +139,13 @@ public class RewardActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            setTheme(R.style.AppTheme_blank);
+            //setTheme(R.style.AppTheme_blank);
             View itemView = convertView;
             if(itemView == null){
                 itemView = getLayoutInflater().inflate(R.layout.item_view,parent,false);
             }
 
             Background currentBackground = myBackground.get(position);
-
             ImageView imageView = (ImageView) itemView.findViewById(R.id.item_icon);
             imageView.setImageResource(currentBackground.getIconID());
 
