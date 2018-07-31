@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             btnLogout.setVisibility(View.VISIBLE);
             populate();
             showChildGPS();
+            backGround();
         }
 
         setGroupBtn();
@@ -145,6 +146,45 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MainActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        user = returned;
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.main_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
 
     private void showChildGPS() {
         Call<List<User>> caller = proxy.getMonitorsUsers(userId);
@@ -187,22 +227,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
-        Gson gson = new Gson();
-        String json = user.getCustomJson();
-        current = gson.fromJson(json, EarnedRewards.class);
-        ConstraintLayout layout = findViewById(R.id.main_layout);
-        if(current.getSelectedBackground() == 0){
-            layout.setBackground(getResources().getDrawable(R.drawable.background0));
-        }
-        if(current.getSelectedBackground() == 1){
-            layout.setBackground(getResources().getDrawable(R.drawable.background1));
-        }
-        if(current.getSelectedBackground() == 2){
-            layout.setBackground(getResources().getDrawable(R.drawable.background2));
-        }
-
-
-
     }
 
     private void responseGroup(Group returnedGroup) {
@@ -678,8 +702,17 @@ public class MainActivity extends AppCompatActivity {
         btnReward.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intentToReward = RewardActivity.makeIntent(MainActivity.this);
-                startActivity(intentToReward);
+                        switch (session.getToken()) {
+                            case "":
+                                Intent intentToLogin = LoginActivity.makeIntent(MainActivity.this);
+                                startActivity(intentToLogin);
+                                finish();
+                                break;
+                            default:
+                                Intent intentToReward = RewardActivity.makeIntent(MainActivity.this);
+                                startActivityForResult(intentToReward,920);
+                    }
+
             }
         });
     }
@@ -687,10 +720,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == 99) {
+        switch (requestCode) {
+            case 99:
             if (resultCode == RESULT_OK) {
                 this.finish();
             }
+            case 920:
+                if (resultCode == RESULT_OK) {
+                    session = Session.getInstance();
+                    proxy = session.getProxy();
+                    user = session.getUser();
+                    userId = user.getId();
+                    Gson gson = new Gson();
+                    String json = data.getStringExtra("rewards");
+                    current = gson.fromJson(json, EarnedRewards.class);
+                    changeBackGround();
+                    //Toast.makeText(this,""+user.getBirthYear(),Toast.LENGTH_LONG).show();
+                }
         }
     }
 }

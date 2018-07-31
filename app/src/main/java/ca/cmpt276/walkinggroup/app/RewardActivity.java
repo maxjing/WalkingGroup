@@ -1,6 +1,7 @@
 package ca.cmpt276.walkinggroup.app;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -58,19 +59,18 @@ public class RewardActivity extends AppCompatActivity {
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
-        if(user.getCurrentPoints() == null){
-            CurrentPoints = 0;
-        }else{
-            CurrentPoints = user.getCurrentPoints();
-        }
-        if(user.getTotalPointsEarned() == null){
-            TotalPointsEarned = 0;
-        }else{
-            TotalPointsEarned = user.getTotalPointsEarned();
-        }
+//        if(user.getCurrentPoints() == null){
+//            CurrentPoints = 0;
+//        }else{
+//            CurrentPoints = user.getCurrentPoints();
+//        }
+//        if(user.getTotalPointsEarned() == null){
+//            TotalPointsEarned = 0;
+//        }else{
+//            TotalPointsEarned = user.getTotalPointsEarned();
+//        }
         //rewards = user.getRewards();
-
-        setTextViews();
+//        setTextViews();
         setConfirmBtn();
 
         populateBackgroundList();
@@ -113,6 +113,19 @@ public class RewardActivity extends AppCompatActivity {
 //        }else{
 //            txt_.setText("null");
 //        }
+
+        if(user.getCurrentPoints() == null){
+            CurrentPoints = 0;
+        }else{
+            CurrentPoints = user.getCurrentPoints();
+        }
+        if(user.getTotalPointsEarned() == null){
+            TotalPointsEarned = 0;
+        }else{
+            TotalPointsEarned = user.getTotalPointsEarned();
+        }
+
+        setTextViews();
 
     }
 
@@ -173,8 +186,14 @@ public class RewardActivity extends AppCompatActivity {
                         rewards = new EarnedRewards("null",new ArrayList<>(),position,null);
                         json = gson.toJson(rewards);
                         CurrentPoints = CurrentPoints - myBackground.get(position).getPoints();
+                        user.setRewards(rewards);
+                        user.setCustomJson(json);
+                        user.setCurrentPoints(CurrentPoints);
+                        Intent data = new Intent();
+                        data.putExtra("rewards",json);
                         Call<User> caller = proxy.getUserById(userId);
                         ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> response(returnedUser));
+                        setResult(Activity.RESULT_OK,data);
                         finish();
                     }else{
                         MyToast.makeText(RewardActivity.this,"Not enough points!",Toast.LENGTH_LONG).show();
@@ -188,11 +207,9 @@ public class RewardActivity extends AppCompatActivity {
 
     private void response(User returnedUser) {
         MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT);
-        user = returnedUser;
-        user.setRewards(rewards);
-        user.setCustomJson(json);
-        user.setCurrentPoints(CurrentPoints);
-        Call<User> caller = proxy.editUserById(userId,user);
+        returnedUser.setCustomJson(json);
+        returnedUser.setCurrentPoints(CurrentPoints);
+        Call<User> caller = proxy.editUserById(userId,returnedUser);
         ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForEdit(returned));
     }
 
