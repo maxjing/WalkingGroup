@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.PermissionRequest;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -146,7 +147,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     }
 
     private void responseApprove(PermissionRequest pr) {
-        Toast.makeText(this, "Approved Success", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, "Approved Success", Toast.LENGTH_SHORT).show();
     }
 
     private void setDenyBtn() {
@@ -162,7 +163,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     }
 
     private void responseDenied(PermissionRequest pr) {
-        Toast.makeText(this, "Denied Success", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, "Denied Success", Toast.LENGTH_SHORT).show();
     }
 
     private boolean isSendByUser(Long id) {

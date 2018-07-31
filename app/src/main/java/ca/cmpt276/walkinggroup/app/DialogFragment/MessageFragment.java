@@ -60,7 +60,7 @@ public class MessageFragment extends AppCompatDialogFragment {
 
                             startActivity(intentToCreate);
                         } catch (Exception e) {
-                            Toast.makeText(getActivity(), "should create a group at selected location ", Toast.LENGTH_SHORT).show();
+                            MyToast.makeText(getActivity(), "should create a group at selected location ", Toast.LENGTH_SHORT).show();
                         }
 
                         break;

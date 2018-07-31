@@ -58,6 +58,7 @@ import ca.cmpt276.walkinggroup.app.Adapter.CustomInfoWindowAdapter;
 import ca.cmpt276.walkinggroup.app.Adapter.PlaceAutocompleteAdapter;
 import ca.cmpt276.walkinggroup.app.DialogFragment.JoinGroupFragment;
 import ca.cmpt276.walkinggroup.app.DialogFragment.MessageFragment;
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.PlaceInfo;
@@ -353,9 +354,9 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                 }
                 if (flag) {
-                    Toast.makeText(GoogleMapsActivity.this, R.string.show_walking_groups, Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(GoogleMapsActivity.this, R.string.show_walking_groups, Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(GoogleMapsActivity.this, R.string.hide_walking_groups, Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(GoogleMapsActivity.this, R.string.hide_walking_groups, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -401,11 +402,11 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (mSearchMarkerDetail != null) {
                         if (mMeetPlaceDetail == null) {
-                            Toast.makeText(GoogleMapsActivity.this, R.string.select_meet_place, Toast.LENGTH_SHORT).show();
+                            MyToast.makeText(GoogleMapsActivity.this, R.string.select_meet_place, Toast.LENGTH_SHORT).show();
                         } else if (mSearchMarkerDetail == mMeetPlaceDetail) {
-                            Toast.makeText(GoogleMapsActivity.this, R.string.different_place, Toast.LENGTH_SHORT).show();
+                            MyToast.makeText(GoogleMapsActivity.this, R.string.different_place, Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(GoogleMapsActivity.this, R.string.clear_selected_place, Toast.LENGTH_SHORT).show();
+                            MyToast.makeText(GoogleMapsActivity.this, R.string.clear_selected_place, Toast.LENGTH_SHORT).show();
                             Bundle args = new Bundle();
                             final double Latitude = mSearchMarkerDetail.getLatLng().latitude;
                             final double Longtitude = mSearchMarkerDetail.getLatLng().longitude;
@@ -432,7 +433,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                         }
 
                     }else {
-                        Toast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(GoogleMapsActivity.this, R.string.create_group_select, Toast.LENGTH_SHORT).show();
                     }
                 } else if (mMarkerList != null) {
                     if (marker.getTitle().equals(MEETING_PLACE) && position != null) {
@@ -466,7 +467,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                     }
                     if (markerID != 0) {
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10f));
-                        Toast.makeText(GoogleMapsActivity.this, R.string.yellow_marker, Toast.LENGTH_SHORT).show();
+                        MyToast.makeText(GoogleMapsActivity.this, R.string.yellow_marker, Toast.LENGTH_SHORT).show();
                     }
                 }
                 return false;
@@ -607,7 +608,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
                             }
                         } else {
                             Log.d(TAG, "onComplete: current location is null");
-                            Toast.makeText(GoogleMapsActivity.this, R.string.unable_get_location, Toast.LENGTH_SHORT).show();
+                            MyToast.makeText(GoogleMapsActivity.this, R.string.unable_get_location, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -644,7 +645,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
         } else {
             mSearchMarker.add(mMap.addMarker(new MarkerOptions().position(latLng)));
         }
-        Toast.makeText(GoogleMapsActivity.this,
+        MyToast.makeText(GoogleMapsActivity.this,
                 R.string.red_blue_marker,
                 Toast.LENGTH_LONG).show();
         hideSoftKeyboard();
@@ -760,7 +761,7 @@ public class GoogleMapsActivity extends FragmentActivity implements OnMapReadyCa
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Toast.makeText(this, R.string.map_is_ready, Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, R.string.map_is_ready, Toast.LENGTH_SHORT).show();
         Log.d(TAG, "OnMapReady: Map is Ready");
         mMap = googleMap;
 

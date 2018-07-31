@@ -46,6 +46,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+
 /**
  * the auto_fill api get from Google Map guide
  * https://github.com/googlesamples/android-play-places/blob/master/PlaceCompleteAdapter/Application/src/main/java/com/example/google/playservices/placecomplete/PlaceAutocompleteAdapter.java
@@ -232,7 +234,7 @@ public class PlaceAutocompleteAdapter
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
         } catch (RuntimeExecutionException e) {
             // If the query did not complete successfully return null
-            Toast.makeText(getContext(), "Error contacting API: " + e.toString(),
+            MyToast.makeText(getContext(), "Error contacting API: " + e.toString(),
                     Toast.LENGTH_SHORT).show();
             Log.e(TAG, "Error getting autocomplete prediction API call", e);
             return null;
