@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,9 +38,11 @@ public class UserInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme5);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
+
+        ConstraintLayout layout = findViewById(R.id.user_info_layout);
+        layout.setBackground(getResources().getDrawable(R.drawable.background6));
 
         session = Session.getInstance();
         proxy = session.getProxy();

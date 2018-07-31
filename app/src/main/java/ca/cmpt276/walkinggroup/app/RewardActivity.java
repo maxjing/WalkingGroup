@@ -203,9 +203,10 @@ public class RewardActivity extends AppCompatActivity {
         OKbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setTheme(R.style.AppTheme1);
-                setContentView(R.layout.activity_main);
-                finish();
+                ConstraintLayout layout = findViewById(R.id.reward_layout);
+                layout.setBackgroundResource(R.drawable.background1);
+
+                //finish();
             }
         });
 

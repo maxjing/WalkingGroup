@@ -13,6 +13,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -76,9 +77,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme1);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ConstraintLayout layout = findViewById(R.id.main_layout);
+        layout.setBackground(getResources().getDrawable(R.drawable.background4));
 
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         token = dataToGet.getString("userToken", "");

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/user_info_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ca.cmpt276.walkinggroup.app.UserInfoActivity">
@@ -38,8 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/name"
                 android:background="@android:color/transparent"
+                android:text="@string/name"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -64,9 +65,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:text="@string/email"
                 android:textColor="#FFF"
-                android:background="@android:color/transparent"
                 android:textSize="18dp" />
 
             <TextView
@@ -74,8 +75,8 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -90,8 +91,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/birth_year"
                 android:background="@android:color/transparent"
+                android:text="@string/birth_year"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -100,8 +101,8 @@
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -116,8 +117,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/birth_month"
                 android:background="@android:color/transparent"
+                android:text="@string/birth_month"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -126,9 +127,9 @@
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@android:color/transparent"
                 android:text=""
                 android:textColor="#FFF"
-                android:background="@android:color/transparent"
                 android:textSize="18dp" />
         </LinearLayout>
 
@@ -142,8 +143,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/address"
                 android:background="@android:color/transparent"
+                android:text="@string/address"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -152,8 +153,8 @@
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -168,8 +169,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/cell_phone"
                 android:background="@android:color/transparent"
+                android:text="@string/cell_phone"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -194,8 +195,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/home_phone"
                 android:background="@android:color/transparent"
+                android:text="@string/home_phone"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -204,8 +205,8 @@
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -220,8 +221,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/grade"
                 android:background="@android:color/transparent"
+                android:text="@string/grade"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -230,8 +231,8 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -246,8 +247,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/teacher_name"
                 android:background="@android:color/transparent"
+                android:text="@string/teacher_name"
                 android:textColor="#FFF"
                 android:textSize="18dp" />
 
@@ -256,8 +257,8 @@
                 android:layout_width="235dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
@@ -282,8 +283,8 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text=""
                 android:background="@android:color/transparent"
+                android:text=""
                 android:textColor="#FFF"
                 android:textSize="18dp" />
         </LinearLayout>
