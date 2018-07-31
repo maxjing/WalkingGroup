@@ -132,6 +132,7 @@ public class RewardActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            setTheme(R.style.AppTheme_blank);
             View itemView = convertView;
             if(itemView == null){
                 itemView = getLayoutInflater().inflate(R.layout.item_view,parent,false);

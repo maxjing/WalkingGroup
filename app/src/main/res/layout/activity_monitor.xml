@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background0"
     tools:context="ca.cmpt276.walkinggroup.app.MonitorActivity">
 
     <TextView
