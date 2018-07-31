@@ -26,12 +26,14 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.GpsLocation;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private LatLng tempUserLocation;
     private List<Group> upGroups = new ArrayList<>();
     private Session session;
+    private EarnedRewards current;
 
 
     @Override
@@ -102,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             btnLogout.setVisibility(View.VISIBLE);
             populate();
             showChildGPS();
-
         }
 
         setGroupBtn();
@@ -185,6 +187,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
 
         }
+        Gson gson = new Gson();
+        String json = user.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        ConstraintLayout layout = findViewById(R.id.main_layout);
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+
 
 
     }

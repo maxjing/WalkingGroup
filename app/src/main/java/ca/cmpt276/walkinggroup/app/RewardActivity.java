@@ -97,16 +97,17 @@ public class RewardActivity extends AppCompatActivity {
         MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
         //TextView txt_ = (TextView) findViewById(R.id.textView12);
-        if(!json.equals("null")) {
-            current = gson.fromJson(json, EarnedRewards.class);
-        }else{
-            current = new EarnedRewards("null",new ArrayList<>(),0,null);
-            String json_null = gson.toJson(current);
-            user.setRewards(rewards);
-            user.setCustomJson(json_null);
-            Call<User> caller = proxy.editUserById(userId,user);
-            ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
-        }
+//        if(!json.equals("null")) {
+//            current = gson.fromJson(json, EarnedRewards.class);
+//        }else{
+//            current = new EarnedRewards("null",new ArrayList<>(),0,null);
+//            String json_null = gson.toJson(current);
+//            user.setRewards(current);
+//            user.setCustomJson(json_null);
+//            Call<User> caller = proxy.editUserById(userId,user);
+//            ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
+//        }
+        current = gson.fromJson(json, EarnedRewards.class);
         TextView txt_ = (TextView) findViewById(R.id.textView12);
         txt_.setText(""+current.getSelectedBackground());
 //        }else{

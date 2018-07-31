@@ -11,9 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private long userId = 0;
     private WGServerProxy proxy;
     private Session session;
+    private EarnedRewards current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,12 +122,34 @@ public class LoginActivity extends AppCompatActivity {
     private void response(User user) {
         session.setUser(user);
         userId = user.getId();
+        Gson gson = new Gson();
+        String json = user.getCustomJson();
+        if(!json.equals("null")) {
+            current = gson.fromJson(json, EarnedRewards.class);
+            this.user.setRewards(current);
+        }else{
+            current = new EarnedRewards("null",new ArrayList<>(),0,null);
+            String json_null = gson.toJson(current);
+            this.user.setRewards(current);
+            user.setCustomJson(json_null);
+            Call<User> caller = proxy.editUserById(userId,user);
+            ProxyBuilder.callProxy(LoginActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
+        }
+//        MyToast.makeText(LoginActivity.this,json,Toast.LENGTH_SHORT).show();
+//        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+//        //TextView txt_ = (TextView) findViewById(R.id.textView12);
+//        current = gson.fromJson(json, EarnedRewards.class);
+//        this.user.setRewards(current);
+//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
         finish();
 
 
+    }
+
+    private void responseForEdit(User returnedUser) {
     }
 
 
