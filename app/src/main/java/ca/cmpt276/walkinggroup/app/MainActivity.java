@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void responseForGet(User returned) {
         Gson gson = new Gson();
-        user = returned;
         String json = returned.getCustomJson();
         current = gson.fromJson(json, EarnedRewards.class);
         changeBackGround();
@@ -727,15 +726,17 @@ public class MainActivity extends AppCompatActivity {
             }
             case 920:
                 if (resultCode == RESULT_OK) {
-                    session = Session.getInstance();
-                    proxy = session.getProxy();
-                    user = session.getUser();
-                    userId = user.getId();
+//                    session = Session.getInstance();
+//                    proxy = session.getProxy();
+//                    user = session.getUser();
+//                    userId = user.getId();
                     Gson gson = new Gson();
                     String json = data.getStringExtra("rewards");
                     current = gson.fromJson(json, EarnedRewards.class);
                     changeBackGround();
-                    //Toast.makeText(this,""+user.getBirthYear(),Toast.LENGTH_LONG).show();
+                    //user.setRewards(current);
+                    //Toast.makeText(this,""+user.getCurrentPoints()+" "+ user.getName(),Toast.LENGTH_LONG).show();
+//                    Toast.makeText(this,""+user.getBirthYear(),Toast.LENGTH_LONG).show();
                 }
         }
     }

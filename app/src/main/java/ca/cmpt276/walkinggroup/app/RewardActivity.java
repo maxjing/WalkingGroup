@@ -86,8 +86,8 @@ public class RewardActivity extends AppCompatActivity {
 //        TextView txt = (TextView) findViewById(R.id.txt_rewards);
 //        txt.setText(json);
 
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
+//        Call<User> caller = proxy.getUserById(userId);
+//        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
 //        EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
 //        TextView txt_ = (TextView) findViewById(R.id.textView12);
 //        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
@@ -144,9 +144,9 @@ public class RewardActivity extends AppCompatActivity {
 //            ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
 //        }
         current = gson.fromJson(json, EarnedRewards.class);
-        TextView txt_ = (TextView) findViewById(R.id.textView12);
+       // TextView txt_ = (TextView) findViewById(R.id.textView12);
         changeBackGround();
-        txt_.setText(""+current.getSelectedBackground());
+        //txt_.setText(""+current.getSelectedBackground());
 //        }else{
 //            txt_.setText("null");
 //        }
@@ -223,6 +223,7 @@ public class RewardActivity extends AppCompatActivity {
                         rewards = new EarnedRewards("null",new ArrayList<>(),position,null);
                         json = gson.toJson(rewards);
                         CurrentPoints = CurrentPoints - myBackground.get(position).getPoints();
+                        //user.setBirthYear(2000);
                         user.setRewards(rewards);
                         user.setCustomJson(json);
                         user.setCurrentPoints(CurrentPoints);
