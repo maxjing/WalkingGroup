@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +15,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -45,6 +50,7 @@ public class MessagesActivity extends AppCompatActivity {
     private List<Long> readId;
     private List<Long> unreadId;
     private Session session;
+    private EarnedRewards current;
 
 
     @Override
@@ -58,12 +64,53 @@ public class MessagesActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
+        backGround();
+
         populate();
         setMsgBtn();
 //        setDeleteAllBtn();
         setCancel();
         handler.postDelayed(update, 1000*5);
 
+
+    }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MessagesActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.message_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
 
     }
 

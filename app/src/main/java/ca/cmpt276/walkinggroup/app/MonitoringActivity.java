@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -41,6 +46,7 @@ public class MonitoringActivity extends AppCompatActivity {
     private long userId;
     private long groupId;
     private Session session;
+    private EarnedRewards current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +59,53 @@ public class MonitoringActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
+        backGround();
+
         setAddBtn();
         registerClickCallback();
 
         populateListView();
     }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MonitoringActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.monitoring_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
+
 
     private void setAddBtn() {
         Button btn = (Button) findViewById(R.id.btnAdd);

@@ -8,11 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -34,6 +38,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
     private Message message;
     private List<Group> groupsMember;
     private Session session;
+    private EarnedRewards current;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +50,51 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
+
+        backGround();
         
         message = new Message();
         setSendEmergencyBtn();
         setCancel();
+    }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MessagesEmergencyActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        RelativeLayout layout = findViewById(R.id.messages_emergency_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
     }
 
 

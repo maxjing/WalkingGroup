@@ -3,6 +3,7 @@ package ca.cmpt276.walkinggroup.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +14,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -43,6 +47,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
     private Message message;
     private String TAG = "MessagesGroupsActivity";
     private Session session;
+    private EarnedRewards current;
 
 
     @Override
@@ -57,6 +62,8 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
+        backGround();
+
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesGroupsActivity.this, caller_user, returnedUser -> response(returnedUser));
         msg = dataToGet.getString("pMessage","");
@@ -64,6 +71,46 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         message.setText(msg);
         setSendAllBtn();
     }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(MessagesGroupsActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.messages_groups_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
+
 
     private void response(User returnedUser) {
         user = returnedUser;

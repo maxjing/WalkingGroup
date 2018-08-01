@@ -3,6 +3,7 @@ package ca.cmpt276.walkinggroup.app;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,9 +15,13 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
+import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Message;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import retrofit2.Call;
@@ -39,6 +44,7 @@ public class PermissionActivity extends AppCompatActivity {
     private List<Long> approvedId;
     private List<Long> deniedId;
     private static final Handler handler = new Handler();
+    private EarnedRewards current;
 
 
     @Override
@@ -51,12 +57,54 @@ public class PermissionActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
+        backGround();
+
         populate();
         setBackBtn();
         handler.postDelayed(update, 1000*2);
 
 
     }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(PermissionActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void responseForGet(User returned) {
+        Gson gson = new Gson();
+        String json = returned.getCustomJson();
+        current = gson.fromJson(json, EarnedRewards.class);
+        changeBackGround();
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.permission_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
+
 
 
     Runnable update = new Runnable() {
