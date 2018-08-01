@@ -157,7 +157,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     }
 
     private void setStatus(User user){
-        status = statusTemp +" BY "+user.getName();
+        status = statusTemp +" "+getString(R.string.by)+" "+user.getName();
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
         requestStatus.setText(status);
     }
@@ -195,7 +195,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     }
 
     private void responseApprove(PermissionRequest pr) {
-        MyToast.makeText(this, "Approved Success", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, getString(R.string.approved_success), Toast.LENGTH_SHORT).show();
     }
 
     private void setDenyBtn() {
@@ -211,7 +211,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     }
 
     private void responseDenied(PermissionRequest pr) {
-        MyToast.makeText(this, "Denied Success", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, getString(R.string.denied_success), Toast.LENGTH_SHORT).show();
     }
 
     private boolean isSendByUser(Long id) {

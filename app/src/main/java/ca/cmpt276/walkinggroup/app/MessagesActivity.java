@@ -217,7 +217,7 @@ public class MessagesActivity extends AppCompatActivity {
         readId      = new ArrayList<>(returnedMsg.size());
         try {
             for(int i = 0; i<returnedMsg.size();i++){
-                readMsgList.add("Emergency: "+returnedMsg.get(i).getText());
+                readMsgList.add(getString(R.string.emergency_)+" "+returnedMsg.get(i).getText());
                 readId.add(returnedMsg.get(i).getId());
             }
         } catch (Exception e) {
@@ -245,7 +245,7 @@ public class MessagesActivity extends AppCompatActivity {
         unreadId      = new ArrayList<>(returnedMsg.size());
         try {
             for(int i = 0; i<returnedMsg.size();i++){
-                unreadMsgList.add("Emergency: "+returnedMsg.get(i).getText());
+                unreadMsgList.add(getString(R.string.emergency_)+" "+returnedMsg.get(i).getText());
                 unreadId.add(returnedMsg.get(i).getId());
             }
         } catch (Exception e) {

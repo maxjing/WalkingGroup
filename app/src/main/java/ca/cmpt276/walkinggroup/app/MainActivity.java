@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            MyToast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+            MyToast.makeText(MainActivity.this, getString(R.string.latlng)+" " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
             if (mStopSignal) {
                 User tempUser = session.getUser();
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
                 Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                 ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
-                MyToast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, getString(R.string.arrive_target_place) + getString(R.string.points_) + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
                 //handler.removeCallbacks(toastRunnable);
@@ -381,7 +381,7 @@ public class MainActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyToast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, getString(R.string.start_update_location), Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
                 handler.postDelayed(checkChangeRunnable, 600000);
 
@@ -409,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
 
-                MyToast.makeText(MainActivity.this, "LatLng: " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, getString(R.string.latlng)+" " + tempUserLocation + ", " + mStopSignal, Toast.LENGTH_SHORT).show();
 
                 if (mStopSignal) {
                     User tempUser = session.getUser();
@@ -425,10 +425,10 @@ public class MainActivity extends AppCompatActivity {
                     Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                     ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
-                    MyToast.makeText(MainActivity.this, "Arrive Target Place!" + "Points:" + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
+                    MyToast.makeText(MainActivity.this, getString(R.string.arrive_target_place) + getString(R.string.points_) + tempUser.getCurrentPoints() + ", " + tempUser.getTotalPointsEarned(), Toast.LENGTH_SHORT).show();
                 }
 
-                MyToast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, getString(R.string.stop_update_location), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
 
                 //handler.removeCallbacks(toastRunnable);
@@ -592,7 +592,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyToast.makeText(MainActivity.this, "Stop update location!", Toast.LENGTH_SHORT).show();
+                MyToast.makeText(MainActivity.this, getString(R.string.stop_update_location), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);

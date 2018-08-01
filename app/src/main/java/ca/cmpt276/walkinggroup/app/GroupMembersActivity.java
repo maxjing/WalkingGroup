@@ -2,7 +2,6 @@ package ca.cmpt276.walkinggroup.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.icu.text.UnicodeSetSpanner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,14 +20,13 @@ import java.util.List;
 import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
-import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
-public class GroupMemmbersActivity extends AppCompatActivity {
+public class GroupMembersActivity extends AppCompatActivity {
     public static final String INFO_GROUPID = "ca.cmpt276.walkinggroup.app - GroupInfo - GroupId";
     public static final String CHILD_GROUP = "child_group";
     private WGServerProxy proxy;
@@ -44,7 +42,7 @@ public class GroupMemmbersActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_group_memmbers);
+        setContentView(R.layout.activity_group_members);
         session = Session.getInstance();
         proxy = session.getProxy();
         userId = session.getUser().getId();
@@ -55,14 +53,14 @@ public class GroupMemmbersActivity extends AppCompatActivity {
         groupId = intent.getLongExtra(INFO_GROUPID,0);
 
         Call<Group> caller = proxy.getGroupById(groupId);
-        ProxyBuilder.callProxy(GroupMemmbersActivity.this,caller, returnedGroup -> response(returnedGroup));
+        ProxyBuilder.callProxy(GroupMembersActivity.this,caller, returnedGroup -> response(returnedGroup));
         setBack();
 
     }
 
     private void backGround() {
         Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(GroupMemmbersActivity.this,caller,returned -> responseForGet(returned));
+        ProxyBuilder.callProxy(GroupMembersActivity.this,caller, returned -> responseForGet(returned));
     }
 
     private void responseForGet(User returned) {
@@ -105,7 +103,7 @@ public class GroupMemmbersActivity extends AppCompatActivity {
         group = returnedGroup;
 
         Call<List<User>> caller = proxy.getGroupMembers(groupId);
-        ProxyBuilder.callProxy(GroupMemmbersActivity.this,caller,returnedList -> responseMembers(returnedList));
+        ProxyBuilder.callProxy(GroupMembersActivity.this,caller, returnedList -> responseMembers(returnedList));
     }
 
     private void responseMembers(List<User> returnedList) {
@@ -123,14 +121,14 @@ public class GroupMemmbersActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 group.setLeader(members.get(i));
                 Call<Group> caller = proxy.updateGroup(groupId,group);
-                ProxyBuilder.callProxy(GroupMemmbersActivity.this, caller, returned -> responseNewLeader(returned));
+                ProxyBuilder.callProxy(GroupMembersActivity.this, caller, returned -> responseNewLeader(returned));
 
             }
         });
     }
 
     private void responseNewLeader(Group group){
-        MyToast.makeText(this, "Transfer Request Made", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(this, getString(R.string.transfer_request_made), Toast.LENGTH_SHORT).show();
     }
 
     private void setBack(){
@@ -138,7 +136,7 @@ public class GroupMemmbersActivity extends AppCompatActivity {
         btnGroup.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = GroupInfoActivity.makeIntent2(GroupMemmbersActivity.this);
+                Intent intent = GroupInfoActivity.makeIntent2(GroupMembersActivity.this);
                 finish();
 
             }
@@ -146,7 +144,7 @@ public class GroupMemmbersActivity extends AppCompatActivity {
     }
 
     public static Intent makeIntent(Context context) {
-        Intent intent = new Intent(context, GroupMemmbersActivity.class);
+        Intent intent = new Intent(context, GroupMembersActivity.class);
         return intent;
     }
 

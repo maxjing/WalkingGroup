@@ -192,7 +192,7 @@ public class GroupInfoActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = GroupMemmbersActivity.makeIntent(GroupInfoActivity.this);
+                Intent intent = GroupMembersActivity.makeIntent(GroupInfoActivity.this);
                 intent.putExtra(INFO_GROUPID,groupId);
                 startActivity(intent);
             }

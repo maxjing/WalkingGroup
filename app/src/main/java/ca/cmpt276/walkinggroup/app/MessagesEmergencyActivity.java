@@ -107,7 +107,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
                 EditText editMsg = (EditText)findViewById(R.id.editEmergencyMsg);
                 String msg = editMsg.getText().toString();
                 if (msg.matches("")){
-                    msg = "HELP!!!!!";
+                    msg = getString(R.string.help_emergency);
                 }
                 message.setText(msg);
 
@@ -148,7 +148,7 @@ public class MessagesEmergencyActivity extends AppCompatActivity {
 
 
     private void response(List<Message> returnedMsg) {
-        MyToast.makeText(MessagesEmergencyActivity.this, "Emergency Message Sent", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(MessagesEmergencyActivity.this, getString(R.string.emergency_message_sent), Toast.LENGTH_SHORT).show();
 
     }
 

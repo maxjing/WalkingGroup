@@ -158,7 +158,7 @@ public class MessagesGroupsActivity extends AppCompatActivity {
 
     }
     private void response(List<Message> returnedMsg) {
-        MyToast.makeText(MessagesGroupsActivity.this, "Message Sent", Toast.LENGTH_SHORT).show();
+        MyToast.makeText(MessagesGroupsActivity.this, getString(R.string.message_sent), Toast.LENGTH_SHORT).show();
 
 
     }

@@ -74,7 +74,7 @@ public class RewardActivity extends AppCompatActivity {
         //rewards = user.getRewards();
 //        setTextViews();
 
-        setConfirmBtn();
+        setCancelBtn();
 
         populateBackgroundList();
         populateListView();
@@ -130,7 +130,7 @@ public class RewardActivity extends AppCompatActivity {
         Gson gson = new Gson();
         user = returned;
         json = returned.getCustomJson();
-        MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
+//        MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
         //TextView txt_ = (TextView) findViewById(R.id.textView12);
 //        if(!json.equals("null")) {
@@ -213,11 +213,11 @@ public class RewardActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if(current.getSelectedBackground() == position){
-                    MyToast.makeText(RewardActivity.this,"The reward has already earned!",Toast.LENGTH_LONG).show();
+                    MyToast.makeText(RewardActivity.this,getString(R.string.reward_has_been_earned),Toast.LENGTH_LONG).show();
 
                 }else{
                     if(CurrentPoints >= myBackground.get(position).getPoints()){
-                        MyToast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
+//                        MyToast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
                         Background clickedBackground = myBackground.get(position);
                         Gson gson = new Gson();
                         rewards = new EarnedRewards("null",new ArrayList<>(),position,null);
@@ -234,7 +234,7 @@ public class RewardActivity extends AppCompatActivity {
                         setResult(Activity.RESULT_OK,data);
                         finish();
                     }else{
-                        MyToast.makeText(RewardActivity.this,"Not enough points!",Toast.LENGTH_LONG).show();
+                        MyToast.makeText(RewardActivity.this,getString(R.string.not_enough_points),Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -254,19 +254,7 @@ public class RewardActivity extends AppCompatActivity {
     private void responseForEdit(User returned) {
     }
 
-    private void setConfirmBtn() {
-        Button OKbtn = findViewById(R.id.reward_ok_btn);
-        OKbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ConstraintLayout layout = findViewById(R.id.reward_layout);
-                layout.setBackgroundResource(R.drawable.background1);
-
-                //finish();
-            }
-        });
-
-
+    private void setCancelBtn() {
         Button Cancelbtn = findViewById(R.id.reward_cancel_btn);
         Cancelbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -279,9 +267,9 @@ public class RewardActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void setTextViews() {
         TextView CurrentPointsTextView = findViewById(R.id.current_points_textview);
-        CurrentPointsTextView.setText("USE MY POINTS: " + CurrentPoints);
+        CurrentPointsTextView.setText(getString(R.string.use_my_points)+" " + CurrentPoints);
         TextView TotalPointsTextView = findViewById(R.id.total_points_textview);
-        TotalPointsTextView.setText("TOTAL POINTS: " + TotalPointsEarned);
+        TotalPointsTextView.setText(getString(R.string.total_points)+" " + TotalPointsEarned);
     }
 
     public static Intent makeIntent(Context context) {

@@ -183,10 +183,10 @@ public class EditActivity extends AppCompatActivity {
                     year = Integer.parseInt(etYear);
                     month = Integer.parseInt(etMonth);
                     if (year < 1900 || year > 2018) {
-                        MyToast.makeText(EditActivity.this, "The birth year should between 1900 and 2018.", Toast.LENGTH_LONG).show();
+                        MyToast.makeText(EditActivity.this, getString(R.string.year_limit), Toast.LENGTH_LONG).show();
                     }
                     if (month < 1 || month > 12) {
-                        MyToast.makeText(EditActivity.this, "The month you entered does not exist.", Toast.LENGTH_LONG).show();
+                        MyToast.makeText(EditActivity.this, getString(R.string.month_limit), Toast.LENGTH_LONG).show();
                     }
                     if (year >= 1900 && year <= 2018 && month >= 1 && month <= 12) {
                         user.setName(editName);
@@ -221,7 +221,7 @@ public class EditActivity extends AppCompatActivity {
                     if (etYear.equals("") && !etMonth.equals("")) {
                         month = Integer.parseInt(etMonth);
                         if (month < 1 || month > 12) {
-                            MyToast.makeText(EditActivity.this, "The month you entered does not exist.", Toast.LENGTH_LONG).show();
+                            MyToast.makeText(EditActivity.this, getString(R.string.month_limit), Toast.LENGTH_LONG).show();
                         } else {
                             user.setBirthYear(null);
                             user.setBirthMonth(month);
@@ -241,7 +241,7 @@ public class EditActivity extends AppCompatActivity {
                     if (!etYear.equals("") && etMonth.equals("")) {
                         year = Integer.parseInt(etYear);
                         if (year < 1900 || year > 2018) {
-                            MyToast.makeText(EditActivity.this, "The birth year should between 1900 and 2018.", Toast.LENGTH_LONG).show();
+                            MyToast.makeText(EditActivity.this, getString(R.string.year_limit), Toast.LENGTH_LONG).show();
                         } else {
                             user.setBirthYear(year);
                             user.setBirthMonth(null);

@@ -5,7 +5,7 @@
     android:id="@+id/group_members_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.GroupMemmbersActivity">
+    tools:context="ca.cmpt276.walkinggroup.app.GroupMembersActivity">
 
     <ListView
         android:id="@+id/listview_member_transfer"
@@ -27,7 +27,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="23dp"
         android:layout_marginTop="19dp"
-        android:text="Click a Member to Tranfer Leader"
+        android:text="@string/click_a_member_to_tranfer_leader"
         android:textColor="@android:color/white"
         android:textSize="20sp" />
 
@@ -39,6 +39,6 @@
         android:layout_alignStart="@+id/listview_member_transfer"
         android:layout_marginBottom="36dp"
         android:background="@drawable/background_button"
-        android:text="Back"
+        android:text="@string/back"
         android:textColor="@android:color/white" />
 </RelativeLayout>

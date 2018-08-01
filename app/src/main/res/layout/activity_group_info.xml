@@ -119,7 +119,7 @@
         android:layout_marginTop="60dp"
         android:background="@drawable/background_button"
         android:padding="10dp"
-        android:text="Transfer Leader"
+        android:text="@string/transfer_leader"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.059"
