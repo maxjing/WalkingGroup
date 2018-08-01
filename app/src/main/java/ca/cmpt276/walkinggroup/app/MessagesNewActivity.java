@@ -71,7 +71,7 @@ public class MessagesNewActivity extends AppCompatActivity {
 
     private void changeBackGround(){
         RelativeLayout layout = findViewById(R.id.messages_new_layout);
-        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(current.getSelectedBackground() == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
