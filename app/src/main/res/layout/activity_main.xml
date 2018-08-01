@@ -65,7 +65,7 @@
         android:text="@string/log_out"
         android:textColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/user_title" />
 
     <Button
         android:id="@+id/btnMonitoring"
@@ -215,7 +215,7 @@
         android:text="@string/parent_s_dashboard"
         android:textColor="#FFF"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/user_title" />
 
     <Button
         android:id="@+id/btnPermission"
@@ -239,6 +239,19 @@
         android:textColor="#FFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/google_map" />
+
+    <TextView
+        android:id="@+id/user_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Beginner"
+        android:textAllCaps="true"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
