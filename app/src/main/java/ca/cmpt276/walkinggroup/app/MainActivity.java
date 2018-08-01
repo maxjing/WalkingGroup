@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //ConstraintLayout layout = findViewById(R.id.main_layout);
-        //layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        ConstraintLayout layout = findViewById(R.id.main_layout);
+        layout.setBackground(getResources().getDrawable(R.drawable.background0));
 
         SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
         token = dataToGet.getString("userToken", "");
