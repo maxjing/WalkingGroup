@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void changeBackGround(){
         ConstraintLayout layout = findViewById(R.id.main_layout);
-        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(current.getSelectedBackground() == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
