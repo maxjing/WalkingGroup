@@ -52,13 +52,15 @@ public class RewardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_reward);
 
-        ConstraintLayout layout = findViewById(R.id.reward_layout);
-        layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        //ConstraintLayout layout = findViewById(R.id.reward_layout);
+        //layout.setBackground(getResources().getDrawable(R.drawable.background6));
 
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
         userId = user.getId();
+
+        backGround();
 //        if(user.getCurrentPoints() == null){
 //            CurrentPoints = 0;
 //        }else{
@@ -71,6 +73,7 @@ public class RewardActivity extends AppCompatActivity {
 //        }
         //rewards = user.getRewards();
 //        setTextViews();
+
         setConfirmBtn();
 
         populateBackgroundList();
@@ -89,6 +92,39 @@ public class RewardActivity extends AppCompatActivity {
 //        TextView txt_ = (TextView) findViewById(R.id.textView12);
 //        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
     }
+
+    private void backGround() {
+        Call<User> caller = proxy.getUserById(userId);
+        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
+    }
+
+    private void changeBackGround(){
+        ConstraintLayout layout = findViewById(R.id.reward_layout);
+        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(current.getSelectedBackground() == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(current.getSelectedBackground() == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(current.getSelectedBackground() == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(current.getSelectedBackground() == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(current.getSelectedBackground() == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(current.getSelectedBackground() == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(current.getSelectedBackground() == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
+
 
     private void responseForGet(User returned) {
         Gson gson = new Gson();
@@ -109,6 +145,7 @@ public class RewardActivity extends AppCompatActivity {
 //        }
         current = gson.fromJson(json, EarnedRewards.class);
         TextView txt_ = (TextView) findViewById(R.id.textView12);
+        changeBackGround();
         txt_.setText(""+current.getSelectedBackground());
 //        }else{
 //            txt_.setText("null");
@@ -134,9 +171,9 @@ public class RewardActivity extends AppCompatActivity {
         myBackground.add(new Background(10,R.drawable.background1_icon));
         myBackground.add(new Background(20,R.drawable.background2_icon));
         myBackground.add(new Background(30,R.drawable.background3_icon));
-        myBackground.add(new Background(40,R.drawable.background6_icon));
+        myBackground.add(new Background(40,R.drawable.background4_icon));
         myBackground.add(new Background(50,R.drawable.background5_icon));
-        myBackground.add(new Background(60,R.drawable.background4_icon));
+        myBackground.add(new Background(60,R.drawable.background6_icon));
     }
 
     private void populateListView() {

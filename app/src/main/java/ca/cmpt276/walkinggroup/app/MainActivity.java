@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -52,6 +51,7 @@ import retrofit2.Call;
 
 public class MainActivity extends AppCompatActivity {
     private static final Handler handler = new Handler();
+    public static final int POINTS_GET = 5;
     private String token;
     private String TAG = "MainActivity";
     private WGServerProxy proxy;
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
             }else {
-                handler.postDelayed(this, 6000);
+                handler.postDelayed(this, 600000);
             }
         }
     };
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 MyToast.makeText(MainActivity.this, "Start update location!", Toast.LENGTH_SHORT).show();
                 //handler.postDelayed(toastRunnable, 5000);
-                handler.postDelayed(checkChangeRunnable, 6000);
+                handler.postDelayed(checkChangeRunnable, 600000);
 
                 startService(new Intent(getApplicationContext(), LocationService.class));
             }
@@ -421,8 +421,8 @@ public class MainActivity extends AppCompatActivity {
                         tempUser.setCurrentPoints(0);
                     }
 
-                    tempUser.setCurrentPoints(session.getUser().getCurrentPoints() + 1);
-                    tempUser.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + 1);
+                    tempUser.setCurrentPoints(session.getUser().getCurrentPoints() + POINTS_GET);
+                    tempUser.setTotalPointsEarned(session.getUser().getTotalPointsEarned() + POINTS_GET);
                     Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
                     ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
 
