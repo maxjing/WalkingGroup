@@ -134,9 +134,9 @@ public class RewardActivity extends AppCompatActivity {
         myBackground.add(new Background(10,R.drawable.background1_icon));
         myBackground.add(new Background(20,R.drawable.background2_icon));
         myBackground.add(new Background(30,R.drawable.background3_icon));
-        myBackground.add(new Background(40,R.drawable.background4_icon));
+        myBackground.add(new Background(40,R.drawable.background6_icon));
         myBackground.add(new Background(50,R.drawable.background5_icon));
-        myBackground.add(new Background(60,R.drawable.background6_icon));
+        myBackground.add(new Background(60,R.drawable.background4_icon));
     }
 
     private void populateListView() {
