@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
@@ -202,7 +203,7 @@ public class GroupCreateActivity extends AppCompatActivity {
     }
 
     private void response(Group groups) {
-
+        MyToast.makeText(GroupCreateActivity.this, R.string.requestSend, Toast.LENGTH_LONG).show();
 
 
     }

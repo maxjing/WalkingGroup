@@ -160,4 +160,8 @@
     <string name="approved_success">Approved Success</string>
     <string name="denied_success">Denied Success</string>
     <string name="title">Title</string>
+
+    //toast
+    <string name="requestSend">Request Send</string>
+    <string name="regSuccess">Register Success. Please login</string>
 </resources>

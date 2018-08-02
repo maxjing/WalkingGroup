@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
@@ -97,6 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
         userEmail = user.getEmail();
         user.setId(user.getId());
         Intent intent = LoginActivity.makeIntent(RegisterActivity.this);
+        MyToast.makeText(RegisterActivity.this, R.string.regSuccess, Toast.LENGTH_LONG).show();
         startActivity(intent);
         finish();
 

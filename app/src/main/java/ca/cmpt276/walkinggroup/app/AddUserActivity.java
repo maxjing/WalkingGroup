@@ -141,11 +141,13 @@ public class AddUserActivity extends AppCompatActivity {
     private void responseForAddMonitored(User parent) {
         Call<List<User>> caller_ed = proxy.addToMonitoredByUsers(userId, parent);
         ProxyBuilder.callProxy(AddUserActivity.this, caller_ed, returnedUser -> response(returnedUser));
+        MyToast.makeText(AddUserActivity.this, R.string.requestSend, Toast.LENGTH_LONG).show();
     }
 
     private void responseForAddMonitoring(User child) {
         Call<List<User>> caller = proxy.addToMonitorsUsers(userId, child);
         ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
+        MyToast.makeText(AddUserActivity.this, R.string.requestSend, Toast.LENGTH_LONG).show();
     }
 
 

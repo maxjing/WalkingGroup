@@ -22,6 +22,7 @@ import java.util.List;
 import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Group;
+import ca.cmpt276.walkinggroup.dataobjects.GroupInfo;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
@@ -128,6 +129,7 @@ public class GroupInfoActivity extends AppCompatActivity {
 
     private void responseForDelete() {
         finish();
+        MyToast.makeText(GroupInfoActivity.this, R.string.requestSend, Toast.LENGTH_LONG).show();
     }
 
     private void registerClickCallback() {
