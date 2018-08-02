@@ -33,7 +33,7 @@ import retrofit2.Call;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LOGIN";
-
+    private int bgNum;
     private User user;
     private String userEmail;
     private String userPassword="secret...JustKidding,That'sTooEasyToGuess!";
@@ -120,6 +120,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void response(User user) {
+
+
         session.setUser(user);
         userId = user.getId();
         Gson gson = new Gson();
@@ -141,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
 //        current = gson.fromJson(json, EarnedRewards.class);
 //        this.user.setRewards(current);
 //        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        bgNum = current.getSelectedBackground();
+
         savePref();
         Intent intent = MainActivity.makeIntent(LoginActivity.this);
         startActivity(intent);
@@ -159,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
         PrefEditor.putString("userToken",userToken);
         PrefEditor.putLong("userId",userId);
         PrefEditor.putString("userEmail",userEmail);
+        PrefEditor.putInt("bg",bgNum);
+
 
         PrefEditor.apply();
 

@@ -283,7 +283,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         if (mBroadcastReceiver == null) {
             mBroadcastReceiver = new BroadcastReceiver() {
                 @SuppressLint("SetTextI18n")
@@ -769,6 +768,10 @@ public class MainActivity extends AppCompatActivity {
                     String json = data.getStringExtra("rewards");
                     current = gson.fromJson(json, EarnedRewards.class);
                     changeBackGround();
+                    SharedPreferences dataToSave = getApplicationContext().getSharedPreferences("userPref", 0);
+                    SharedPreferences.Editor PrefEditor = dataToSave.edit();
+                    PrefEditor.putInt("bg", current.getSelectedBackground());
+                    PrefEditor.apply();
                     //user.setRewards(current);
                     //Toast.makeText(this,""+user.getCurrentPoints()+" "+ user.getName(),Toast.LENGTH_LONG).show();
 //                    Toast.makeText(this,""+user.getBirthYear(),Toast.LENGTH_LONG).show();

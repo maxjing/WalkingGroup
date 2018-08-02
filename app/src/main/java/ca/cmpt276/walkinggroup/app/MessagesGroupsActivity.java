@@ -62,7 +62,10 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
-        backGround();
+        int bgNum = dataToGet.getInt("bg",0);
+        changeBackGround(bgNum);
+
+
 
         Call<User> caller_user = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MessagesGroupsActivity.this, caller_user, returnedUser -> response(returnedUser));
@@ -72,40 +75,30 @@ public class MessagesGroupsActivity extends AppCompatActivity {
         setSendAllBtn();
     }
 
-    private void backGround() {
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(MessagesGroupsActivity.this,caller,returned -> responseForGet(returned));
-    }
 
-    private void responseForGet(User returned) {
-        Gson gson = new Gson();
-        String json = returned.getCustomJson();
-        current = gson.fromJson(json, EarnedRewards.class);
-        changeBackGround();
-    }
 
-    private void changeBackGround(){
+    private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.messages_groups_layout);
 //        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
-        if(current.getSelectedBackground() == 0){
+        if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
-        if(current.getSelectedBackground() == 1){
+        if(bgNumber == 1){
             layout.setBackground(getResources().getDrawable(R.drawable.background1));
         }
-        if(current.getSelectedBackground() == 2){
+        if(bgNumber == 2){
             layout.setBackground(getResources().getDrawable(R.drawable.background2));
         }
-        if(current.getSelectedBackground() == 3){
+        if(bgNumber == 3){
             layout.setBackground(getResources().getDrawable(R.drawable.background3));
         }
-        if(current.getSelectedBackground() == 4){
+        if(bgNumber == 4){
             layout.setBackground(getResources().getDrawable(R.drawable.background4));
         }
-        if(current.getSelectedBackground() == 5){
+        if(bgNumber == 5){
             layout.setBackground(getResources().getDrawable(R.drawable.background5));
         }
-        if(current.getSelectedBackground() == 6){
+        if(bgNumber == 6){
             layout.setBackground(getResources().getDrawable(R.drawable.background6));
         }
 

@@ -160,7 +160,7 @@ public class RewardActivity extends AppCompatActivity {
         user = returned;
         json = returned.getCustomJson();
 //        MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
-       // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
+        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
         //TextView txt_ = (TextView) findViewById(R.id.textView12);
 //        if(!json.equals("null")) {
 //            current = gson.fromJson(json, EarnedRewards.class);
@@ -173,7 +173,7 @@ public class RewardActivity extends AppCompatActivity {
 //            ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
 //        }
         current = gson.fromJson(json, EarnedRewards.class);
-       // TextView txt_ = (TextView) findViewById(R.id.textView12);
+        // TextView txt_ = (TextView) findViewById(R.id.textView12);
         changeBackGround();
         changeTitle();
         //txt_.setText(""+current.getSelectedBackground());

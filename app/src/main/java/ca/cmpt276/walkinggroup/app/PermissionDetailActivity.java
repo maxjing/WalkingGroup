@@ -2,6 +2,7 @@ package ca.cmpt276.walkinggroup.app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,11 +43,12 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private Long userId;
     private String TAG = "PermissionDetailActivity";
     private Long permissionId;
-    private boolean sendByUser = false;
-    private List<Long> statusUserId;
+
     private String status;
     private String statusTemp;
     private EarnedRewards current;
+    private List<User> authUsers;
+    private List<String> listviewAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,9 @@ public class PermissionDetailActivity extends AppCompatActivity {
         proxy = session.getProxy();
         userId = session.getUser().getId();
 
-        backGround();
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        int bgNum = dataToGet.getInt("bg",0);
+        changeBackGround(bgNum);
 
         Intent intent = getIntent();
         permissionId = intent.getLongExtra("permissionId", 0);
@@ -69,46 +73,35 @@ public class PermissionDetailActivity extends AppCompatActivity {
         setApproveBtn();
         setDenyBtn();
         setBackBtn();
-    }
 
-    private void backGround() {
-        Call<User> caller = proxy.getUserById(userId);
-        ProxyBuilder.callProxy(PermissionDetailActivity.this,caller,returned -> responseForGet(returned));
     }
-
-    private void responseForGet(User returned) {
-        Gson gson = new Gson();
-        String json = returned.getCustomJson();
-        current = gson.fromJson(json, EarnedRewards.class);
-        changeBackGround();
-    }
-
-    private void changeBackGround(){
+    private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.permission_detail_layout);
 //        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
-        if(current.getSelectedBackground() == 0){
+        if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
-        if(current.getSelectedBackground() == 1){
+        if(bgNumber == 1){
             layout.setBackground(getResources().getDrawable(R.drawable.background1));
         }
-        if(current.getSelectedBackground() == 2){
+        if(bgNumber == 2){
             layout.setBackground(getResources().getDrawable(R.drawable.background2));
         }
-        if(current.getSelectedBackground() == 3){
+        if(bgNumber == 3){
             layout.setBackground(getResources().getDrawable(R.drawable.background3));
         }
-        if(current.getSelectedBackground() == 4){
+        if(bgNumber == 4){
             layout.setBackground(getResources().getDrawable(R.drawable.background4));
         }
-        if(current.getSelectedBackground() == 5){
+        if(bgNumber == 5){
             layout.setBackground(getResources().getDrawable(R.drawable.background5));
         }
-        if(current.getSelectedBackground() == 6){
+        if(bgNumber == 6){
             layout.setBackground(getResources().getDrawable(R.drawable.background6));
         }
 
     }
+
 
 
     private void populate() {
@@ -132,13 +125,43 @@ public class PermissionDetailActivity extends AppCompatActivity {
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
 
 
+        List<PermissionRequest.Authorizor> authList = new ArrayList<>(permission.getAuthorizors());
+        int authUserSize = 0;
+        for(int i = 0;i<authList.size();i++){
+            authUsers = new ArrayList<>(authList.get(i).getUsers());
+            if(authUsers.size()>1){
+                authUserSize = authUsers.size();
+
+            }
+        }
+        int authRealSize;
+
+        if(authUserSize !=0){
+            authRealSize = authList.size() - authUserSize + 1;
+
+        }else{
+            authRealSize = authList.size();
+
+        }
+        listviewAuth = new ArrayList<>();
+        for(int i =0 ;i<authRealSize;i++){
+            authUsers = new ArrayList<>(authList.get(i).getUsers());
+            for(int j = 0; j<authUsers.size();j++){
+                Call<User> caller_requestUser = proxy.getUserById(authUsers.get(j).getId());
+                ProxyBuilder.callProxy(PermissionDetailActivity.this,caller_requestUser,returnedUser->responseAuthUsers(returnedUser));
+            }
+        }
+
+
+
+
         if(statusTemp == "PENDING"){
             requestStatus.setText(statusTemp);
             btnDeny.setVisibility(View.VISIBLE);
             btnApproved.setVisibility(View.VISIBLE);
         }
         else {
-            List<PermissionRequest.Authorizor> authList = new ArrayList<>(permission.getAuthorizors());
+
             User whoAorP = new User();
 
             for(int i = 0;i<authList.size();i++){
@@ -156,6 +179,20 @@ public class PermissionDetailActivity extends AppCompatActivity {
 
     }
 
+    private void responseAuthUsers(User user){
+        if(!user.getId().equals(requestUserId)){
+            listviewAuth.add("Name: "+user.getName()+" Email: "+user.getEmail());
+
+        }
+        populateAuthList();
+
+    }
+
+    private void populateAuthList(){
+        ArrayAdapter<String> adapterAuthList = new ArrayAdapter<>(this, R.layout.permission_status, listviewAuth);
+        ListView listPending = (ListView) findViewById(R.id.listview_status);
+        listPending.setAdapter(adapterAuthList);
+    }
     private void setStatus(User user){
         status = statusTemp +" "+getString(R.string.by)+" "+user.getName();
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
@@ -189,6 +226,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Call<PermissionRequest> caller = proxy.approveOrDenyPermissionRequest(permissionId, WGServerProxy.PermissionStatus.APPROVED);
                 ProxyBuilder.callProxy(PermissionDetailActivity.this, caller, returnedPermission -> responseApprove(returnedPermission));
+                MyToast.makeText(PermissionDetailActivity.this,"Approved, you may not see it in your approve list for waiting for other users to approve",Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
