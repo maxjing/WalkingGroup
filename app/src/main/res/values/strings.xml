@@ -129,7 +129,7 @@
     <string name="total_points">TOTAL POINTS:</string>
     <string name="ranking">Ranking</string>
     <string name="points_shown">Points shown</string>
-    <string name="illustration">Illustration</string>
+    <string name="background">Background</string>
     <string name="points">Points</string>
     <string name="customize_background">Customize Background</string>
     <string name="reward_has_been_earned">The reward has already been earned!</string>
@@ -159,4 +159,5 @@
     <string name="by">BY</string>
     <string name="approved_success">Approved Success</string>
     <string name="denied_success">Denied Success</string>
+    <string name="title">Title</string>
 </resources>

@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
             current = gson.fromJson(json, EarnedRewards.class);
             this.user.setRewards(current);
         }else{
-            current = new EarnedRewards("null",new ArrayList<>(),0,null);
+            current = new EarnedRewards("Beginner",new ArrayList<>(),0,null);
             String json_null = gson.toJson(current);
             this.user.setRewards(current);
             user.setCustomJson(json_null);

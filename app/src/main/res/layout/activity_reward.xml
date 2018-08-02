@@ -55,37 +55,59 @@
 
     <ListView
         android:id="@+id/backgroundListView"
-        android:layout_width="344dp"
-        android:layout_height="408dp"
+        android:layout_width="200dp"
+        android:layout_height="449dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_illustration" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_background" />
 
     <TextView
-        android:id="@+id/txt_illustration"
+        android:id="@+id/txt_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
-        android:text="@string/illustration"
+        android:text="@string/background"
         android:textColor="#FFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
 
     <TextView
-        android:id="@+id/txt_point"
+        android:id="@+id/txt_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:text="@string/title"
+        android:textColor="#FFF"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/txt_point"
+        app:layout_constraintTop_toBottomOf="@+id/total_points_textview" />
+
+    <TextView
+        android:id="@+id/txt_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
         android:text="@string/points"
         android:textColor="#FFF"
         android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/txt_illustration"
+        app:layout_constraintStart_toEndOf="@+id/txt_background"
         app:layout_constraintTop_toBottomOf="@+id/current_points_textview" />
+
+    <ListView
+        android:id="@+id/titleListView"
+        android:layout_width="144dp"
+        android:layout_height="387dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/backgroundListView"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 </android.support.constraint.ConstraintLayout>

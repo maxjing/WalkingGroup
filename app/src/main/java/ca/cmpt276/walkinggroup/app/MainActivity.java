@@ -148,11 +148,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void setTitleTextView(User tempUser) {
-        TextView title = findViewById(R.id.user_title);
-        title.setText(tempUser.getRewards().getTitle());
-        title.setTextColor(tempUser.getRewards().getTitleColor());
-    }
+//    private void setTitleTextView(User tempUser) {
+//        TextView title = findViewById(R.id.user_title);
+//        title.setText(tempUser.getRewards().getTitle());
+//        title.setTextColor(tempUser.getRewards().getTitleColor());
+//    }
 
     private void backGround() {
         Call<User> caller = proxy.getUserById(userId);
@@ -167,6 +167,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void changeBackGround(){
+        TextView title = findViewById(R.id.user_title);
+        title.setText(current.getTitle());
         ConstraintLayout layout = findViewById(R.id.main_layout);
 //        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(current.getSelectedBackground() == 0){
@@ -191,32 +193,32 @@ public class MainActivity extends AppCompatActivity {
             layout.setBackground(getResources().getDrawable(R.drawable.background6));
         }
 
-        User tempUser = session.getUser();
-        if (tempUser.getTotalPointsEarned() != null) {
-            if (tempUser.getTotalPointsEarned() > 100) {
-                current.setTitle("Little bird");
-                current.setTitleColor(Color.GREEN);
-            } else if (tempUser.getTotalPointsEarned() > 500) {
-                current.setTitle("Warrior");
-                current.setTitleColor(Color.CYAN);
-            } else if (tempUser.getTotalPointsEarned() > 1000) {
-                current.setTitle("Warlord ");
-                current.setTitleColor(Color.LTGRAY);
-            } else if (tempUser.getTotalPointsEarned() > 3000) {
-                current.setTitle("Paladin");
-                current.setTitleColor(Color.WHITE);
-            } else if (tempUser.getTotalPointsEarned() > 6000) {
-                current.setTitle("High lord");
-                current.setTitleColor(Color.YELLOW);
-            } else if (tempUser.getTotalPointsEarned() > 10000) {
-                current.setTitle("Dragon slayer");
-                current.setTitleColor(Color.RED);
-            }
-            tempUser.setRewards(current);
-            Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
-            ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
-            setTitleTextView(tempUser);
-        }
+//        User tempUser = session.getUser();
+//        if (tempUser.getTotalPointsEarned() != null) {
+//            if (tempUser.getTotalPointsEarned() > 100) {
+//                current.setTitle("Little bird");
+//                current.setTitleColor(Color.GREEN);
+//            } else if (tempUser.getTotalPointsEarned() > 500) {
+//                current.setTitle("Warrior");
+//                current.setTitleColor(Color.CYAN);
+//            } else if (tempUser.getTotalPointsEarned() > 1000) {
+//                current.setTitle("Warlord ");
+//                current.setTitleColor(Color.LTGRAY);
+//            } else if (tempUser.getTotalPointsEarned() > 3000) {
+//                current.setTitle("Paladin");
+//                current.setTitleColor(Color.WHITE);
+//            } else if (tempUser.getTotalPointsEarned() > 6000) {
+//                current.setTitle("High lord");
+//                current.setTitleColor(Color.YELLOW);
+//            } else if (tempUser.getTotalPointsEarned() > 10000) {
+//                current.setTitle("Dragon slayer");
+//                current.setTitleColor(Color.RED);
+//            }
+//            tempUser.setRewards(current);
+//            Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
+//            ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
+//            setTitleTextView(tempUser);
+//        }
     }
 
     private void showChildGPS() {

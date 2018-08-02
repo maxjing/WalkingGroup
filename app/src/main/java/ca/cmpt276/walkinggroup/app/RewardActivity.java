@@ -28,6 +28,7 @@ import ca.cmpt276.walkinggroup.app.DialogFragment.MyToast;
 import ca.cmpt276.walkinggroup.dataobjects.Background;
 import ca.cmpt276.walkinggroup.dataobjects.EarnedRewards;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
+import ca.cmpt276.walkinggroup.dataobjects.Title;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
@@ -41,9 +42,11 @@ public class RewardActivity extends AppCompatActivity {
     private Integer CurrentPoints;
     private Integer TotalPointsEarned;
     private List<Background> myBackground = new ArrayList<Background>();
+    private List<Title> myTitle = new ArrayList<Title>();
     private String json;
     private EarnedRewards rewards;
     private EarnedRewards current;
+    private int level;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +83,8 @@ public class RewardActivity extends AppCompatActivity {
         populateListView();
         registerClickCallback();
 
+        populateTitle();
+        registerTitleClickCallback();
         //Gson gson = new Gson();
 //        EarnedRewards rewards = new EarnedRewards("Dragon slayer",new ArrayList<>(),1, Color.BLUE);
 //        json = gson.toJson(rewards);
@@ -125,6 +130,30 @@ public class RewardActivity extends AppCompatActivity {
 
     }
 
+    private void changeTitle() {
+        if(current.getTitle().equals("Beginner")){
+            level = 0;
+        }
+        if(current.getTitle().equals("Little bird")){
+            level = 1;
+        }
+        if(current.getTitle().equals("Warrior")){
+            level = 2;
+        }
+        if(current.getTitle().equals("Warlord")){
+            level = 3;
+        }
+        if(current.getTitle().equals("Paladin")){
+            level = 4;
+        }
+        if(current.getTitle().equals("High lord")){
+            level = 5;
+        }
+        if(current.getTitle().equals("Dragon slayer")){
+            level = 6;
+        }
+    }
+
 
     private void responseForGet(User returned) {
         Gson gson = new Gson();
@@ -146,6 +175,7 @@ public class RewardActivity extends AppCompatActivity {
         current = gson.fromJson(json, EarnedRewards.class);
        // TextView txt_ = (TextView) findViewById(R.id.textView12);
         changeBackGround();
+        changeTitle();
         //txt_.setText(""+current.getSelectedBackground());
 //        }else{
 //            txt_.setText("null");
@@ -165,6 +195,7 @@ public class RewardActivity extends AppCompatActivity {
         setTextViews();
 
     }
+
 
     private void populateBackgroundList() {
         myBackground.add(new Background(0,R.drawable.background0_icon));
@@ -220,7 +251,7 @@ public class RewardActivity extends AppCompatActivity {
 //                        MyToast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
                         Background clickedBackground = myBackground.get(position);
                         Gson gson = new Gson();
-                        rewards = new EarnedRewards("null",new ArrayList<>(),position,null);
+                        rewards = new EarnedRewards(current.getTitle(),new ArrayList<>(),position,null);
                         json = gson.toJson(rewards);
                         CurrentPoints = CurrentPoints - myBackground.get(position).getPoints();
                         //user.setBirthYear(2000);
@@ -252,6 +283,55 @@ public class RewardActivity extends AppCompatActivity {
     }
 
     private void responseForEdit(User returned) {
+    }
+
+    private void populateTitle() {
+        myTitle.add(new Title("Little bird",100));
+        myTitle.add(new Title("Warrior",500));
+        myTitle.add(new Title("Warlord ",1000));
+        myTitle.add(new Title("Paladin",3000));
+        myTitle.add(new Title("High lord",6000));
+        myTitle.add(new Title("Dragon slayer",10000));
+        String[] items = new String[myTitle.size()];
+        for (int i = 0; i < myTitle.size(); i++) {
+            items[i] = myTitle.get(i).getTitle() + " - " + myTitle.get(i).getPoint();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.list_title,items);
+        ListView list = (ListView) findViewById(R.id.titleListView);
+        list.setAdapter(adapter);
+    }
+
+    private void registerTitleClickCallback() {
+        ListView list = (ListView) findViewById(R.id.titleListView);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position > level) {
+                    MyToast.makeText(RewardActivity.this,"You need to buy lower title first.",Toast.LENGTH_LONG).show();
+                }else if(position == level){
+                    if(CurrentPoints >= myTitle.get(position).getPoint()){
+                        Gson gson = new Gson();
+                        rewards = new EarnedRewards(myTitle.get(position).getTitle(),new ArrayList<>(),current.getSelectedBackground(),null);
+                        json = gson.toJson(rewards);
+                        CurrentPoints = CurrentPoints - myTitle.get(position).getPoint();
+                        //user.setBirthYear(2000);
+                        user.setRewards(rewards);
+                        user.setCustomJson(json);
+                        user.setCurrentPoints(CurrentPoints);
+                        Intent data = new Intent();
+                        data.putExtra("rewards",json);
+                        Call<User> caller = proxy.getUserById(userId);
+                        ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> response(returnedUser));
+                        setResult(Activity.RESULT_OK,data);
+                        finish();
+                    }else{
+                        MyToast.makeText(RewardActivity.this,getString(R.string.not_enough_points),Toast.LENGTH_LONG).show();
+                    }
+                }else{
+                    MyToast.makeText(RewardActivity.this,getString(R.string.reward_has_been_earned),Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void setCancelBtn() {
