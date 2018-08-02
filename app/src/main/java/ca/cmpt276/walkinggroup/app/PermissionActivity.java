@@ -61,7 +61,7 @@ public class PermissionActivity extends AppCompatActivity {
 
         populate();
         setBackBtn();
-        handler.postDelayed(update, 1000*2);
+        handler.postDelayed(update, 1000*1);
 
 
     }
