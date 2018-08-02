@@ -111,7 +111,7 @@ public class PermissionActivity extends AppCompatActivity {
         @Override
         public void run() {
             populate();
-            handler.postDelayed(this, 2000);
+            handler.postDelayed(this, 1000);
         }
     };
 
@@ -160,9 +160,9 @@ public class PermissionActivity extends AppCompatActivity {
 
     private void populatePendingPermissionList() {
         ArrayAdapter<String> adapterRead = new ArrayAdapter<>(this, R.layout.permissions_pending, pendingList);
-        ListView listRead = (ListView) findViewById(R.id.listView_pending);
-        listRead.setAdapter(adapterRead);
-        listRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listPending = (ListView) findViewById(R.id.listView_pending);
+        listPending.setAdapter(adapterRead);
+        listPending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -197,9 +197,9 @@ public class PermissionActivity extends AppCompatActivity {
 
     private void populateApprovedPermissionList() {
         ArrayAdapter<String> adapterRead = new ArrayAdapter<>(this, R.layout.permissions_approved, approvedList);
-        ListView listRead = (ListView) findViewById(R.id.listView_approved);
-        listRead.setAdapter(adapterRead);
-        listRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listApproved = (ListView) findViewById(R.id.listView_approved);
+        listApproved.setAdapter(adapterRead);
+        listApproved.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -233,9 +233,9 @@ public class PermissionActivity extends AppCompatActivity {
 
     private void populateDeniedPermissionList() {
         ArrayAdapter<String> adapterRead = new ArrayAdapter<>(this, R.layout.permissions_denied, deniedList);
-        ListView listRead = (ListView) findViewById(R.id.listView_Denied);
-        listRead.setAdapter(adapterRead);
-        listRead.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView listDenied = (ListView) findViewById(R.id.listView_Denied);
+        listDenied.setAdapter(adapterRead);
+        listDenied.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
