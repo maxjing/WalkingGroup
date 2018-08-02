@@ -628,7 +628,6 @@ public class MainActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyToast.makeText(MainActivity.this, getString(R.string.stop_update_location), Toast.LENGTH_SHORT).show();
                 stopService(new Intent(getApplicationContext(), LocationService.class));
                 //handler.removeCallbacks(toastRunnable);
                 handler.removeCallbacks(checkChangeRunnable);
