@@ -49,6 +49,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
     private EarnedRewards current;
     private List<User> authUsers;
     private List<String> listviewAuth;
+    private List<PermissionRequest.Authorizor> authList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class PermissionDetailActivity extends AppCompatActivity {
         TextView requestStatus = (TextView) findViewById(R.id.requestStatus);
 
 
-        List<PermissionRequest.Authorizor> authList = new ArrayList<>(permission.getAuthorizors());
+        authList = new ArrayList<>(permission.getAuthorizors());
         int authUserSize = 0;
         for(int i = 0;i<authList.size();i++){
             authUsers = new ArrayList<>(authList.get(i).getUsers());
@@ -138,6 +139,14 @@ public class PermissionDetailActivity extends AppCompatActivity {
 
         if(authUserSize !=0){
             authRealSize = authList.size() - authUserSize + 1;
+            for(int i =0 ;i<authRealSize;i++){
+                authUsers = new ArrayList<>(authList.get(i).getUsers());
+                for(int j = 0; j<authUsers.size();j++){
+                    Call<User> caller_requestUser = proxy.getUserById(authUsers.get(j).getId());
+                    ProxyBuilder.callProxy(PermissionDetailActivity.this,caller_requestUser,returnedUser->responseAuthUsers(returnedUser));
+                }
+            }
+
 
         }else{
             authRealSize = authList.size();
