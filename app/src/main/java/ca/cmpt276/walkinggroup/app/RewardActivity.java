@@ -288,7 +288,7 @@ public class RewardActivity extends AppCompatActivity {
     private void populateTitle() {
         myTitle.add(new Title("Little bird",100));
         myTitle.add(new Title("Warrior",500));
-        myTitle.add(new Title("Warlord ",1000));
+        myTitle.add(new Title("Warlord",1000));
         myTitle.add(new Title("Paladin",3000));
         myTitle.add(new Title("High lord",6000));
         myTitle.add(new Title("Dragon slayer",10000));
