@@ -26,7 +26,9 @@ import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
-
+/**
+ * Help to enable group leader transfer his leader role
+ */
 public class GroupMembersActivity extends AppCompatActivity {
     public static final String INFO_GROUPID = "ca.cmpt276.walkinggroup.app - GroupInfo - GroupId";
     public static final String CHILD_GROUP = "child_group";

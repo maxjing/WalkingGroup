@@ -32,6 +32,10 @@ import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.dataobjects.User;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 
+/**
+ * Show user's permission request according to their status
+ */
+
 public class PermissionActivity extends AppCompatActivity {
     private List<String> pendingList;
     private List<String> approvedList;

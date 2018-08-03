@@ -35,6 +35,10 @@ import retrofit2.Call;
 import ca.cmpt276.walkinggroup.dataobjects.Session;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 
+/**
+ * Show single permission details including status and their authorizors list
+ */
+
 public class PermissionDetailActivity extends AppCompatActivity {
     private Set<PermissionRequest.Authorizor> authorizors;
     private Session session;
