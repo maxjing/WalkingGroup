@@ -75,7 +75,6 @@ public class EditActivity extends AppCompatActivity {
 
     private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.edit_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }

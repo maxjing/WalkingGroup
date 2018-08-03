@@ -1,5 +1,9 @@
 package ca.cmpt276.walkinggroup.dataobjects;
 
+/**
+ * Store information about the title.
+ */
+
 public class Title {
     private String title;
     private int point;

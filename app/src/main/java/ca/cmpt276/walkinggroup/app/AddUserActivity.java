@@ -55,20 +55,12 @@ public class AddUserActivity extends AppCompatActivity {
         int bgNum = dataToGet.getInt("bg",0);
         changeBackGround(bgNum);
 
-
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(AddUserActivity.this, caller, returnedUser -> response(returnedUser));
-
         setCancelBtn();
         setOKBtn();
-        //Toast.makeText(this,""+user.getRewards().getSelectedBackground(),Toast.LENGTH_LONG).show();
-
-
     }
 
     private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.addUser_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }

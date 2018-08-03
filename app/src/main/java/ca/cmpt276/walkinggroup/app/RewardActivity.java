@@ -35,6 +35,13 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * Show user's current points and total points;
+ * User could spend points on new backgrounds and new titles.
+ * If the user wants to change the background, the user needs to buy the specific background every time.
+ * The user could only purchase higher titles.
+ */
+
 public class RewardActivity extends AppCompatActivity {
     private Session session;
     private User user;
@@ -56,9 +63,6 @@ public class RewardActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_reward);
 
-        //ConstraintLayout layout = findViewById(R.id.reward_layout);
-        //layout.setBackground(getResources().getDrawable(R.drawable.background6));
-
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
@@ -69,18 +73,6 @@ public class RewardActivity extends AppCompatActivity {
         changeBackGround(bgNum);
 
         backGround();
-//        if(user.getCurrentPoints() == null){
-//            CurrentPoints = 0;
-//        }else{
-//            CurrentPoints = user.getCurrentPoints();
-//        }
-//        if(user.getTotalPointsEarned() == null){
-//            TotalPointsEarned = 0;
-//        }else{
-//            TotalPointsEarned = user.getTotalPointsEarned();
-//        }
-        //rewards = user.getRewards();
-//        setTextViews();
 
         setCancelBtn();
 
@@ -90,21 +82,9 @@ public class RewardActivity extends AppCompatActivity {
 
         populateTitle();
         registerTitleClickCallback();
-        //Gson gson = new Gson();
-//        EarnedRewards rewards = new EarnedRewards("Dragon slayer",new ArrayList<>(),1, Color.BLUE);
-//        json = gson.toJson(rewards);
-//        TextView txt = (TextView) findViewById(R.id.txt_rewards);
-//        txt.setText(json);
-
-//        Call<User> caller = proxy.getUserById(userId);
-//        ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
-//        EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
-//        TextView txt_ = (TextView) findViewById(R.id.textView12);
-//        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
     }
     private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.reward_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
@@ -165,27 +145,9 @@ public class RewardActivity extends AppCompatActivity {
         Gson gson = new Gson();
         user = returned;
         json = returned.getCustomJson();
-//        MyToast.makeText(RewardActivity.this,json,Toast.LENGTH_SHORT).show();
-        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
-        //TextView txt_ = (TextView) findViewById(R.id.textView12);
-//        if(!json.equals("null")) {
-//            current = gson.fromJson(json, EarnedRewards.class);
-//        }else{
-//            current = new EarnedRewards("null",new ArrayList<>(),0,null);
-//            String json_null = gson.toJson(current);
-//            user.setRewards(current);
-//            user.setCustomJson(json_null);
-//            Call<User> caller = proxy.editUserById(userId,user);
-//            ProxyBuilder.callProxy(RewardActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
-//        }
         current = gson.fromJson(json, EarnedRewards.class);
-        // TextView txt_ = (TextView) findViewById(R.id.textView12);
-//        changeBackGround();
+
         changeTitle();
-        //txt_.setText(""+current.getSelectedBackground());
-//        }else{
-//            txt_.setText("null");
-//        }
 
         if(user.getCurrentPoints() == null){
             CurrentPoints = 0;
@@ -227,7 +189,6 @@ public class RewardActivity extends AppCompatActivity {
         @NonNull
         @Override
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            //setTheme(R.style.AppTheme_blank);
             View itemView = convertView;
             if(itemView == null){
                 itemView = getLayoutInflater().inflate(R.layout.item_view,parent,false);
@@ -254,13 +215,11 @@ public class RewardActivity extends AppCompatActivity {
 
                 }else{
                     if(CurrentPoints >= myBackground.get(position).getPoints()){
-//                        MyToast.makeText(RewardActivity.this,"selected" + position,Toast.LENGTH_SHORT).show();
                         Background clickedBackground = myBackground.get(position);
                         Gson gson = new Gson();
                         rewards = new EarnedRewards(current.getTitle(),new ArrayList<>(),position,null);
                         json = gson.toJson(rewards);
                         CurrentPoints = CurrentPoints - myBackground.get(position).getPoints();
-                        //user.setBirthYear(2000);
                         user.setRewards(rewards);
                         user.setCustomJson(json);
                         user.setCurrentPoints(CurrentPoints);
@@ -320,7 +279,6 @@ public class RewardActivity extends AppCompatActivity {
                         rewards = new EarnedRewards(myTitle.get(position).getTitle(),new ArrayList<>(),current.getSelectedBackground(),null);
                         json = gson.toJson(rewards);
                         CurrentPoints = CurrentPoints - myTitle.get(position).getPoint();
-                        //user.setBirthYear(2000);
                         user.setRewards(rewards);
                         user.setCustomJson(json);
                         user.setCurrentPoints(CurrentPoints);

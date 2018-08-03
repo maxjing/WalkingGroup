@@ -50,12 +50,6 @@ public class MonitorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitor);
 
-//        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref",0);
-//        token = dataToGet.getString("userToken","");
-//        proxy = ProxyBuilder.getProxy(getString(R.string.apikey), token);
-//        user = User.getInstance();
-//
-//        userId = dataToGet.getLong("userId", 0);
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
@@ -83,7 +77,6 @@ public class MonitorActivity extends AppCompatActivity {
 
     private void changeBackGround(int bgNumber){
         ConstraintLayout layout = findViewById(R.id.monitor_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(bgNumber == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }

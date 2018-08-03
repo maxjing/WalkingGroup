@@ -1,5 +1,9 @@
 package ca.cmpt276.walkinggroup.dataobjects;
 
+/**
+ * Store information about the background.
+ */
+
 public class Background {
     private int points;
     private int iconID;

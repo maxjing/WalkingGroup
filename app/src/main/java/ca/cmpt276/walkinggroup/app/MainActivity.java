@@ -148,12 +148,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void setTitleTextView(User tempUser) {
-//        TextView title = findViewById(R.id.user_title);
-//        title.setText(tempUser.getRewards().getTitle());
-//        title.setTextColor(tempUser.getRewards().getTitleColor());
-//    }
-
     private void backGround() {
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(MainActivity.this,caller,returned -> responseForGet(returned));
@@ -170,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
         TextView title = findViewById(R.id.user_title);
         title.setText(current.getTitle());
         ConstraintLayout layout = findViewById(R.id.main_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         if(current.getSelectedBackground() == 0){
             layout.setBackground(getResources().getDrawable(R.drawable.background0));
         }
@@ -192,33 +185,6 @@ public class MainActivity extends AppCompatActivity {
         if(current.getSelectedBackground() == 6){
             layout.setBackground(getResources().getDrawable(R.drawable.background6));
         }
-
-//        User tempUser = session.getUser();
-//        if (tempUser.getTotalPointsEarned() != null) {
-//            if (tempUser.getTotalPointsEarned() > 100) {
-//                current.setTitle("Little bird");
-//                current.setTitleColor(Color.GREEN);
-//            } else if (tempUser.getTotalPointsEarned() > 500) {
-//                current.setTitle("Warrior");
-//                current.setTitleColor(Color.CYAN);
-//            } else if (tempUser.getTotalPointsEarned() > 1000) {
-//                current.setTitle("Warlord ");
-//                current.setTitleColor(Color.LTGRAY);
-//            } else if (tempUser.getTotalPointsEarned() > 3000) {
-//                current.setTitle("Paladin");
-//                current.setTitleColor(Color.WHITE);
-//            } else if (tempUser.getTotalPointsEarned() > 6000) {
-//                current.setTitle("High lord");
-//                current.setTitleColor(Color.YELLOW);
-//            } else if (tempUser.getTotalPointsEarned() > 10000) {
-//                current.setTitle("Dragon slayer");
-//                current.setTitleColor(Color.RED);
-//            }
-//            tempUser.setRewards(current);
-//            Call<User> callerUpdate = proxy.editUserById(session.getUser().getId(), tempUser);
-//            ProxyBuilder.callProxy(MainActivity.this, callerUpdate, returnedUser -> responseUserUpdate(returnedUser));
-//            setTitleTextView(tempUser);
-//        }
     }
 
     private void showChildGPS() {
@@ -760,10 +726,6 @@ public class MainActivity extends AppCompatActivity {
             }
             case 920:
                 if (resultCode == RESULT_OK) {
-//                    session = Session.getInstance();
-//                    proxy = session.getProxy();
-//                    user = session.getUser();
-//                    userId = user.getId();
                     Gson gson = new Gson();
                     String json = data.getStringExtra("rewards");
                     current = gson.fromJson(json, EarnedRewards.class);
@@ -772,9 +734,6 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor PrefEditor = dataToSave.edit();
                     PrefEditor.putInt("bg", current.getSelectedBackground());
                     PrefEditor.apply();
-                    //user.setRewards(current);
-                    //Toast.makeText(this,""+user.getCurrentPoints()+" "+ user.getName(),Toast.LENGTH_LONG).show();
-//                    Toast.makeText(this,""+user.getBirthYear(),Toast.LENGTH_LONG).show();
                 }
         }
     }

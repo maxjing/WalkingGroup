@@ -137,12 +137,6 @@ public class LoginActivity extends AppCompatActivity {
             Call<User> caller = proxy.editUserById(userId,user);
             ProxyBuilder.callProxy(LoginActivity.this,caller,returnedUser -> responseForEdit(returnedUser));
         }
-//        MyToast.makeText(LoginActivity.this,json,Toast.LENGTH_SHORT).show();
-//        // EarnedRewards earned = gson.fromJson(json,EarnedRewards.class);
-//        //TextView txt_ = (TextView) findViewById(R.id.textView12);
-//        current = gson.fromJson(json, EarnedRewards.class);
-//        this.user.setRewards(current);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
         bgNum = current.getSelectedBackground();
 
         savePref();

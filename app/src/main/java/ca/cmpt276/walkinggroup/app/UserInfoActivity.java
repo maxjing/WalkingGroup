@@ -45,9 +45,6 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        //ConstraintLayout layout = findViewById(R.id.user_info_layout);
-        //layout.setBackground(getResources().getDrawable(R.drawable.background6));
-
         session = Session.getInstance();
         proxy = session.getProxy();
         user = session.getUser();
