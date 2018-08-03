@@ -24,6 +24,10 @@ import ca.cmpt276.walkinggroup.proxy.ProxyBuilder;
 import ca.cmpt276.walkinggroup.proxy.WGServerProxy;
 import retrofit2.Call;
 
+/**
+ * The leader board shows all users and is sorted from highest total points to lowest points.
+ */
+
 public class LeaderBoardActivity extends AppCompatActivity {
 
     private Session session;

@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 import ca.cmpt276.walkinggroup.app.R;
 
+/**
+ * Have a customized toast.
+*/
+
 public class MyToast {
     private Toast mToast;
     private MyToast(Context context, CharSequence text, int duration) {
