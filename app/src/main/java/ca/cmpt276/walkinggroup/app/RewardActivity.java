@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -63,6 +64,10 @@ public class RewardActivity extends AppCompatActivity {
         user = session.getUser();
         userId = user.getId();
 
+        SharedPreferences dataToGet = getApplicationContext().getSharedPreferences("userPref", 0);
+        int bgNum = dataToGet.getInt("bg",0);
+        changeBackGround(bgNum);
+
         backGround();
 //        if(user.getCurrentPoints() == null){
 //            CurrentPoints = 0;
@@ -97,38 +102,39 @@ public class RewardActivity extends AppCompatActivity {
 //        TextView txt_ = (TextView) findViewById(R.id.textView12);
 //        txt_.setText(earned.getTitle()+" "+earned.getPossibleBackgroundFiles()+" "+earned.getSelectedBackground()+" "+earned.getTitleColor());
     }
+    private void changeBackGround(int bgNumber){
+        ConstraintLayout layout = findViewById(R.id.reward_layout);
+//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
+        if(bgNumber == 0){
+            layout.setBackground(getResources().getDrawable(R.drawable.background0));
+        }
+        if(bgNumber == 1){
+            layout.setBackground(getResources().getDrawable(R.drawable.background1));
+        }
+        if(bgNumber == 2){
+            layout.setBackground(getResources().getDrawable(R.drawable.background2));
+        }
+        if(bgNumber == 3){
+            layout.setBackground(getResources().getDrawable(R.drawable.background3));
+        }
+        if(bgNumber == 4){
+            layout.setBackground(getResources().getDrawable(R.drawable.background4));
+        }
+        if(bgNumber == 5){
+            layout.setBackground(getResources().getDrawable(R.drawable.background5));
+        }
+        if(bgNumber == 6){
+            layout.setBackground(getResources().getDrawable(R.drawable.background6));
+        }
+
+    }
 
     private void backGround() {
         Call<User> caller = proxy.getUserById(userId);
         ProxyBuilder.callProxy(RewardActivity.this,caller,returned -> responseForGet(returned));
     }
 
-    private void changeBackGround(){
-        ConstraintLayout layout = findViewById(R.id.reward_layout);
-//        MyToast.makeText(this,""+current.getSelectedBackground(),Toast.LENGTH_SHORT).show();
-        if(current.getSelectedBackground() == 0){
-            layout.setBackground(getResources().getDrawable(R.drawable.background0));
-        }
-        if(current.getSelectedBackground() == 1){
-            layout.setBackground(getResources().getDrawable(R.drawable.background1));
-        }
-        if(current.getSelectedBackground() == 2){
-            layout.setBackground(getResources().getDrawable(R.drawable.background2));
-        }
-        if(current.getSelectedBackground() == 3){
-            layout.setBackground(getResources().getDrawable(R.drawable.background3));
-        }
-        if(current.getSelectedBackground() == 4){
-            layout.setBackground(getResources().getDrawable(R.drawable.background4));
-        }
-        if(current.getSelectedBackground() == 5){
-            layout.setBackground(getResources().getDrawable(R.drawable.background5));
-        }
-        if(current.getSelectedBackground() == 6){
-            layout.setBackground(getResources().getDrawable(R.drawable.background6));
-        }
 
-    }
 
     private void changeTitle() {
         if(current.getTitle().equals("Beginner")){
@@ -174,7 +180,7 @@ public class RewardActivity extends AppCompatActivity {
 //        }
         current = gson.fromJson(json, EarnedRewards.class);
         // TextView txt_ = (TextView) findViewById(R.id.textView12);
-        changeBackGround();
+//        changeBackGround();
         changeTitle();
         //txt_.setText(""+current.getSelectedBackground());
 //        }else{
