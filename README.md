@@ -2,8 +2,7 @@
 ## Final Project of CMPT276, worked with 2 other classmates.
 Environment: Android Studio
 
-##Iteration 1
-Walking Group: Iteration 1 User Stories
+## Iteration 1 User Stories
 
 1. Craete Account, Log-in, Log-out,
 ------------------------------------------
@@ -40,8 +39,7 @@ Walking Group: Iteration 1 User Stories
 
 	 
 
-##Iteration 2
-Iteration 2 User Stories
+## Iteration 2 User Stories
 ====================================
 
 ------------------------------------
@@ -93,7 +91,7 @@ In-App Messages
 	
 	
 	
-##Iteration 3
+## Iteration 3
 Use Cases -- Iteration 3
 ========================
 
