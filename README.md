@@ -92,7 +92,6 @@ In-App Messages
 	
 	
 ## Iteration 3
-Use Cases -- Iteration 3
 ========================
 
 Gamification
