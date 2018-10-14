@@ -1,5 +1,6 @@
 # WalkingGroup
-## Final Project of CMPT276, worked with 2 other classmates.
+## Final Project of CMPT276, worked with 2 other classmates. Walking group is an Android app which encourage and support people to create or join local walking group team, plus features which allow uses to push emergency button to send helps to their group leader and parents.
+
 Environment: Android Studio
 
 ## Iteration 1 User Stories
