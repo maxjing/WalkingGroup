@@ -24,7 +24,5 @@ WalkingGroup uses pure java for main function, and Retrofit to communicate with 
 WalkingGroup requires Android 5.0 above to run.
 
 ### ScreenShots
-![image](https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/main.jpeg)
-![image](https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/panicmsg.jpeg)
-![image](https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/newmsg.jpeg)
-![image](https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/map.png)
+<img src="https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/main.jpeg" width=200px style="display:inline">
+
