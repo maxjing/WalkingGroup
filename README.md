@@ -2,7 +2,7 @@
 
 ![image](https://raw.githubusercontent.com/maxjing/WalkingGroup/master/images/icon.png)
 
-Walking Group is an Android Application that allow you to build or join local walking group. his app aims to encourage people walk to school. Using retrofic to communication with api and google api for the map services.
+Walking Group is an Android Application that allow you to build or join local walking group. This app aims to encourage people walk to school. Using retrofic to communication with api and google api for the map services.
 
 # Features 
 
